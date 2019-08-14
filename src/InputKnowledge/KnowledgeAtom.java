@@ -30,14 +30,14 @@ public abstract class KnowledgeAtom {
     /**
      * Constructor for creating a KA with the name of the entity
      * @param id the id of the entity the KA describes
-     * @param name the name of the entity the KA describes
      * @param override if the KA is of 'override' type
+     * @param name the name of the entity the KA describes
      */
-    public KnowledgeAtom(String id, String name, boolean override, KnowledgeBase knowledgeBase) {
+    public KnowledgeAtom(String id, boolean override, KnowledgeBase knowledgeBase, String name) {
         this.id = id;
-        this.name = name;
         this.override = override;
         this.knowledgeBase = knowledgeBase;
+        this.name = name;
     }
 
     public String getId() {

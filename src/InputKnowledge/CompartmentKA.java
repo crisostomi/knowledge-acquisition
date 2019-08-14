@@ -11,8 +11,18 @@ public class CompartmentKA extends KnowledgeAtom {
         this.size = null;
     }
 
+    public CompartmentKA(String id, boolean override, KnowledgeBase knowledgeBase, String name) {
+        super(id, override, knowledgeBase, name);
+        this.size = null;
+    }
+
     public CompartmentKA(String id, boolean override, KnowledgeBase knowledgeBase, double size) {
         super(id, override, knowledgeBase);
+        this.size = size;
+    }
+
+    public CompartmentKA(String id, boolean override, KnowledgeBase knowledgeBase, String name, double size) {
+        super(id, override, knowledgeBase, name);
         this.size = size;
     }
 

@@ -6,8 +6,13 @@ import DataTypes.RealInterval;
 public class Species extends BiologicalEntity {
     private RealInterval initialAmount;
 
-    public Species(String id, String name) {
-        super(id, name);
+    public Species(String id) throws PreconditionsException {
+        super(id);
+    }
+
+    public Species(String id, String name) throws PreconditionsException {
+        super(id);
+        this.setName(name);
     }
 
     @Override
