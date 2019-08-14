@@ -1,5 +1,7 @@
 package InputKnowledge;
 
+import Model.Model;
+
 public abstract class KnowledgeAtom {
 
     private final String id;
@@ -40,4 +42,7 @@ public abstract class KnowledgeAtom {
     public boolean isOverride() {
         return override;
     }
+
+    public abstract void consolidateModelWithAtom(Model m);
+
 }
