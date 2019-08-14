@@ -4,10 +4,11 @@ import DataTypes.PreconditionsException;
 
 public class Compartment extends BiologicalEntity {
 
-    private double size;
+    private Double size;
 
-    public Compartment(String id, String name) {
-        super(id, name);
+    public Compartment(String id) throws PreconditionsException {
+        super(id);
+        this.size = null;
     }
 
     @Override
@@ -15,7 +16,7 @@ public class Compartment extends BiologicalEntity {
 
     }
 
-    public double getSize() {
+    public Double getSize() {
         return size;
     }
 

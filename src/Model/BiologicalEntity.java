@@ -9,11 +9,18 @@ public abstract class BiologicalEntity {
 
     private final String id; //unique
     private String name;
-    private Set<LinkTypeAdditionalKnowledge> additionalKnowledge;
+    private Set<LinkTypeAdditionalKnowledge> additionalKnowledge = new HashSet<LinkTypeAdditionalKnowledge>();
 
-    public BiologicalEntity(String id, String name) {
+    private static Set<String> idsInUse = new HashSet<>();
+
+    public BiologicalEntity(String id) throws PreconditionsException {
+        if (idsInUse.contains(id)) {
+            throw new BiologicalEntityNotUniqueException(
+                    "Biological entity " + id + " already exists"
+            );
+        }
         this.id = id;
-        this.name = name;
+        this.name = null;
     }
 
     public void insertLinkAdditionalKnowledge(AdditionalKnowledgeType addKnowType, String value){
