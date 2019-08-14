@@ -4,6 +4,7 @@ import DataTypes.ModifierType;
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Reaction extends BiologicalEntity {
@@ -58,5 +59,17 @@ public class Reaction extends BiologicalEntity {
 
     public void setRate(RealInterval rate) {
         this.rate = rate;
+    }
+
+    public Set<LinkTypeReactant> getReactants() {
+        return (Set<LinkTypeReactant>)((HashSet<LinkTypeReactant>)reactants).clone();
+    }
+
+    public Set<LinkTypeProduct> getProducts() {
+        return (Set<LinkTypeProduct>)((HashSet<LinkTypeProduct>)products).clone();
+    }
+
+    public Set<LinkTypeModifier> getModifiers() {
+        return (Set<LinkTypeModifier>)((HashSet<LinkTypeModifier>)modifiers).clone();
     }
 }
