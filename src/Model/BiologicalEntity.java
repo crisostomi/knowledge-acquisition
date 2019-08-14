@@ -1,9 +1,12 @@
 package Model;
 
+import DataTypes.PreconditionsException;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class BiologicalEntity {
+
     private final String id; //unique
     private String name;
     private Set<LinkTypeAdditionalKnowledge> additionalKnowledge;
@@ -26,7 +29,11 @@ public abstract class BiologicalEntity {
         return name;
     }
 
-    public abstract void override();
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public abstract void override(BiologicalEntity bioEntity) throws PreconditionsException;
 
     public Set<LinkTypeAdditionalKnowledge> getLinkAdditionalKnowledge() {
         return (Set<LinkTypeAdditionalKnowledge>)
