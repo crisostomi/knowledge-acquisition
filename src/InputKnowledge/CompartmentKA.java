@@ -32,19 +32,22 @@ public class CompartmentKA extends KnowledgeAtom {
 
        if (be != null && !(be instanceof Compartment)) {
            throw new PreconditionsException(
-                   "The model has a BiologicalEntity with same ID that is not a Compartment"
+                   "The model comprises a BiologicalEntity with same ID that is not a Compartment"
            );
        }
 
+       Compartment c;
        if (be == null) {
-           Compartment c = new Compartment(this.getId());
+           c = new Compartment(this.getId());
            // TODO: create new link <m, c> in comprises
-
-           this.handleCompartmentSize(c);
-
-           this.handleBioEntityName(c);
-           this.addAdditionalKnowledge(c);
+       } else {
+           c = (Compartment) be;
        }
+
+        this.handleCompartmentSize(c);
+
+        this.handleBioEntityName(c);
+        this.addAdditionalKnowledge(c);
     }
 
     private void handleCompartmentSize(Compartment c) throws PreconditionsException {

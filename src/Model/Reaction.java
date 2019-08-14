@@ -14,8 +14,8 @@ public class Reaction extends BiologicalEntity {
     private Set<LinkTypeModifier> modifiers;
 
 
-    public Reaction(String id, String name) {
-        super(id, name);
+    public Reaction(String id) throws PreconditionsException {
+        super(id);
     }
 
     public void override(BiologicalEntity bioEntity) throws PreconditionsException {
