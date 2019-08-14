@@ -1,23 +1,34 @@
 package Model;
 
 import DataTypes.PreconditionsException;
-
 import java.util.HashSet;
 import java.util.Set;
 
 public class Model {
 
-    public void overrideModel(Model other){
+//    public void overrideModel(Model other){
+//        for (LinkTypeComprises linkComprises:this.getLinkComprisesSet()){
+//            this.overrideEntity(linkComprises.getBiologicalEntity());
+//        }
+//    }
 
-    }
-
-    public BiologicalEntity getBioEntityById(String id){
-        return null;
-    }
-
-    public void overrideEntity(BiologicalEntity other){
-
-    }
+//    public BiologicalEntity getBioEntityById(String id){
+//        return null;
+//    }
+//
+//    public void overrideEntity(BiologicalEntity other){
+//        Boolean exists = false;
+//        for (LinkTypeComprises <mod_be,model>:this.comprises) do {
+//            if (mod_be.id == be.id) then {
+//                mod_be.override(be)
+//                exists = true
+//            }
+//        }
+//
+//        if (not exists) then
+//                new_model_be = be.clone()
+//        create new link <this, new_model_be> in comprises
+//    }
 
     private Set<LinkTypeComprises> linkComprisesSet = new HashSet<LinkTypeComprises>();
 
