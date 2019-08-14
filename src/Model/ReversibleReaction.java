@@ -7,14 +7,19 @@ public class ReversibleReaction extends Reaction {
     RealInterval revRate;
 
 
-    public ReversibleReaction(String id) throws PreconditionsException {
-        super(id);
+    public ReversibleReaction(String id, Model m) throws PreconditionsException {
+        super(id, m);
     }
 
     @Override
     public void override(BiologicalEntity bioEntity) throws PreconditionsException {
-        super.override(bioEntity);
-        this.overrideRevRate((ReversibleReaction) bioEntity);
+        if(this.getId().equals(bioEntity.getId()) && bioEntity instanceof ReversibleReaction){
+            super.override(bioEntity);
+            this.overrideRevRate((ReversibleReaction) bioEntity);
+        }
+        else{
+            throw new PreconditionsException("The overrider and the overridee must have same ID and same class.");
+        }
     }
 
     public void overrideRevRate(ReversibleReaction revReaction) throws PreconditionsException{
