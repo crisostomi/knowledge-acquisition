@@ -18,12 +18,12 @@ public class SpeciesKA extends KnowledgeAtom {
     }
 
     public void initializeCompartmentId(String compartmentId) throws PreconditionsException {
-        if (this.compartmentId != null) throw new PreconditionsException();
+        if (this.compartmentId != null || compartmentId == null) throw new PreconditionsException();
         this.compartmentId = compartmentId;
     }
 
     public void initializeInitialAmount(RealInterval initialAmount) throws PreconditionsException {
-        if (this.initialAmount != null) throw new PreconditionsException();
+        if (this.initialAmount != null || initialAmount == null) throw new PreconditionsException();
         this.initialAmount = initialAmount;
     }
 
@@ -33,20 +33,23 @@ public class SpeciesKA extends KnowledgeAtom {
 
         if (be != null && !(be instanceof Species)) {
             throw new PreconditionsException(
-                    "The model has a BiologicalEntity with same ID that is not a Species"
+                    "The model comprises a BiologicalEntity with same ID that is not a Species"
             );
         }
 
+        Species s;
         if (be == null) {
-            Species s = new Species(this.getId());
-            // TODO: create new link <m, c> in comprises
-
-            this.handleSpeciesInitialAmount(s);
-            this.handleSpeciesCompartment(s);
-
-            this.handleBioEntityName(s);
-            this.addAdditionalKnowledge(s);
+            s = new Species(this.getId());
+            // TODO: create new link <m, s> in comprises
+        } else {
+            s = (Species) be;
         }
+
+        this.handleSpeciesInitialAmount(s);
+        this.handleSpeciesCompartment(s);
+
+        this.handleBioEntityName(s);
+        this.addAdditionalKnowledge(s);
     }
 
     private void handleSpeciesCompartment(Species s) throws PreconditionsException {
