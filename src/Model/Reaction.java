@@ -3,9 +3,15 @@ package Model;
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
 
+import java.util.Set;
+
 public class Reaction extends BiologicalEntity {
 
     private RealInterval rate;
+    private Set<LinkTypeReactant> reactants;
+    private Set<LinkTypeProduct> products;
+    private Set<LinkTypeModifier> modifiers;
+
 
     public Reaction(String id, String name) {
         super(id, name);
