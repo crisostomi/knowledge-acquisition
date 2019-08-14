@@ -93,9 +93,8 @@ public abstract class KnowledgeAtom {
 
     protected void handleBioEntityName(BiologicalEntity be) throws PreconditionsException {
         if (!this.id.equals(be.getId())) throw new IdMismatchException();
-        if (this.getName() == null) throw new KnowledgeAtomNameNotFoundException();
         if (be.getName() != null && !be.getName().equals(this.getName())) throw new NameMismatchException();
 
-        be.setName(this.getName());
+        if (this.getName() != null) be.setName(this.getName());
     }
 }

@@ -40,16 +40,14 @@ public class CompartmentKA extends KnowledgeAtom {
            Compartment c = new Compartment(this.getId());
            // TODO: create new link <m, c> in comprises
 
+           this.handleCompartmentSize(c);
+
            this.handleBioEntityName(c);
-           try {
-               this.handleCompartmentSize(c);
-           } catch (CompartmentKASizeNotFoundException exc) {}
            this.addAdditionalKnowledge(c);
        }
     }
 
     private void handleCompartmentSize(Compartment c) throws PreconditionsException {
-        if (this.size == null) throw new CompartmentKASizeNotFoundException();
         if (this.size != null && c.getSize() != null && Double.compare(this.size, c.getSize()) != 0) {
             throw new SizeMismatchException(
                     "Compartment " + c.getId() + " already has size " + c.getSize() +
@@ -57,6 +55,6 @@ public class CompartmentKA extends KnowledgeAtom {
             );
         }
 
-        c.setSize(this.size);
+        if (this.size != null) c.setSize(this.size);
     }
 }

@@ -41,19 +41,42 @@ public class SpeciesKA extends KnowledgeAtom {
             Species s = new Species(this.getId());
             // TODO: create new link <m, c> in comprises
 
-            this.handleBioEntityName(s);
-            try {
-                this.handleSpeciesInitialAmount(s);
-            } catch (SpeciesKAInitAmountNotFoundException exc) {}
+            this.handleSpeciesInitialAmount(s);
+            this.handleSpeciesCompartment(s);
 
-            try {
-                this.handleSpeciesCompartment(s);
-            } catch (SpeciesKACompartmentNotFoundException exc) {}
+            this.handleBioEntityName(s);
             this.addAdditionalKnowledge(s);
         }
     }
 
-    private void handleSpeciesCompartment(Species s) {}
+    private void handleSpeciesCompartment(Species s) throws PreconditionsException {
+        if (!this.id.equals(s.getId())) {
+            throw new IdMismatchException(
+                    "Species has different ID ("+s.getId()+") from atom ("+this.id+")"
+            );
+        }
 
-    private void handleSpeciesInitialAmount(Species s) {}
+        // TODO: rest of method (need link in Compartment)
+
+    }
+
+    private void handleSpeciesInitialAmount(Species s) throws PreconditionsException {
+        if (!this.id.equals(s.getId())) {
+            throw new IdMismatchException(
+                    "Species has different ID ("+s.getId()+") from atom ("+this.id+")"
+            );
+        }
+
+        if (this.initialAmount != null) {
+            if (s.getInitialAmount() != null) {
+                RealInterval newInitalAmount = s.getInitialAmount().intersect(this.initialAmount);
+                s.setInitialAmount(newInitalAmount);
+            } else {
+                s.setInitialAmount(this.initialAmount);
+            }
+        } else if (s.getInitialAmount() == null) {
+            RealInterval newInitalAmount = new RealInterval(0, Double.MAX_VALUE);
+            s.setInitialAmount(newInitalAmount);
+        }
+    }
 }
