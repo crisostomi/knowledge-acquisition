@@ -10,10 +10,12 @@ public abstract class BiologicalEntity {
     private final String id; //unique
     private String name;
     private Set<LinkTypeAdditionalKnowledge> additionalKnowledge = new HashSet<LinkTypeAdditionalKnowledge>();
+    private LinkTypeComprises linkComprises;
 
     private static Set<String> idsInUse = new HashSet<>();
 
-    public BiologicalEntity(String id) throws PreconditionsException {
+
+    public BiologicalEntity(String id, Model m) throws PreconditionsException {
         if (idsInUse.contains(id)) {
             throw new BiologicalEntityNotUniqueException(
                     "Biological entity " + id + " already exists"
@@ -21,6 +23,8 @@ public abstract class BiologicalEntity {
         }
         this.id = id;
         this.name = null;
+
+        LinkComprises.insertLink(m, this);
     }
 
     public void insertLinkAdditionalKnowledge(AdditionalKnowledgeType addKnowType, String value){
@@ -56,7 +60,6 @@ public abstract class BiologicalEntity {
         }
     }
 
-    private Set<LinkTypeComprises> linkComprisesSet = new HashSet<LinkTypeComprises>();
 
     public void insertLinkComprises(LinkComprises pass, LinkTypeComprises l)
             throws PreconditionsException {
@@ -64,19 +67,19 @@ public abstract class BiologicalEntity {
             throw new PreconditionsException(
                     "E’ necessario esibire un oggetto di class " +
                             "AssociazioneAssoc per invocare questo metodo!");
-        linkComprisesSet.add(l);
+        linkComprises = l;
     }
 
-    public void removeLinkComprises(LinkComprises pass, LinkTypeComprises l)
+    public void removeLinkComprises(LinkComprises pass)
             throws PreconditionsException {
         if (pass == null)
             throw new PreconditionsException(
                     "E’ necessario esibire un oggetto di class " +
                             "AssociazioneAssoc per invocare questo metodo!");
-        linkComprisesSet.remove(l);
+        linkComprises = null;
     }
 
-    public Set<LinkTypeComprises> getLinkAssoc() {
-        return (Set<LinkTypeComprises>)((HashSet<LinkTypeComprises>)linkComprisesSet).clone();
+    public LinkTypeComprises getLinkComprises() {
+        return linkComprises;
     }
 }

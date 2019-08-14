@@ -38,8 +38,7 @@ public class CompartmentKA extends KnowledgeAtom {
 
        Compartment c;
        if (be == null) {
-           c = new Compartment(this.getId());
-           // TODO: create new link <m, c> in comprises
+           c = new Compartment(this.getId(), m);
        } else {
            c = (Compartment) be;
        }

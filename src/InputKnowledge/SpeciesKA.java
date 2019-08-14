@@ -39,8 +39,7 @@ public class SpeciesKA extends KnowledgeAtom {
 
         Species s;
         if (be == null) {
-            s = new Species(this.getId());
-            // TODO: create new link <m, s> in comprises
+            s = new Species(this.getId(), m);
         } else {
             s = (Species) be;
         }
