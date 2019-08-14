@@ -1,7 +1,6 @@
 package Model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 public abstract class BiologicalEntity {
@@ -19,10 +18,22 @@ public abstract class BiologicalEntity {
         this.additionalKnowledge.add(link);
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Set<LinkTypeAdditionalKnowledge> getAdditionalKnowledge() {
+        return additionalKnowledge;
+    }
+
     public abstract void override();
 
-//    public Map<AdditionalKnowledgeType, String> getAdditionalKnowledge(){
-//        Map<AdditionalKnowledgeType, String> addKnow = new HashMap<AdditionalKnowledgeType, String>();
-//
-//    }
+    public Set<LinkTypeAdditionalKnowledge> getLinkadditionalKA() {
+        return (Set<LinkTypeAdditionalKnowledge>)
+                ((HashSet<LinkTypeAdditionalKnowledge>)additionalKnowledge).clone();
+    }
 }
