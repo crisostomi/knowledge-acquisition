@@ -7,8 +7,8 @@ public class ReversibleReaction extends Reaction {
     RealInterval revRate;
 
 
-    public ReversibleReaction(String id) throws PreconditionsException {
-        super(id);
+    public ReversibleReaction(String id, Model m) throws PreconditionsException {
+        super(id, m);
     }
 
     @Override
