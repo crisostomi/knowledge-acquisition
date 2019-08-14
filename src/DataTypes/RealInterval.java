@@ -22,6 +22,14 @@ public class RealInterval {
         this.upperBound = ub;
     }
 
+    public double getLowerBound() {
+        return lowerBound;
+    }
+
+    public double getUpperBound() {
+        return upperBound;
+    }
+
     /**
      * Method that intersects this with another instance of RealInterval. If the intersection
      * results in an empty interval, null is returned
