@@ -19,7 +19,7 @@ public final class LinkComprises {
     public static void removeLink(LinkTypeComprises link)
             throws PreconditionsException {
         LinkComprises pass = new LinkComprises();
-        link.getBiologicalEntity().removeLinkComprises(pass, link);
+        link.getBiologicalEntity().removeLinkComprises(pass);
         link.getModel().removeLinkComprises(pass, link);
     }
 }

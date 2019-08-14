@@ -62,8 +62,7 @@ public class ReactionKA extends KnowledgeAtom {
 
         Reaction r;
         if (be == null) {
-            r = new Reaction(this.id);
-            // TODO: create new link <m, r> in comprises
+            r = new Reaction(this.id, m);
         } else {
             r = (Reaction) be;
         }
@@ -134,8 +133,7 @@ public class ReactionKA extends KnowledgeAtom {
             String s_id = entry.getKey();
             Integer stoich = entry.getValue();
 
-            Species s = new Species(s_id);
-            // TODO: create new link <r.comprises.Model, s> in comprises
+            Species s = new Species(s_id, r.getLinkComprises().getModel());
 
             r.addReactant(s, stoich);
         }
@@ -167,8 +165,7 @@ public class ReactionKA extends KnowledgeAtom {
             String s_id = entry.getKey();
             Integer stoich = entry.getValue();
 
-            Species s = new Species(s_id);
-            // TODO: create new link <r.comprises.Model, s> in comprises
+            Species s = new Species(s_id, r.getLinkComprises().getModel());
 
             r.addProduct(s, stoich);
         }
@@ -199,8 +196,7 @@ public class ReactionKA extends KnowledgeAtom {
             String s_id = entry.getKey();
             ModifierType type = entry.getValue();
 
-            Species s = new Species(s_id);
-            // TODO: create new link <r.comprises.Model, s> in comprises
+            Species s = new Species(s_id, r.getLinkComprises().getModel());
 
             r.addModifier(s, type);
         }

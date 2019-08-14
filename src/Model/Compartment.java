@@ -6,8 +6,8 @@ public class Compartment extends BiologicalEntity {
 
     private Double size;
 
-    public Compartment(String id) throws PreconditionsException {
-        super(id);
+    public Compartment(String id, Model m) throws PreconditionsException {
+        super(id, m);
         this.size = null;
     }
 
