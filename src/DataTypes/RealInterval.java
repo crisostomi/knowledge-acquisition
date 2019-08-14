@@ -10,12 +10,12 @@ public class RealInterval {
      * Class that represents a real interval
      * @param lb the lower bound of the interval
      * @param ub the upper bound of the interval
-     * @throws RealIntervalPreconditionsException if provided with lb > ub
+     * @throws PreconditionsException if provided with lb > ub
      */
-    public RealInterval(double lb, double ub) throws RealIntervalPreconditionsException {
+    public RealInterval(double lb, double ub) throws PreconditionsException {
 
         if (lb > ub) {
-            throw new RealIntervalPreconditionsException("" +
+            throw new PreconditionsException("" +
                     "Cannot create RealInterval instance with lower bound greater than upper bound");
         }
         this.lowerBound = lb;
@@ -34,7 +34,7 @@ public class RealInterval {
 
         try {
             return new RealInterval(lb, ub);
-        } catch (RealIntervalPreconditionsException exc) {
+        } catch (PreconditionsException exc) {
             return null;
         }
     }
