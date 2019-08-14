@@ -7,6 +7,14 @@ public class SpeciesReference {
     private String speciesId;
     private int stoichiometry;
 
+    public int getStoichiometry() {
+        return stoichiometry;
+    }
+
+    public String getSpeciesId() {
+        return speciesId;
+    }
+
     /**
      * Class that represents a reference to a species in a reaction
      * @param speciesId id of the species
