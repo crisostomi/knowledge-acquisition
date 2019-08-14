@@ -71,7 +71,6 @@ public abstract class KnowledgeAtom {
     public abstract void consolidateModelWithAtom(Model m);
 
     public void addAdditionalKnowledge(BiologicalEntity be) throws PreconditionsException {
-        boolean preconditions = true;
 
         for (LinkTypeAdditionalKA link1 : this.getLinkAdditionalKA()) {
             AdditionalKnowledgeType t1 = link1.getAdditionalKnowledgeType();
@@ -80,15 +79,13 @@ public abstract class KnowledgeAtom {
                 AdditionalKnowledgeType t2 = link2.getAddKnowType();
 
                 if (t1 == t2 && !link1.getValue().equals(link2.getValue())) {
-                    preconditions = false;
+                    throw new AdditionalKnowledgeMismatchException(
+                            "Biological entity " + be.getId() + " already has value " + link2.getValue() +
+                                    " for AdditionalKnowledgeType " + t1.getId() +
+                                    " which is different from value " + link1.getValue() + " provided by the atom"
+                    );
                 }
             }
-        }
-
-        if (!preconditions) {
-            throw new PreconditionsException(
-                    "There is conflicting additional knowledge!"
-            );
         }
 
         for (LinkTypeAdditionalKA link : this.getLinkAdditionalKA()) {

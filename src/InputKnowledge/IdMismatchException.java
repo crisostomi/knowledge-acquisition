@@ -2,7 +2,7 @@ package InputKnowledge;
 
 import DataTypes.PreconditionsException;
 
-public class IdMismatchException extends PreconditionsException {
+public class IdMismatchException extends ConflictingKnowledgeException {
     public IdMismatchException() {
         super();
     }
