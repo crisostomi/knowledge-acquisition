@@ -3,8 +3,7 @@ package DataTypes;
 public class PreconditionsException extends Exception {
 
     /**
-     * Class that represents the failure to comply with RealInterval constructor
-     * preconditions
+     * Class that represents the failure to comply with datatypes methods preconditions
      */
     public PreconditionsException() {
         super();
