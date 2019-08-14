@@ -67,6 +67,7 @@ public abstract class BiologicalEntity {
             throw new PreconditionsException(
                     "E’ necessario esibire un oggetto di class " +
                             "AssociazioneAssoc per invocare questo metodo!");
+        if (linkComprises != null) throw new LinkMultiplicityException();
         linkComprises = l;
     }
 
@@ -79,7 +80,8 @@ public abstract class BiologicalEntity {
         linkComprises = null;
     }
 
-    public LinkTypeComprises getLinkComprises() {
+    public LinkTypeComprises getLinkComprises() throws PreconditionsException{
+        if (linkComprises == null) throw new LinkMultiplicityException();
         return linkComprises;
     }
 }

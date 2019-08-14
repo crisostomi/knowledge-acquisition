@@ -12,19 +12,21 @@ public abstract class KnowledgeAtom {
     protected final String name;
     private final boolean override;
 
-    private KnowledgeBase knowledgeBase;
     private Set<LinkTypeAdditionalKA> additionalKA = new HashSet<>();
+    private LinkTypeContains linkContains;
 
     /**
      * Constructor for creating a KA without the name of the entity
      * @param id the id of the entity the KA describes
      * @param override if the KA is of 'override' type
      */
-    public KnowledgeAtom(String id, boolean override, KnowledgeBase knowledgeBase) {
+    public KnowledgeAtom(String id, boolean override, KnowledgeBase knowledgeBase)
+                        throws PreconditionsException {
         this.id = id;
         this.name = null;
         this.override = override;
-        this.knowledgeBase = knowledgeBase;
+
+        LinkContains.insertLink(knowledgeBase, this);
     }
 
     /**
@@ -33,11 +35,13 @@ public abstract class KnowledgeAtom {
      * @param override if the KA is of 'override' type
      * @param name the name of the entity the KA describes
      */
-    public KnowledgeAtom(String id, boolean override, KnowledgeBase knowledgeBase, String name) {
+    public KnowledgeAtom(String id, boolean override, KnowledgeBase knowledgeBase, String name)
+            throws PreconditionsException {
         this.id = id;
         this.override = override;
-        this.knowledgeBase = knowledgeBase;
         this.name = name;
+
+        LinkContains.insertLink(knowledgeBase, this);
     }
 
     public String getId() {
@@ -50,10 +54,6 @@ public abstract class KnowledgeAtom {
 
     public boolean isOverride() {
         return override;
-    }
-
-    public KnowledgeBase getKnowledgeBase() {
-        return knowledgeBase;
     }
 
     private void insertLinkAdditionalKA(AdditionalKnowledgeType t, String v) throws PreconditionsException {
@@ -96,5 +96,19 @@ public abstract class KnowledgeAtom {
         if (be.getName() != null && !be.getName().equals(this.getName())) throw new NameMismatchException();
 
         if (this.getName() != null) be.setName(this.getName());
+    }
+
+    public void insertLinkContains(LinkContains pass, LinkTypeContains l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "E’ necessario esibire un oggetto di class " +
+                            "AssociazioneAssoc per invocare questo metodo!");
+        if (linkContains != null) throw new LinkMultiplicityException();
+        linkContains = l;
+    }
+
+    public LinkTypeContains getLinkContains() {
+        return linkContains;
     }
 }

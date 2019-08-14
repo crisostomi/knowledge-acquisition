@@ -6,11 +6,13 @@ import java.util.Set;
 
 public class Model {
 
-//    public void overrideModel(Model other){
+    private Set<LinkTypeComprises> linkComprisesSet = new HashSet<>();
+
+   public void overrideModel(Model other){
 //        for (LinkTypeComprises linkComprises:this.getLinkComprisesSet()){
 //            this.overrideEntity(linkComprises.getBiologicalEntity());
 //        }
-//    }
+    }
 
    public BiologicalEntity getBioEntityById(String id){
         return null;
@@ -30,7 +32,6 @@ public class Model {
 //        create new link <this, new_model_be> in comprises
 //    }
 
-    private Set<LinkTypeComprises> linkComprisesSet = new HashSet<LinkTypeComprises>();
 
     public void insertLinkComprises(LinkComprises pass, LinkTypeComprises l)
             throws PreconditionsException {

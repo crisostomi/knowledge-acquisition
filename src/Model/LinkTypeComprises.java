@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 public class LinkTypeComprises {
     private Model model;
     private BiologicalEntity bioEntity;
@@ -17,5 +19,16 @@ public class LinkTypeComprises {
         this.bioEntity = bioEntity;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LinkTypeComprises that = (LinkTypeComprises) o;
+        return model == that.model && bioEntity == that.bioEntity;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(model, bioEntity);
+    }
 }
