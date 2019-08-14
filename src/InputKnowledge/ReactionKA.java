@@ -10,11 +10,12 @@ import java.util.Set;
 
 public class ReactionKA extends KnowledgeAtom {
 
-    private String compartmentId = null;
-    private RealInterval rate = null;
-    private Set<SpeciesReference> reactants = new HashSet<>();
-    private Set<SpeciesReference> products = new HashSet<>();
-    private Set<ModifierReference> modifiers = new HashSet<>();
+    protected RealInterval rate = null;
+
+    protected String compartmentId = null;
+    protected Set<SpeciesReference> reactants = new HashSet<>();
+    protected Set<SpeciesReference> products = new HashSet<>();
+    protected Set<ModifierReference> modifiers = new HashSet<>();
 
 
     public ReactionKA(String id, boolean override, KnowledgeBase knowledgeBase) {
@@ -28,11 +29,6 @@ public class ReactionKA extends KnowledgeAtom {
     public void initializeCompartmentId(String compartmentId) throws PreconditionsException {
         if (this.compartmentId != null || compartmentId == null) throw new PreconditionsException();
         this.compartmentId = compartmentId;
-    }
-
-    public void initializeRate(RealInterval rate) throws PreconditionsException {
-        if (this.rate != null || rate == null) throw new PreconditionsException();
-        this.rate = rate;
     }
 
     public void initializeReactants(Set<SpeciesReference> reactants) throws PreconditionsException {
@@ -110,14 +106,14 @@ public class ReactionKA extends KnowledgeAtom {
 
         if (this.rate != null) {
             if (r.getRate() != null) {
-                RealInterval newInitalAmount = r.getRate().intersect(this.rate);
-                r.setRate(newInitalAmount);
+                RealInterval newRate = r.getRate().intersect(this.rate);
+                r.setRate(newRate);
             } else {
                 r.setRate(this.rate);
             }
         } else if (r.getRate() == null) {
-            RealInterval newInitalAmount = new RealInterval(0, Double.MAX_VALUE);
-            r.setRate(newInitalAmount);
+            RealInterval newRate = new RealInterval(0, Double.MAX_VALUE);
+            r.setRate(newRate);
         }
     }
 

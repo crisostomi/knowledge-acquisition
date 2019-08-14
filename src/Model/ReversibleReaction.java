@@ -4,7 +4,8 @@ import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
 
 public class ReversibleReaction extends Reaction {
-    RealInterval revRate;
+
+    private RealInterval rateInv;
 
 
     public ReversibleReaction(String id, Model m) throws PreconditionsException {
@@ -24,10 +25,18 @@ public class ReversibleReaction extends Reaction {
 
     public void overrideRevRate(ReversibleReaction revReaction) throws PreconditionsException{
         if(this.getId().equals(revReaction.getId())){
-            this.revRate = revReaction.revRate;
+            this.rateInv = revReaction.rateInv;
         }
         else{
             throw new PreconditionsException("The overrider and the overridee have different ids.");
         }
+    }
+
+    public RealInterval getRateInv() {
+        return rateInv;
+    }
+
+    public void setRateInv(RealInterval rateInv) {
+        this.rateInv = rateInv;
     }
 }

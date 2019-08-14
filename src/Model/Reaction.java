@@ -55,14 +55,6 @@ public class Reaction extends BiologicalEntity {
         }
     }
 
-    public RealInterval getRate() {
-        return rate;
-    }
-
-    public void setRate(RealInterval rate) {
-        this.rate = rate;
-    }
-
     public Set<LinkTypeReactant> getReactants() {
         return (Set<LinkTypeReactant>)((HashSet<LinkTypeReactant>)reactants).clone();
     }
@@ -95,5 +87,13 @@ public class Reaction extends BiologicalEntity {
 
     public LinkTypeReactionCompartment getLinkReactionCompartment() {
         return linkTypeReactionCompartment;
+    }
+
+    public RealInterval getRate() {
+        return rate;
+    }
+
+    public void setRate(RealInterval rate) {
+        this.rate = rate;
     }
 }

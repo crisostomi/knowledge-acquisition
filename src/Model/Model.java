@@ -12,9 +12,9 @@ public class Model {
 //        }
 //    }
 
-//    public BiologicalEntity getBioEntityById(String id){
-//        return null;
-//    }
+   public BiologicalEntity getBioEntityById(String id){
+        return null;
+   }
 //
 //    public void overrideEntity(BiologicalEntity other){
 //        Boolean exists = false;
