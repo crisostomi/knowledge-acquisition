@@ -3,15 +3,13 @@ package InputKnowledge;
 import DataTypes.PreconditionsException;
 import Model.*;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public abstract class KnowledgeAtom {
 
-    private final String id;
-    private final String name;
+    protected final String id;
+    protected final String name;
     private final boolean override;
 
     private KnowledgeBase knowledgeBase;
@@ -58,7 +56,7 @@ public abstract class KnowledgeAtom {
         return knowledgeBase;
     }
 
-    public void insertLinkAdditionalKA(AdditionalKnowledgeType t, String v) throws PreconditionsException {
+    private void insertLinkAdditionalKA(AdditionalKnowledgeType t, String v) throws PreconditionsException {
         LinkTypeAdditionalKA link = new LinkTypeAdditionalKA(t, this, v);
         additionalKA.add(link);
     }
@@ -68,9 +66,9 @@ public abstract class KnowledgeAtom {
                 ((HashSet<LinkTypeAdditionalKA>)additionalKA).clone();
     }
 
-    public abstract void consolidateModelWithAtom(Model m);
+    public abstract void consolidateModelWithAtom(Model m) throws PreconditionsException ;
 
-    public void addAdditionalKnowledge(BiologicalEntity be) throws PreconditionsException {
+    protected void addAdditionalKnowledge(BiologicalEntity be) throws PreconditionsException {
 
         for (LinkTypeAdditionalKA link1 : this.getLinkAdditionalKA()) {
             AdditionalKnowledgeType t1 = link1.getAdditionalKnowledgeType();
@@ -93,7 +91,7 @@ public abstract class KnowledgeAtom {
         }
     }
 
-    public void handleBioEntityName(BiologicalEntity be) throws PreconditionsException {
+    protected void handleBioEntityName(BiologicalEntity be) throws PreconditionsException {
         if (!this.id.equals(be.getId())) throw new IdMismatchException();
         if (this.getName() == null) throw new KnowledgeAtomNameNotFoundException();
         if (be.getName() != null && !be.getName().equals(this.getName())) throw new NameMismatchException();
