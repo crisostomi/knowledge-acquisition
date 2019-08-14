@@ -39,7 +39,7 @@ public class Model {
         linkComprisesSet.remove(l);
     }
 
-    public Set<LinkTypeComprises> getLinkAssoc() {
+    public Set<LinkTypeComprises> getLinkComprisesSet() {
         return (Set<LinkTypeComprises>)((HashSet<LinkTypeComprises>)linkComprisesSet).clone();
     }
 }
