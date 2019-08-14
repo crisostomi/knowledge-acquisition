@@ -3,7 +3,9 @@ package InputKnowledge;
 import DataTypes.PreconditionsException;
 import Model.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class KnowledgeAtom {
@@ -61,15 +63,44 @@ public abstract class KnowledgeAtom {
         additionalKA.add(link);
     }
 
-    public Set<LinkTypeAdditionalKA> getLinkadditionalKA() {
+    public Set<LinkTypeAdditionalKA> getLinkAdditionalKA() {
         return (Set<LinkTypeAdditionalKA>)
                 ((HashSet<LinkTypeAdditionalKA>)additionalKA).clone();
     }
 
     public abstract void consolidateModelWithAtom(Model m);
 
-    public void addAdditionalKnowledge(BiologicalEntity be) {
+    public void addAdditionalKnowledge(BiologicalEntity be) throws PreconditionsException {
         boolean preconditions = true;
 
+        for (LinkTypeAdditionalKA link1 : this.getLinkAdditionalKA()) {
+            AdditionalKnowledgeType t1 = link1.getAdditionalKnowledgeType();
+
+            for (LinkTypeAdditionalKnowledge link2 : be.getLinkAdditionalKnowledge()) {
+                AdditionalKnowledgeType t2 = link2.getAddKnowType();
+
+                if (t1 == t2 && !link1.getValue().equals(link2.getValue())) {
+                    preconditions = false;
+                }
+            }
+        }
+
+        if (!preconditions) {
+            throw new PreconditionsException(
+                    "There is conflicting additional knowledge!"
+            );
+        }
+
+        for (LinkTypeAdditionalKA link : this.getLinkAdditionalKA()) {
+            be.insertLinkAdditionalKnowledge(link.getAdditionalKnowledgeType(), link.getValue());
+        }
+    }
+
+    public void handleBioEntityName(BiologicalEntity be) throws PreconditionsException {
+        if (!this.id.equals(be.getId())) throw new IdMismatchException();
+        if (this.getName() == null) throw new KnowledgeAtomNameNotFoundException();
+        if (be.getName() != null && !be.getName().equals(this.getName())) throw new NameMismatchException();
+
+        be.setName(this.getName());
     }
 }
