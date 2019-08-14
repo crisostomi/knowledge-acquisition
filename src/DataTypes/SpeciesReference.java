@@ -2,17 +2,25 @@ package DataTypes;
 
 import java.util.Objects;
 
+
 public class SpeciesReference {
     private String speciesId;
     private int stoichiometry;
 
-    SpeciesReference(String speciesId, int stoichiometry) throws Exception{
+    /**
+     * Class that represents a reference to a species in a reaction
+     * @param speciesId id of the species
+     * @param stoichiometry stoichiometry of the species in the reaction
+     * @throws PreconditionsException
+     */
+
+    SpeciesReference(String speciesId, int stoichiometry) throws PreconditionsException{
         if (stoichiometry > 0){
             this.speciesId = speciesId;
             this.stoichiometry = stoichiometry;
         }
         else{
-            throw new Exception();
+            throw new PreconditionsException("Stoichiometry must be greater than zero.");
         }
     }
 
