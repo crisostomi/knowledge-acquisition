@@ -16,6 +16,7 @@ public class ReactionKA extends KnowledgeAtom {
     private Set<SpeciesReference> products = new HashSet<>();
     private Set<ModifierReference> modifiers = new HashSet<>();
 
+
     public ReactionKA(String id, boolean override, KnowledgeBase knowledgeBase) {
         super(id, override, knowledgeBase);
     }
@@ -85,7 +86,19 @@ public class ReactionKA extends KnowledgeAtom {
             );
         }
 
-        // TODO: rest of method (need link in Compartment)
+        Compartment c = null;
+        LinkTypeReactionCompartment l = r.getLinkReactionCompartment();
+        if (l != null) {
+            c = l.getCompartment();
+            if (!(c.getId().equals(this.compartmentId))) throw new CompartmentMismatchException();
+        }
+
+        if (c == null) {
+            c = new Compartment(this.compartmentId, r.getLinkComprises().getModel());
+
+        }
+
+        LinkReactionCompartment.insertLink(r, c);
     }
 
     private void handleReactionRate(Reaction r) throws PreconditionsException {

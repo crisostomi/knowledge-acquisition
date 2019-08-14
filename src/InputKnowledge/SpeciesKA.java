@@ -58,8 +58,19 @@ public class SpeciesKA extends KnowledgeAtom {
             );
         }
 
-        // TODO: rest of method (need link in Compartment)
+        Compartment c = null;
+        LinkTypeSpeciesCompartment l = s.getLinkSpeciesCompartment();
+        if (l != null) {
+            c = l.getCompartment();
+            if (!(c.getId().equals(this.compartmentId))) throw new CompartmentMismatchException();
+        }
 
+        if (c == null) {
+            c = new Compartment(this.compartmentId, s.getLinkComprises().getModel());
+
+        }
+
+        LinkSpeciesCompartment.insertLink(s, c);
     }
 
     private void handleSpeciesInitialAmount(Species s) throws PreconditionsException {

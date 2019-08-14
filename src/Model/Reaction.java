@@ -14,6 +14,8 @@ public class Reaction extends BiologicalEntity {
     private Set<LinkTypeProduct> products;
     private Set<LinkTypeModifier> modifiers;
 
+    private LinkTypeReactionCompartment linkTypeReactionCompartment;
+
 
     public Reaction(String id, Model m) throws PreconditionsException {
         super(id, m);
@@ -71,5 +73,27 @@ public class Reaction extends BiologicalEntity {
 
     public Set<LinkTypeModifier> getModifiers() {
         return (Set<LinkTypeModifier>)((HashSet<LinkTypeModifier>)modifiers).clone();
+    }
+
+    public void insertLinkReactionCompartment(LinkReactionCompartment pass, LinkTypeReactionCompartment l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "E’ necessario esibire un oggetto di class " +
+                            "AssociazioneAssoc per invocare questo metodo!");
+        linkTypeReactionCompartment = l;
+    }
+
+    public void removeLinkReactionCompartment(LinkReactionCompartment pass)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "E’ necessario esibire un oggetto di class " +
+                            "AssociazioneAssoc per invocare questo metodo!");
+        linkTypeReactionCompartment = null;
+    }
+
+    public LinkTypeReactionCompartment getLinkReactionCompartment() {
+        return linkTypeReactionCompartment;
     }
 }

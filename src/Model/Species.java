@@ -16,11 +16,6 @@ public class Species extends BiologicalEntity {
         this.setName(name);
     }
 
-    public void setCompartment(Compartment compartment){
-        linkTypeSpeciesCompartment = new LinkTypeSpeciesCompartment(this, compartment);
-    }
-
-
     @Override
     public void override(BiologicalEntity bioEntity) throws PreconditionsException {
         if (this.getId().equals(bioEntity.getId()) && bioEntity instanceof Species){

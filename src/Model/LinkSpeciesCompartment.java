@@ -2,7 +2,9 @@ package Model;
 
 import DataTypes.PreconditionsException;
 
-public class LinkSpeciesCompartment {
+public final class LinkSpeciesCompartment {
+
+    private LinkSpeciesCompartment() {}
 
     public static void insertLink(Species species, Compartment compartment) throws PreconditionsException {
         // Creo un pass: solo i metodi di questa classe possono farlo!
