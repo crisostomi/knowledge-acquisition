@@ -26,13 +26,9 @@ public abstract class BiologicalEntity {
         return name;
     }
 
-    public Set<LinkTypeAdditionalKnowledge> getAdditionalKnowledge() {
-        return additionalKnowledge;
-    }
-
     public abstract void override();
 
-    public Set<LinkTypeAdditionalKnowledge> getLinkadditionalKA() {
+    public Set<LinkTypeAdditionalKnowledge> getLinkAdditionalKnowledge() {
         return (Set<LinkTypeAdditionalKnowledge>)
                 ((HashSet<LinkTypeAdditionalKnowledge>)additionalKnowledge).clone();
     }
