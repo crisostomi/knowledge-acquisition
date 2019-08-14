@@ -3,6 +3,7 @@ package InputKnowledge;
 import DataTypes.*;
 import Model.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -115,7 +116,25 @@ public class ReactionKA extends KnowledgeAtom {
             );
         }
 
-        // TODO: (need link comprises)
+        Model m = r.getLinkComprises().getModel();
+        Map<Species, Integer> existent = new HashMap<>();
+        Map<String, Integer> nonExistent = new HashMap<>();
+
+        for (SpeciesReference sr : this.reactants) {
+
+            String speciesId = sr.getSpeciesId();
+            Integer stoich = sr.getStoichiometry();
+
+            Species s = (Species)m.getBioEntityById(speciesId);
+            if (s == null) {
+                existent.put(s, stoich);
+            } else {
+                nonExistent.put(speciesId, stoich);
+            }
+        }
+
+        handleExistentReactionReactants(r, existent);
+        handleNonExistentReactionReactants(r, nonExistent);
 
     }
 
@@ -147,7 +166,25 @@ public class ReactionKA extends KnowledgeAtom {
             );
         }
 
-        // TODO: (need link comprises)
+        Model m = r.getLinkComprises().getModel();
+        Map<Species, Integer> existent = new HashMap<>();
+        Map<String, Integer> nonExistent = new HashMap<>();
+
+        for (SpeciesReference sr : this.products) {
+
+            String speciesId = sr.getSpeciesId();
+            Integer stoich = sr.getStoichiometry();
+
+            Species s = (Species)m.getBioEntityById(speciesId);
+            if (s == null) {
+                existent.put(s, stoich);
+            } else {
+                nonExistent.put(speciesId, stoich);
+            }
+        }
+
+        handleExistentReactionProducts(r, existent);
+        handleNonExistentReactionProducts(r, nonExistent);
 
     }
 
@@ -179,7 +216,25 @@ public class ReactionKA extends KnowledgeAtom {
             );
         }
 
-        // TODO: (need link comprises)
+        Model m = r.getLinkComprises().getModel();
+        Map<Species, ModifierType> existent = new HashMap<>();
+        Map<String, ModifierType> nonExistent = new HashMap<>();
+
+        for (ModifierReference mr : this.modifiers) {
+
+            String speciesId = mr.getSpeciesId();
+            ModifierType stoich = mr.getType();
+
+            Species s = (Species)m.getBioEntityById(speciesId);
+            if (s == null) {
+                existent.put(s, stoich);
+            } else {
+                nonExistent.put(speciesId, stoich);
+            }
+        }
+
+        handleExistentReactionModifiers(r, existent);
+        handleNonExistentReactionModifiers(r, nonExistent);
     }
 
     private void handleExistentReactionModifiers(Reaction r, Map<Species, ModifierType> modifiers) {
