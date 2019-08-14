@@ -39,4 +39,13 @@ public abstract class BiologicalEntity {
         return (Set<LinkTypeAdditionalKnowledge>)
                 ((HashSet<LinkTypeAdditionalKnowledge>)additionalKnowledge).clone();
     }
+
+    public void overrideName(BiologicalEntity bioEntity) throws PreconditionsException{
+        if (this.getId().equals(bioEntity.getId())){
+            this.name = bioEntity.name;
+        }
+        else {
+            throw new PreconditionsException("The overrider and the overridee have different ids.");
+        }
+    }
 }
