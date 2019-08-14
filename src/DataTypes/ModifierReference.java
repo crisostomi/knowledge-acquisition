@@ -3,8 +3,8 @@ package DataTypes;
 import java.util.Objects;
 
 public class ModifierReference {
-    private String speciesId;
-    private ModifierType type;
+    private final String speciesId;
+    private final ModifierType type;
 
     public ModifierReference(String speciesId, ModifierType type){
         this.speciesId = speciesId;

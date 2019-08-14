@@ -4,8 +4,8 @@ import java.util.Objects;
 
 
 public class SpeciesReference {
-    private String speciesId;
-    private int stoichiometry;
+    private final String speciesId;
+    private final int stoichiometry;
 
     public int getStoichiometry() {
         return stoichiometry;
