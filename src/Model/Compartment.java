@@ -38,8 +38,16 @@ public class Compartment extends BiologicalEntity {
     }
 
     @Override
-    public void cloneIntoModel(Model model) {
-
+    public Compartment cloneIntoModel(Model model) throws PreconditionsException {
+        Compartment compartment = new Compartment(this.getId(), model);
+        if (this.getName() != null){
+            compartment.setName(this.getName());
+        }
+        if (this.getSize() != null){
+            compartment.setSize(this.getSize());
+        }
+        LinkComprises.insertLink(model, compartment);
+        return compartment;
     }
 
 

@@ -25,7 +25,7 @@ public abstract class BiologicalEntity {
         LinkComprises.insertLink(m, this);
     }
 
-    public abstract void cloneIntoModel(Model model);
+    public abstract BiologicalEntity cloneIntoModel(Model model) throws PreconditionsException;
 
     public abstract void override(BiologicalEntity bioEntity) throws PreconditionsException;
 

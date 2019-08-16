@@ -33,8 +33,17 @@ public class Species extends BiologicalEntity {
     }
 
     @Override
-    public void cloneIntoModel(Model model) {
-
+    public Species cloneIntoModel(Model model) throws PreconditionsException{
+        Species species = new Species(this.getId(), model);
+        species.setName(this.getName());
+        species.setInitialAmount(this.getInitialAmount());
+        LinkComprises.insertLink(model, species);
+        BiologicalEntity comp = model.getBioEntityById(species.getLinkSpeciesCompartment().getCompartment().getId());
+        if ( comp == null || !(comp instanceof Compartment)) {
+            comp = this.getLinkSpeciesCompartment().getCompartment().cloneIntoModel(model);
+        }
+        LinkSpeciesCompartment.insertLink(species, (Compartment) comp);
+        return species;
     }
 
 

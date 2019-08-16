@@ -41,8 +41,17 @@ public class Reaction extends BiologicalEntity {
     }
 
     @Override
-    public void cloneIntoModel(Model model) {
+    public Reaction cloneIntoModel(Model model) throws PreconditionsException {
+        Reaction reaction = new Reaction(this.getId(), model);
+        reaction.setName(this.getName());
+        reaction.setRate(this.getRate());
+        LinkComprises.insertLink(model, reaction);
 
+        BiologicalEntity comp = model.getBioEntityById(reaction.getLinkReactionCompartment().getCompartment().getId());
+        if ( comp == null || !(comp instanceof Compartment)) {
+            comp = this.getLinkReactionCompartment().getCompartment().cloneIntoModel(model);
+        }
+        return reaction;
     }
 
 // Reactant association, of which Reaction is the only responsible, n to n
