@@ -1,23 +1,20 @@
-import org.sbml.jsbml.*;
-
-import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+import Model.Model;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("hello world!");
 
         String kbPath = "/home/scacio/Downloads/R-HSA-3828062.sbml";
 
         try {
-            SBase tree = SBMLReader.read(new File(kbPath));
-            Reaction r = tree.getModel().getListOfReactions().get(0);
-            String id = r.getId();
-            String name = r.getName();
-            String c = r.getCompartment();
 
-            Integer sboTerm = r.getSBOTerm();
+            Set<String> kbPaths = new HashSet<>();
+            kbPaths.add(kbPath);
 
-            System.out.println("File read!");
+            Model m = HandleKB.createModel(kbPaths);
+            System.out.println("hello world!");
+
         } catch (Exception exc) {
             exc.printStackTrace();
         }

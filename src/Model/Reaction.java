@@ -13,9 +13,9 @@ public class Reaction extends BiologicalEntity {
     private RealInterval rateInv;
     private boolean reversible = false;
 
-    private Set<LinkTypeReactant> reactants;
-    private Set<LinkTypeProduct> products;
-    private Set<LinkTypeModifier> modifiers;
+    private Set<LinkTypeReactant> reactants = new HashSet<>();
+    private Set<LinkTypeProduct> products = new HashSet<>();
+    private Set<LinkTypeModifier> modifiers = new HashSet<>();
 
     private LinkTypeReactionCompartment linkTypeReactionCompartment;
 
