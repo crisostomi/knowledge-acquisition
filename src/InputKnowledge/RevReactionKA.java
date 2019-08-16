@@ -19,8 +19,8 @@ public class RevReactionKA extends ReactionKA {
     }
 
     @Override
-    public void consolidateModelWithAtom(Model m) {
-
+    public void consolidateModelWithAtom(Model m) throws PreconditionsException{
+        // TODO: non sarebbe meglio accorpare..?
     }
 
     private void handleRevReactionRate(ReversibleReaction r) throws PreconditionsException {

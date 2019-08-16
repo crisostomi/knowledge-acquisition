@@ -22,7 +22,7 @@ public class SpeciesReference {
      * @throws PreconditionsException
      */
 
-    SpeciesReference(String speciesId, int stoichiometry) throws PreconditionsException{
+    public SpeciesReference(String speciesId, int stoichiometry) throws PreconditionsException{
         if (stoichiometry > 0){
             this.speciesId = speciesId;
             this.stoichiometry = stoichiometry;

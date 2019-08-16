@@ -7,7 +7,7 @@ public class AdditionalKnowledgeType {
     private static Set<String> idsInUse = new HashSet<>();
     private final String id;
 
-    AdditionalKnowledgeType(String id) throws AdditionalKnowledgeTypeNotUniqueException {
+    public AdditionalKnowledgeType(String id) throws AdditionalKnowledgeTypeNotUniqueException {
         if (idsInUse.contains(id)) throw new AdditionalKnowledgeTypeNotUniqueException(
                 "AdditionalKnowledgeType " + id + " already exists"
         );

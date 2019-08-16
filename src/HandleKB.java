@@ -5,13 +5,16 @@ import Parser.KBParser;
 import Parser.Parser;
 import Parser.*;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 public class HandleKB {
 
     public static Model createModel(Set<String> kbPaths)
-            throws FormatNotSupportedException, PreconditionsException {
+            throws XMLStreamException, IOException,
+            FormatNotSupportedException, PreconditionsException {
         Set<KnowledgeBase> KBs = new HashSet<>();
 
         for (String kbPath : kbPaths) {

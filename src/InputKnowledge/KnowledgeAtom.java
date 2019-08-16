@@ -56,7 +56,7 @@ public abstract class KnowledgeAtom {
         return override;
     }
 
-    private void insertLinkAdditionalKA(AdditionalKnowledgeType t, String v) throws PreconditionsException {
+    public void insertLinkAdditionalKA(AdditionalKnowledgeType t, String v) throws PreconditionsException {
         LinkTypeAdditionalKA link = new LinkTypeAdditionalKA(t, this, v);
         additionalKA.add(link);
     }
