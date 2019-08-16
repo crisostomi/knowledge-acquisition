@@ -7,7 +7,6 @@ public class ReversibleReaction extends Reaction {
 
     private RealInterval rateInv;
 
-
     public ReversibleReaction(String id, Model m) throws PreconditionsException {
         super(id, m);
     }
@@ -32,6 +31,7 @@ public class ReversibleReaction extends Reaction {
         }
     }
 
+// getters and setters
     public RealInterval getRateInv() {
         return rateInv;
     }

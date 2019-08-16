@@ -8,43 +8,43 @@ public class Model {
 
     private Set<LinkTypeComprises> linkComprisesSet = new HashSet<>();
 
-   public void overrideModel(Model other){
-//        for (LinkTypeComprises linkComprises:this.getLinkComprisesSet()){
-//            this.overrideEntity(linkComprises.getBiologicalEntity());
-//        }
+   public void overrideModel(Model overrider) throws PreconditionsException{
+        for (LinkTypeComprises linkComprises: overrider.getLinkComprisesSet()){
+            this.overrideEntity(linkComprises.getBiologicalEntity());
+        }
     }
 
    public BiologicalEntity getBioEntityById(String id){
+
         for (LinkTypeComprises link : linkComprisesSet) {
             BiologicalEntity be = link.getBiologicalEntity();
-
             if (be.getId().equals(id)) return be;
         }
-
         return null;
    }
-//
-//    public void overrideEntity(BiologicalEntity other){
-//        Boolean exists = false;
-//        for (LinkTypeComprises <mod_be,model>:this.comprises) do {
-//            if (mod_be.id == be.id) then {
-//                mod_be.override(be)
-//                exists = true
-//            }
-//        }
-//
-//        if (not exists) then
-//                new_model_be = be.clone()
-//        create new link <this, new_model_be> in comprises
-//    }
 
+    public void overrideEntity(BiologicalEntity other) throws PreconditionsException{
+        boolean exists = false;
+        for (LinkTypeComprises link: this.getLinkComprisesSet()) {
+            BiologicalEntity modelBioEntity = link.getBiologicalEntity();
+            if ( modelBioEntity.getId().equals(other.getId()) ) {
+                modelBioEntity.override(other);
+                exists = true;
+                break;
+            }
+        }
+        if(!exists){
+           other.cloneIntoModel(this);
+        }
+    }
+
+// Comprises association (without attributes), of which BiologicalEntity and Model are both responsible. (n to 1)
 
     public void insertLinkComprises(LinkComprises pass, LinkTypeComprises l)
             throws PreconditionsException {
         if (pass == null)
             throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
+                    "It is necessary to show an instance of LinkComprises to invoke this method");
         linkComprisesSet.add(l);
     }
 
@@ -52,8 +52,7 @@ public class Model {
             throws PreconditionsException {
         if (pass == null)
             throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
+                    "It is necessary to show an instance of LinkComprises to invoke this method");
         linkComprisesSet.remove(l);
     }
 
