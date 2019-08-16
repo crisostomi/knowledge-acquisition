@@ -5,7 +5,7 @@ import Model.Model;
 public class Main {
     public static void main(String[] args) {
 
-        String kbPath = "/home/scacio/Downloads/R-HSA-3828062.sbml";
+        String kbPath = "/home/scacio/Dropbox/Tesisti/software/development/tool/test-cases/test-case-4/in/galactose.sbml";
 
         try {
 
@@ -13,7 +13,7 @@ public class Main {
             kbPaths.add(kbPath);
 
             Model m = HandleKB.createModel(kbPaths);
-            System.out.println("hello world!");
+            System.out.println("All done!");
 
         } catch (Exception exc) {
             exc.printStackTrace();
