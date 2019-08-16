@@ -7,11 +7,10 @@ import java.util.Set;
 
 public abstract class BiologicalEntity {
 
-    private final String id; // unique in Model
+    private final String id;
     private String name;
     private Set<LinkTypeAdditionalKnowledge> additionalKnowledge = new HashSet<LinkTypeAdditionalKnowledge>();
     private LinkTypeComprises linkComprises;
-
 
     public BiologicalEntity(String id, Model m) throws PreconditionsException {
         for (LinkTypeComprises link : m.getLinkComprisesSet()) {
@@ -23,14 +22,64 @@ public abstract class BiologicalEntity {
         }
         this.id = id;
         this.name = null;
-
         LinkComprises.insertLink(m, this);
     }
+
+    public abstract void cloneIntoModel(Model model);
+
+    public abstract void override(BiologicalEntity bioEntity) throws PreconditionsException;
+
+    public void overrideName(BiologicalEntity bioEntity) throws PreconditionsException{
+        if (this.getId().equals(bioEntity.getId())){
+            this.name = bioEntity.name;
+        }
+        else {
+            throw new PreconditionsException("The overrider and the overridee have different ids.");
+        }
+    }
+
+// AdditionalKnowledge association (with attributes), of which BiologicalEntity is the only responsible. (n to n)
 
     public void insertLinkAdditionalKnowledge(AdditionalKnowledgeType addKnowType, String value){
         LinkTypeAdditionalKnowledge link = new LinkTypeAdditionalKnowledge(this, addKnowType, value);
         this.additionalKnowledge.add(link);
     }
+
+    public void removeLinkAdditionalKnowledge(AdditionalKnowledgeType addKnowType, String value){
+        LinkTypeAdditionalKnowledge link = new LinkTypeAdditionalKnowledge(this, addKnowType, value);
+        this.additionalKnowledge.remove(link);
+    }
+
+    public Set<LinkTypeAdditionalKnowledge> getLinkAdditionalKnowledge() {
+        return (Set<LinkTypeAdditionalKnowledge>)
+                ((HashSet<LinkTypeAdditionalKnowledge>)additionalKnowledge).clone();
+    }
+
+// Comprises association (without attributes), of which BiologicalEntity and Model are both responsible. (n to 1)
+
+    public void insertLinkComprises(LinkComprises pass, LinkTypeComprises l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkComprises to invoke this method");
+        if (linkComprises != null) throw new LinkMultiplicityException();
+        linkComprises = l;
+    }
+
+    public void removeLinkComprises(LinkComprises pass)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkComprises to invoke this method");
+        linkComprises = null;
+    }
+
+    public LinkTypeComprises getLinkComprises() throws PreconditionsException{
+        if (linkComprises == null) throw new LinkMultiplicityException();
+        return linkComprises;
+    }
+
+// getters and setters
 
     public String getId() {
         return id;
@@ -43,48 +92,5 @@ public abstract class BiologicalEntity {
     public void setName(String name){
         this.name = name;
     }
-
-    public abstract void override(BiologicalEntity bioEntity) throws PreconditionsException;
-
-    public Set<LinkTypeAdditionalKnowledge> getLinkAdditionalKnowledge() {
-        return (Set<LinkTypeAdditionalKnowledge>)
-                ((HashSet<LinkTypeAdditionalKnowledge>)additionalKnowledge).clone();
-    }
-
-    public void overrideName(BiologicalEntity bioEntity) throws PreconditionsException{
-        if (this.getId().equals(bioEntity.getId())){
-            this.name = bioEntity.name;
-        }
-        else {
-            throw new PreconditionsException("The overrider and the overridee have different ids.");
-        }
-    }
-
-
-    public void insertLinkComprises(LinkComprises pass, LinkTypeComprises l)
-            throws PreconditionsException {
-        if (pass == null)
-            throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
-        if (linkComprises != null) throw new LinkMultiplicityException();
-        linkComprises = l;
-    }
-
-    public void removeLinkComprises(LinkComprises pass)
-            throws PreconditionsException {
-        if (pass == null)
-            throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
-        linkComprises = null;
-    }
-
-    public LinkTypeComprises getLinkComprises() throws PreconditionsException{
-        if (linkComprises == null) throw new LinkMultiplicityException();
-        return linkComprises;
-    }
-
-    public abstract void cloneIntoModel(Model model);
 
 }

@@ -30,20 +30,21 @@ public class Model {
             if ( modelBioEntity.getId().equals(other.getId()) ) {
                 modelBioEntity.override(other);
                 exists = true;
+                break;
             }
         }
-        if(! exists){
+        if(!exists){
            other.cloneIntoModel(this);
         }
     }
 
+// Comprises association (without attributes), of which BiologicalEntity and Model are both responsible. (n to 1)
 
     public void insertLinkComprises(LinkComprises pass, LinkTypeComprises l)
             throws PreconditionsException {
         if (pass == null)
             throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
+                    "It is necessary to show an instance of LinkComprises to invoke this method");
         linkComprisesSet.add(l);
     }
 
@@ -51,8 +52,7 @@ public class Model {
             throws PreconditionsException {
         if (pass == null)
             throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
+                    "It is necessary to show an instance of LinkComprises to invoke this method");
         linkComprisesSet.remove(l);
     }
 

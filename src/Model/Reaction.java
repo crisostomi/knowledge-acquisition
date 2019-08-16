@@ -31,26 +31,6 @@ public class Reaction extends BiologicalEntity {
         }
     }
 
-    @Override
-    public void cloneIntoModel(Model model) {
-
-    }
-
-    public void addReactant(Species species, int stoichiometry){
-        LinkTypeReactant linkTypeReac = new LinkTypeReactant(species, this, stoichiometry);
-        this.reactants.add(linkTypeReac);
-    }
-
-    public void addModifier(Species species, ModifierType type){
-        LinkTypeModifier linkTypeMod = new LinkTypeModifier(species, this, type);
-        this.modifiers.add(linkTypeMod);
-    }
-
-    public void addProduct(Species species, int stoichiometry){
-        LinkTypeProduct linkTypeProd = new LinkTypeProduct(species, this, stoichiometry);
-        this.products.add(linkTypeProd);
-    }
-
     public void overrideRate(Reaction other) throws PreconditionsException{
         if (this.getId().equals(other.getId())) {
             this.setRate(other.rate);
@@ -60,24 +40,51 @@ public class Reaction extends BiologicalEntity {
         }
     }
 
+    @Override
+    public void cloneIntoModel(Model model) {
+
+    }
+
+// Reactant association, of which Reaction is the only responsible, n to n
+
+    public void addReactant(Species species, int stoichiometry){
+        LinkTypeReactant linkTypeReac = new LinkTypeReactant(species, this, stoichiometry);
+        this.reactants.add(linkTypeReac);
+    }
+
     public Set<LinkTypeReactant> getReactants() {
         return (Set<LinkTypeReactant>)((HashSet<LinkTypeReactant>)reactants).clone();
     }
 
-    public Set<LinkTypeProduct> getProducts() {
-        return (Set<LinkTypeProduct>)((HashSet<LinkTypeProduct>)products).clone();
+// Modifier association, of which Reaction is the only responsible, n to n
+
+    public void addModifier(Species species, ModifierType type){
+        LinkTypeModifier linkTypeMod = new LinkTypeModifier(species, this, type);
+        this.modifiers.add(linkTypeMod);
     }
 
     public Set<LinkTypeModifier> getModifiers() {
         return (Set<LinkTypeModifier>)((HashSet<LinkTypeModifier>)modifiers).clone();
     }
 
+// Product association, of which Reaction is the only responsible, n to n
+
+    public void addProduct(Species species, int stoichiometry){
+        LinkTypeProduct linkTypeProd = new LinkTypeProduct(species, this, stoichiometry);
+        this.products.add(linkTypeProd);
+    }
+
+    public Set<LinkTypeProduct> getProducts() {
+        return (Set<LinkTypeProduct>)((HashSet<LinkTypeProduct>)products).clone();
+    }
+
+// ReactionCompartment association, of which Compartment and Reaction are both responsibles, 0/1 to n
+
     public void insertLinkReactionCompartment(LinkReactionCompartment pass, LinkTypeReactionCompartment l)
             throws PreconditionsException {
         if (pass == null)
             throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
+                    "It is necessary to show an instance of LinkReactionCompartment to invoke this method");
         linkTypeReactionCompartment = l;
     }
 
@@ -85,14 +92,16 @@ public class Reaction extends BiologicalEntity {
             throws PreconditionsException {
         if (pass == null)
             throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
+                    "It is necessary to show an instance of LinkReactionCompartment to invoke this method");
         linkTypeReactionCompartment = null;
     }
 
     public LinkTypeReactionCompartment getLinkReactionCompartment() {
         return linkTypeReactionCompartment;
     }
+
+
+// getters and setters
 
     public RealInterval getRate() {
         return rate;

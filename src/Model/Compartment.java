@@ -19,7 +19,22 @@ public class Compartment extends BiologicalEntity {
 
     @Override
     public void override(BiologicalEntity bioEntity) throws PreconditionsException {
+        if (this.getId().equals(bioEntity.getId()) && bioEntity instanceof Compartment){
+            this.overrideName(bioEntity);
+            this.overrideSize((Compartment) bioEntity);
+        }
+        else{
+            throw new PreconditionsException("The overrider and the overridee have different ids or classes.");
+        }
+    }
 
+    public void overrideSize(Compartment comp) throws PreconditionsException{
+        if (this.getId().equals(comp.getId())){
+            this.size = comp.getSize();
+        }
+        else{
+            throw new PreconditionsException("The overrider and the overridee have different ids.");
+        }
     }
 
     @Override
@@ -27,20 +42,14 @@ public class Compartment extends BiologicalEntity {
 
     }
 
-    public Double getSize() {
-        return size;
-    }
 
-    public void setSize(double size) {
-        this.size = size;
-    }
+// SpeciesCompartment association, of which Compartment and Species are both responsibles, 0/1 to n
 
     public void insertLinkSpeciesCompartment(LinkSpeciesCompartment pass, LinkTypeSpeciesCompartment l)
             throws PreconditionsException {
         if (pass == null)
             throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
         linkSpeciesCompartmentSet.add(l);
     }
 
@@ -48,8 +57,7 @@ public class Compartment extends BiologicalEntity {
             throws PreconditionsException {
         if (pass == null)
             throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
         linkSpeciesCompartmentSet.remove(l);
     }
 
@@ -57,12 +65,13 @@ public class Compartment extends BiologicalEntity {
         return (Set<LinkTypeSpeciesCompartment>)((HashSet<LinkTypeSpeciesCompartment>)linkSpeciesCompartmentSet).clone();
     }
 
+// ReactionCompartment association, of which Compartment and Reaction are both responsibles, 0/1 to n
+
     public void insertLinkReactionCompartment(LinkReactionCompartment pass, LinkTypeReactionCompartment l)
             throws PreconditionsException {
         if (pass == null)
             throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
+                    "It is necessary to show an instance of LinkReactionSpeciesCompartment to invoke this method");
         linkReactionCompartmentSet.add(l);
     }
 
@@ -70,13 +79,23 @@ public class Compartment extends BiologicalEntity {
             throws PreconditionsException {
         if (pass == null)
             throw new PreconditionsException(
-                    "E’ necessario esibire un oggetto di class " +
-                            "AssociazioneAssoc per invocare questo metodo!");
+                    "It is necessary to show an instance of LinkReactionSpeciesCompartment to invoke this method");
         linkReactionCompartmentSet.remove(l);
     }
 
     public Set<LinkTypeReactionCompartment> getLinkReactionCompartmentSet() {
         return (Set<LinkTypeReactionCompartment>)((HashSet<LinkTypeReactionCompartment>)linkReactionCompartmentSet).clone();
+    }
+
+
+// getters and setters
+
+    public Double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
     }
 
 }
