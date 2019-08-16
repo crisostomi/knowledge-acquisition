@@ -26,10 +26,10 @@ public class ConsolidateKB {
         return overrideModel(KB2Model(nonOverride), KB2Model(override));
     }
 
-    private static Model overrideModel(Model m, Model om) {
-        m.overrideModel(om);
+    private static Model overrideModel(Model overridee, Model overrider) throws PreconditionsException{
+        overridee.overrideModel(overrider);
 
-        return m;
+        return overridee;
     }
 
     private static Model KB2Model(Set<KnowledgeAtom> KAtoms)throws PreconditionsException {

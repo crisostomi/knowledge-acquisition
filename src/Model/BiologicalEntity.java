@@ -84,4 +84,7 @@ public abstract class BiologicalEntity {
         if (linkComprises == null) throw new LinkMultiplicityException();
         return linkComprises;
     }
+
+    public abstract void cloneIntoModel(Model model);
+
 }

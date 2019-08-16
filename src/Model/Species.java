@@ -26,6 +26,11 @@ public class Species extends BiologicalEntity {
         }
     }
 
+    @Override
+    public void cloneIntoModel(Model model) {
+
+    }
+
     public RealInterval getInitialAmount() {
         return initialAmount;
     }

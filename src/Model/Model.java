@@ -8,35 +8,34 @@ public class Model {
 
     private Set<LinkTypeComprises> linkComprisesSet = new HashSet<>();
 
-   public void overrideModel(Model other){
-//        for (LinkTypeComprises linkComprises:this.getLinkComprisesSet()){
-//            this.overrideEntity(linkComprises.getBiologicalEntity());
-//        }
+   public void overrideModel(Model overrider) throws PreconditionsException{
+        for (LinkTypeComprises linkComprises: overrider.getLinkComprisesSet()){
+            this.overrideEntity(linkComprises.getBiologicalEntity());
+        }
     }
 
    public BiologicalEntity getBioEntityById(String id){
+
         for (LinkTypeComprises link : linkComprisesSet) {
             BiologicalEntity be = link.getBiologicalEntity();
-
             if (be.getId().equals(id)) return be;
         }
-
         return null;
    }
-//
-//    public void overrideEntity(BiologicalEntity other){
-//        Boolean exists = false;
-//        for (LinkTypeComprises <mod_be,model>:this.comprises) do {
-//            if (mod_be.id == be.id) then {
-//                mod_be.override(be)
-//                exists = true
-//            }
-//        }
-//
-//        if (not exists) then
-//                new_model_be = be.clone()
-//        create new link <this, new_model_be> in comprises
-//    }
+
+    public void overrideEntity(BiologicalEntity other) throws PreconditionsException{
+        boolean exists = false;
+        for (LinkTypeComprises link: this.getLinkComprisesSet()) {
+            BiologicalEntity modelBioEntity = link.getBiologicalEntity();
+            if ( modelBioEntity.getId().equals(other.getId()) ) {
+                modelBioEntity.override(other);
+                exists = true;
+            }
+        }
+        if(! exists){
+           other.cloneIntoModel(this);
+        }
+    }
 
 
     public void insertLinkComprises(LinkComprises pass, LinkTypeComprises l)

@@ -31,6 +31,11 @@ public class Reaction extends BiologicalEntity {
         }
     }
 
+    @Override
+    public void cloneIntoModel(Model model) {
+
+    }
+
     public void addReactant(Species species, int stoichiometry){
         LinkTypeReactant linkTypeReac = new LinkTypeReactant(species, this, stoichiometry);
         this.reactants.add(linkTypeReac);

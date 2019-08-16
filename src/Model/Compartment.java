@@ -22,6 +22,11 @@ public class Compartment extends BiologicalEntity {
 
     }
 
+    @Override
+    public void cloneIntoModel(Model model) {
+
+    }
+
     public Double getSize() {
         return size;
     }
