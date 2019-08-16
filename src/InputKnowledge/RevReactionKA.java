@@ -8,11 +8,13 @@ public class RevReactionKA extends ReactionKA {
 
     private RealInterval rateInv = null;
 
-    public RevReactionKA(String id, boolean override, KnowledgeBase knowledgeBase) {
+    public RevReactionKA(String id, boolean override, KnowledgeBase knowledgeBase)
+                        throws PreconditionsException {
         super(id, override, knowledgeBase);
     }
 
-    public RevReactionKA(String id, boolean override, KnowledgeBase knowledgeBase, String name) {
+    public RevReactionKA(String id, boolean override, KnowledgeBase knowledgeBase, String name)
+                        throws PreconditionsException {
         super(id, override, knowledgeBase, name);
     }
 

@@ -7,19 +7,19 @@ import java.util.Set;
 
 public abstract class BiologicalEntity {
 
-    private final String id; //unique
+    private final String id; // unique in Model
     private String name;
     private Set<LinkTypeAdditionalKnowledge> additionalKnowledge = new HashSet<LinkTypeAdditionalKnowledge>();
     private LinkTypeComprises linkComprises;
 
-    private static Set<String> idsInUse = new HashSet<>();
-
 
     public BiologicalEntity(String id, Model m) throws PreconditionsException {
-        if (idsInUse.contains(id)) {
-            throw new BiologicalEntityNotUniqueException(
-                    "Biological entity " + id + " already exists"
-            );
+        for (LinkTypeComprises link : m.getLinkComprisesSet()) {
+            if (link.getBiologicalEntity().getId().equals(id)) {
+                throw new BiologicalEntityNotUniqueException(
+                        "Biological entity " + id + " already exists in Model"
+                );
+            }
         }
         this.id = id;
         this.name = null;
