@@ -54,6 +54,37 @@ public class Reaction extends BiologicalEntity {
         if ( comp == null || !(comp instanceof Compartment)) {
             comp = this.getLinkReactionCompartment().getCompartment().cloneIntoModel(model);
         }
+        LinkReactionCompartment.insertLink(reaction, (Compartment) comp);
+
+        for ( LinkTypeReactant linkReactant: this.getReactants()){
+            Species reactant = linkReactant.getSpecies();
+            BiologicalEntity destinationModelSpecies = model.getBioEntityById(this.getId());
+            // if not found:
+            if ( destinationModelSpecies == null || !(destinationModelSpecies instanceof Reaction) ){
+                destinationModelSpecies = reactant.cloneIntoModel(model);
+            }
+            reaction.addReactant( (Species)destinationModelSpecies, linkReactant.getStoichiometry());
+        }
+
+        for ( LinkTypeProduct linkProduct: this.getProducts()){
+            Species product = linkProduct.getSpecies();
+            BiologicalEntity destinationModelSpecies = model.getBioEntityById(this.getId());
+            // if not found:
+            if ( destinationModelSpecies == null || !(destinationModelSpecies instanceof Reaction) ){
+                destinationModelSpecies = product.cloneIntoModel(model);
+            }
+            reaction.addProduct( (Species)destinationModelSpecies, linkProduct.getStoichiometry());
+        }
+
+        for ( LinkTypeModifier linkModifier: this.getModifiers()){
+            Species modifier = linkModifier.getSpecies();
+            BiologicalEntity destinationModelSpecies = model.getBioEntityById(this.getId());
+            // if not found:
+            if ( destinationModelSpecies == null || !(destinationModelSpecies instanceof Reaction) ){
+                destinationModelSpecies = modifier.cloneIntoModel(model);
+            }
+            reaction.addModifier( (Species)destinationModelSpecies, linkModifier.getModifierType());
+        }
         return reaction;
     }
 
