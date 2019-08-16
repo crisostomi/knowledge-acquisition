@@ -5,23 +5,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Model {
-
     private Set<LinkTypeComprises> linkComprisesSet = new HashSet<>();
 
-   public void overrideModel(Model overrider) throws PreconditionsException{
+    public void overrideModel(Model overrider) throws PreconditionsException{
         for (LinkTypeComprises linkComprises: overrider.getLinkComprisesSet()){
             this.overrideEntity(linkComprises.getBiologicalEntity());
         }
     }
 
-   public BiologicalEntity getBioEntityById(String id){
+    public BiologicalEntity getBioEntityById(String id){
 
         for (LinkTypeComprises link : linkComprisesSet) {
             BiologicalEntity be = link.getBiologicalEntity();
             if (be.getId().equals(id)) return be;
         }
         return null;
-   }
+    }
 
     public void overrideEntity(BiologicalEntity other) throws PreconditionsException{
         boolean exists = false;
@@ -38,7 +37,7 @@ public class Model {
         }
     }
 
-// Comprises association (without attributes), of which BiologicalEntity and Model are both responsible. (n to 1)
+    // Comprises association (without attributes), of which BiologicalEntity and Model are both responsible. (n to 1)
 
     public void insertLinkComprises(LinkComprises pass, LinkTypeComprises l)
             throws PreconditionsException {
