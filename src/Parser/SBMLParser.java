@@ -24,23 +24,19 @@ public class SBMLParser implements KBParser {
     }
 
     @Override
-    public KnowledgeBase parse(String kbPath) throws XMLStreamException, IOException {
+    public KnowledgeBase parse(String kbPath)
+            throws XMLStreamException, IOException, PreconditionsException {
 
         File f = new File(kbPath);
         SBase tree = SBMLReader.read(f);
 
         KnowledgeBase kb = new KnowledgeBase(f.getName(), kbPath);
 
-        try {
-            parseCompartments(tree, kb);
-            parseSpecies(tree, kb);
-            parseReactions(tree, kb);
-        } catch (PreconditionsException exc) {
-            exc.printStackTrace();
-            return null;
-        }
+        parseCompartments(tree, kb);
+        parseSpecies(tree, kb);
+        parseReactions(tree, kb);
 
-        return null;
+        return kb;
     }
 
     private void parseCompartments(SBase tree, KnowledgeBase kb)
@@ -108,13 +104,13 @@ public class SBMLParser implements KBParser {
     }
 
     private ModifierType getModifierType(ModifierSpeciesReference sr) {
-        String name = sr.getName();
+        String id = sr.getId();
 
-        if (name.contains("catalyst")) {
+        if (id.contains("catalyst")) {
             return ModifierType.CATALYST;
-        } else if (name.contains("positive_regulator")) {
+        } else if (id.contains("positive_regulator")) {
             return ModifierType.POS_REG;
-        } else if (name.contains("negative_regulator")) {
+        } else if (id.contains("negative_regulator")) {
             return ModifierType.NEG_REG;
         } else return null;
     }
@@ -141,7 +137,7 @@ public class SBMLParser implements KBParser {
         Set<DataTypes.SpeciesReference> reactants = new HashSet<>();
         for (SpeciesReference speciesReference : r.getListOfReactants()) {
             DataTypes.SpeciesReference sr = new DataTypes.SpeciesReference(
-                    speciesReference.getId(), (int)speciesReference.getStoichiometry()
+                    speciesReference.getSpecies(), (int)speciesReference.getStoichiometry()
             );
             reactants.add(sr);
         }
@@ -151,7 +147,7 @@ public class SBMLParser implements KBParser {
         Set<DataTypes.SpeciesReference> products = new HashSet<>();
         for (SpeciesReference speciesReference : r.getListOfProducts()) {
             DataTypes.SpeciesReference sr = new DataTypes.SpeciesReference(
-                    speciesReference.getId(), (int)speciesReference.getStoichiometry()
+                    speciesReference.getSpecies(), (int)speciesReference.getStoichiometry()
             );
             products.add(sr);
         }
@@ -165,7 +161,7 @@ public class SBMLParser implements KBParser {
                     "Could not recognize modifier " + mr.getId() + " type"
             );
 
-            modifiers.add(new ModifierReference(mr.getId(), mt));
+            modifiers.add(new ModifierReference(mr.getSpecies(), mt));
         }
 
         ka.initializeModifiers(modifiers);
