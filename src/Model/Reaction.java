@@ -10,6 +10,9 @@ import java.util.Set;
 public class Reaction extends BiologicalEntity {
 
     private RealInterval rate;
+    private RealInterval rateInv;
+    private boolean reversible = false;
+
     private Set<LinkTypeReactant> reactants;
     private Set<LinkTypeProduct> products;
     private Set<LinkTypeModifier> modifiers;
@@ -118,5 +121,27 @@ public class Reaction extends BiologicalEntity {
 
     public void setRate(RealInterval rate) {
         this.rate = rate;
+    }
+
+    public boolean isReversible() {
+        return this.reversible;
+    }
+
+    public void setReversible() {
+        this.reversible = true;
+    }
+
+    public RealInterval getRateInv() throws PreconditionsException {
+        if (this.reversible) return rateInv;
+        else throw new PreconditionsException(
+                "Reaction " + this.id + " is not reversible"
+        );
+    }
+
+    public void setRateInv(RealInterval rateInv) throws PreconditionsException{
+        if (this.reversible) this.rateInv = rateInv;
+        else throw new PreconditionsException(
+                "Reaction " + this.getId() + " is not reversible"
+        );
     }
 }

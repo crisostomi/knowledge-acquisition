@@ -103,11 +103,7 @@ public class SBMLParser implements KBParser {
     private void parseReactions(SBase tree, KnowledgeBase kb)
             throws PreconditionsException {
         for (Reaction r : tree.getModel().getListOfReactions()) {
-            if (r.isReversible()) {
-                parseRevReaction(r, kb);
-            } else {
-                parseReaction(r, kb);
-            }
+            parseReaction(r, kb);
         }
     }
 
@@ -128,6 +124,7 @@ public class SBMLParser implements KBParser {
 
         String id = r.getId();
         String name = r.getName();
+        boolean reversible = r.isReversible();
 
         String compartment = r.getCompartment();
         int sboTermValue = r.getSBOTerm();
@@ -139,62 +136,7 @@ public class SBMLParser implements KBParser {
             ka = new ReactionKA(id, false, kb, name);
         }
 
-        Set<DataTypes.SpeciesReference> reactants = new HashSet<>();
-        for (SpeciesReference speciesReference : r.getListOfReactants()) {
-            DataTypes.SpeciesReference sr = new DataTypes.SpeciesReference(
-                    speciesReference.getId(), (int)speciesReference.getStoichiometry()
-            );
-            reactants.add(sr);
-        }
-
-        ka.initializeReactants(reactants);
-
-        Set<DataTypes.SpeciesReference> products = new HashSet<>();
-        for (SpeciesReference speciesReference : r.getListOfProducts()) {
-            DataTypes.SpeciesReference sr = new DataTypes.SpeciesReference(
-                    speciesReference.getId(), (int)speciesReference.getStoichiometry()
-            );
-            products.add(sr);
-        }
-
-        ka.initializeProducts(products);
-
-        Set<DataTypes.ModifierReference> modifiers = new HashSet<>();
-        for (ModifierSpeciesReference mr : r.getListOfModifiers()) {
-            ModifierType mt = getModifierType(mr);
-            if (mt == null) throw new PreconditionsException(
-                    "Could not recognize modifier " + mr.getId() + " type"
-            );
-
-            modifiers.add(new ModifierReference(mr.getId(), mt));
-        }
-
-        ka.initializeModifiers(modifiers);
-
-        if (!compartment.equals("")) {
-            ka.initializeCompartmentId(compartment);
-        }
-
-        if (Integer.compare(sboTermValue, -1) != 0) {
-            ka.insertLinkAdditionalKA(sboTerm, String.valueOf(sboTermValue));
-        }
-    }
-
-    private void parseRevReaction(Reaction r, KnowledgeBase kb)
-            throws PreconditionsException {
-
-        String id = r.getId();
-        String name = r.getName();
-
-        String compartment = r.getCompartment();
-        int sboTermValue = r.getSBOTerm();
-
-        RevReactionKA ka;
-        if (name.equals("")) {
-            ka = new RevReactionKA(id, false, kb);
-        } else {
-            ka = new RevReactionKA(id, false, kb, name);
-        }
+        if (reversible) ka.setReversible();
 
         Set<DataTypes.SpeciesReference> reactants = new HashSet<>();
         for (SpeciesReference speciesReference : r.getListOfReactants()) {
@@ -236,4 +178,5 @@ public class SBMLParser implements KBParser {
             ka.insertLinkAdditionalKA(sboTerm, String.valueOf(sboTermValue));
         }
     }
+
 }

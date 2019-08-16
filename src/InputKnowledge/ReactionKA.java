@@ -10,12 +10,13 @@ import java.util.Set;
 
 public class ReactionKA extends KnowledgeAtom {
 
-    protected RealInterval rate = null;
-
-    protected String compartmentId = null;
-    protected Set<SpeciesReference> reactants = new HashSet<>();
-    protected Set<SpeciesReference> products = new HashSet<>();
-    protected Set<ModifierReference> modifiers = new HashSet<>();
+    private RealInterval rate = null;
+    private boolean reversible = false;
+    private RealInterval rateInv = null;
+    private String compartmentId = null;
+    private Set<SpeciesReference> reactants = new HashSet<>();
+    private Set<SpeciesReference> products = new HashSet<>();
+    private Set<ModifierReference> modifiers = new HashSet<>();
 
 
     public ReactionKA(String id, boolean override, KnowledgeBase knowledgeBase)
@@ -26,6 +27,25 @@ public class ReactionKA extends KnowledgeAtom {
     public ReactionKA(String id, boolean override, KnowledgeBase knowledgeBase, String name)
             throws PreconditionsException {
         super(id, override, knowledgeBase, name);
+    }
+
+    public void initializeRate(RealInterval rate) throws PreconditionsException {
+        if (this.rate != null || rate == null) throw new PreconditionsException();
+        this.rate = rate;
+    }
+
+    public void setReversible() {
+        this.reversible = true;
+    }
+
+    public boolean getReversible() {
+        return this.reversible;
+    }
+
+    public void initializeRateInv(RealInterval rateInv) throws PreconditionsException {
+        if (this.rateInv != null || rateInv == null) throw new PreconditionsException();
+        this.rateInv = rateInv;
+        this.reversible = true;
     }
 
     public void initializeCompartmentId(String compartmentId) throws PreconditionsException {
@@ -69,6 +89,12 @@ public class ReactionKA extends KnowledgeAtom {
 
         this.handleReactionCompartment(r);
         this.handleReactionRate(r);
+
+        if (reversible) {
+            r.setReversible();
+            this.handleRevReactionRate(r);
+        }
+
         this.handleReactionReactants(r);
         this.handleReactionProducts(r);
         this.handleReactionModifiers(r);
@@ -116,6 +142,26 @@ public class ReactionKA extends KnowledgeAtom {
         } else if (r.getRate() == null) {
             RealInterval newRate = new RealInterval(0, Double.MAX_VALUE);
             r.setRate(newRate);
+        }
+    }
+
+    private void handleRevReactionRate(Reaction r) throws PreconditionsException {
+        if (!this.id.equals(r.getId())) {
+            throw new IdMismatchException(
+                    "ReversibleReaction has different ID ("+r.getId()+") from atom ("+this.id+")"
+            );
+        }
+
+        if (this.rateInv != null) {
+            if (r.getRateInv() != null) {
+                RealInterval newRateInv = r.getRateInv().intersect(this.rateInv);
+                r.setRate(newRateInv);
+            } else {
+                r.setRate(this.rate);
+            }
+        } else if (r.getRateInv() == null) {
+            RealInterval newRate = new RealInterval(0, Double.MAX_VALUE);
+            r.setRateInv(newRate);
         }
     }
 

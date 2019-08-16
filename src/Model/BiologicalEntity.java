@@ -7,7 +7,7 @@ import java.util.Set;
 
 public abstract class BiologicalEntity {
 
-    private final String id;
+    protected final String id;
     private String name;
     private Set<LinkTypeAdditionalKnowledge> additionalKnowledge = new HashSet<LinkTypeAdditionalKnowledge>();
     private LinkTypeComprises linkComprises;
