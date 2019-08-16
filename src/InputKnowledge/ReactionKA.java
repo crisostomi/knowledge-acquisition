@@ -18,11 +18,13 @@ public class ReactionKA extends KnowledgeAtom {
     protected Set<ModifierReference> modifiers = new HashSet<>();
 
 
-    public ReactionKA(String id, boolean override, KnowledgeBase knowledgeBase) {
+    public ReactionKA(String id, boolean override, KnowledgeBase knowledgeBase)
+            throws PreconditionsException {
         super(id, override, knowledgeBase);
     }
 
-    public ReactionKA(String id, boolean override, KnowledgeBase knowledgeBase, String name) {
+    public ReactionKA(String id, boolean override, KnowledgeBase knowledgeBase, String name)
+            throws PreconditionsException {
         super(id, override, knowledgeBase, name);
     }
 
@@ -135,7 +137,7 @@ public class ReactionKA extends KnowledgeAtom {
             Integer stoich = sr.getStoichiometry();
 
             Species s = (Species)m.getBioEntityById(speciesId);
-            if (s == null) {
+            if (s != null) {
                 existent.put(s, stoich);
             } else {
                 nonExistent.put(speciesId, stoich);
@@ -185,7 +187,7 @@ public class ReactionKA extends KnowledgeAtom {
             Integer stoich = sr.getStoichiometry();
 
             Species s = (Species)m.getBioEntityById(speciesId);
-            if (s == null) {
+            if (s != null) {
                 existent.put(s, stoich);
             } else {
                 nonExistent.put(speciesId, stoich);
@@ -235,7 +237,7 @@ public class ReactionKA extends KnowledgeAtom {
             ModifierType stoich = mr.getType();
 
             Species s = (Species)m.getBioEntityById(speciesId);
-            if (s == null) {
+            if (s != null) {
                 existent.put(s, stoich);
             } else {
                 nonExistent.put(speciesId, stoich);
