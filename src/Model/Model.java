@@ -15,6 +15,12 @@ public class Model {
     }
 
    public BiologicalEntity getBioEntityById(String id){
+        for (LinkTypeComprises link : linkComprisesSet) {
+            BiologicalEntity be = link.getBiologicalEntity();
+
+            if (be.getId().equals(id)) return be;
+        }
+
         return null;
    }
 //
