@@ -60,19 +60,28 @@ public class SpeciesKA extends KnowledgeAtom {
             );
         }
 
-        Compartment c = null;
+        Model m = s.getLinkComprises().getModel();
         LinkTypeSpeciesCompartment l = s.getLinkSpeciesCompartment();
         if (l != null) {
-            c = l.getCompartment();
+            Compartment c = l.getCompartment();
             if (!(c.getId().equals(this.compartmentId))) throw new CompartmentMismatchException();
+        } else {
+
+            BiologicalEntity be = m.getBioEntityById(this.compartmentId);
+            if (be != null && !(be instanceof Compartment)) {
+                throw new PreconditionsException(
+                        "Species " + s.getId() +" compartment id is associated to a BiologicalEntity that is not a Compartment"
+                );
+            }
+
+            Compartment comp = (Compartment)be;
+
+            if (comp == null) {
+                comp = new Compartment(this.compartmentId, m);
+            }
+
+            LinkSpeciesCompartment.insertLink(s, comp);
         }
-
-        if (c == null) {
-            c = new Compartment(this.compartmentId, s.getLinkComprises().getModel());
-
-        }
-
-        LinkSpeciesCompartment.insertLink(s, c);
     }
 
     private void handleSpeciesInitialAmount(Species s) throws PreconditionsException {

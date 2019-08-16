@@ -54,19 +54,19 @@ public class ReactionKA extends KnowledgeAtom {
     }
 
     public void initializeReactants(Set<SpeciesReference> reactants) throws PreconditionsException {
-        if (this.reactants != null || reactants == null) throw new PreconditionsException();
+        if (!this.reactants.isEmpty() || reactants == null) throw new PreconditionsException();
 
         this.reactants.addAll(reactants);
     }
 
     public void initializeProducts(Set<SpeciesReference> products) throws PreconditionsException {
-        if (this.products != null || products == null) throw new PreconditionsException();
+        if (!this.products.isEmpty() || products == null) throw new PreconditionsException();
 
         this.products.addAll(products);
     }
 
     public void initializeModifiers(Set<ModifierReference> modifiers) throws PreconditionsException {
-        if (this.modifiers != null || modifiers == null) throw new PreconditionsException();
+        if (!this.modifiers.isEmpty() || modifiers == null) throw new PreconditionsException();
 
         this.modifiers.addAll(modifiers);
     }
@@ -110,19 +110,28 @@ public class ReactionKA extends KnowledgeAtom {
             );
         }
 
-        Compartment c = null;
+        Model m = r.getLinkComprises().getModel();
         LinkTypeReactionCompartment l = r.getLinkReactionCompartment();
         if (l != null) {
-            c = l.getCompartment();
+            Compartment c = l.getCompartment();
             if (!(c.getId().equals(this.compartmentId))) throw new CompartmentMismatchException();
+        } else {
+
+            BiologicalEntity be = m.getBioEntityById(this.compartmentId);
+            if (be != null && !(be instanceof Compartment)) {
+                throw new PreconditionsException(
+                        "Reaction " + r.getId() +" compartment id is associated to a BiologicalEntity that is not a Compartment"
+                );
+            }
+
+            Compartment comp = (Compartment)be;
+
+            if (comp == null) {
+                comp = new Compartment(this.compartmentId, m);
+            }
+
+            LinkReactionCompartment.insertLink(r, comp);
         }
-
-        if (c == null) {
-            c = new Compartment(this.compartmentId, r.getLinkComprises().getModel());
-
-        }
-
-        LinkReactionCompartment.insertLink(r, c);
     }
 
     private void handleReactionRate(Reaction r) throws PreconditionsException {
