@@ -4,29 +4,22 @@ import Model.*;
 
 public class CompartmentKA extends KnowledgeAtom {
 
-    private final Double size;
+    private Double size = null;
 
     public CompartmentKA(String id, boolean override, KnowledgeBase knowledgeBase)
             throws PreconditionsException {
         super(id, override, knowledgeBase);
-        this.size = null;
     }
 
     public CompartmentKA(String id, boolean override, KnowledgeBase knowledgeBase, String name)
             throws PreconditionsException {
         super(id, override, knowledgeBase, name);
-        this.size = null;
     }
 
-    public CompartmentKA(String id, boolean override, KnowledgeBase knowledgeBase, double size)
+    public void initializeSize(Double size)
             throws PreconditionsException {
-        super(id, override, knowledgeBase);
-        this.size = size;
-    }
+        if (this.size != null || size == null) throw new PreconditionsException();
 
-    public CompartmentKA(String id, boolean override, KnowledgeBase knowledgeBase,
-                         String name, double size) throws PreconditionsException {
-        super(id, override, knowledgeBase, name);
         this.size = size;
     }
 
