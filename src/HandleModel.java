@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class HandleKB {
+public class HandleModel {
 
     public static Model createModel(Set<String> kbPaths)
             throws XMLStreamException,
