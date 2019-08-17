@@ -4,10 +4,15 @@ import DataTypes.ModifierType;
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
 
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Reaction extends BiologicalEntity {
+
+    private static final Logger LOGGER = Logger.getLogger( Reaction.class.getName() );
 
     private RealInterval rate;
     private RealInterval rateInv;

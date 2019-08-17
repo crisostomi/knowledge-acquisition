@@ -11,8 +11,13 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HandleKB {
+
+    private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
+
 
     public static Model createModel(Set<String> kbPaths)
             throws XMLStreamException,
@@ -22,7 +27,7 @@ public class HandleKB {
             ParserConfigurationException,
             SAXException {
         Set<KnowledgeBase> KBs = new HashSet<>();
-
+        LOGGER.log(Level.INFO,"Creating model");
         for (String kbPath : kbPaths) {
             KBParser parser = new Parser();
             KnowledgeBase parsedKB = parser.parse(kbPath);

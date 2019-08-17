@@ -4,8 +4,11 @@ import InputKnowledge.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class ConsolidateKB {
+
+    private static final Logger LOGGER = Logger.getLogger( ConsolidateKB.class.getName() );
 
     public static Model consolidateKB(Set<KnowledgeBase> KBs) throws PreconditionsException {
 
