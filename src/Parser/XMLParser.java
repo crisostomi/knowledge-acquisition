@@ -55,13 +55,16 @@ public class XMLParser implements KBParser {
                 Element element = (Element) node;
                 String id = element.getAttribute("id");
                 String name = element.getAttribute("name");
+                boolean override =
+                        (element.getAttribute("override").isEmpty()) ? false : Boolean.valueOf(element.getAttribute("override"));
+
                 Double size = (element.getAttribute("size").isEmpty()) ? null : Double.valueOf(element.getAttribute("size"));
 
                 CompartmentKA ka;
                 if (name.equals("")) {
-                    ka = new CompartmentKA(id, false, kb);
+                    ka = new CompartmentKA(id, override, kb);
                 } else {
-                    ka = new CompartmentKA(id, false, kb, name);
+                    ka = new CompartmentKA(id, override, kb, name);
                 }
 
                 if (size != null) {
