@@ -6,6 +6,7 @@ import java.util.logging.*;
 import Model.Model;
 import Parser.ConfigBuilder;
 import Parser.XMLParser;
+import Util.CustomLogger;
 
 public class Main {
     public static void main(String[] args) {
