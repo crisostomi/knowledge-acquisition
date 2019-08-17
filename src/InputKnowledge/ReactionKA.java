@@ -7,8 +7,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class ReactionKA extends KnowledgeAtom {
+
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private RealInterval rate = null;
     private boolean reversible = false;
@@ -32,13 +35,17 @@ public class ReactionKA extends KnowledgeAtom {
     public void initializeRate(RealInterval rate) throws PreconditionsException {
         if (this.rate != null || rate == null) throw new PreconditionsException();
         this.rate = rate;
+
+        logger.info(
+                "ReactionKA:" + this.id + "set rate = " + this.rate
+        );
     }
 
     public void setReversible() {
         this.reversible = true;
     }
 
-    public boolean getReversible() {
+    public boolean isReversible() {
         return this.reversible;
     }
 
@@ -46,33 +53,59 @@ public class ReactionKA extends KnowledgeAtom {
         if (this.rateInv != null || rateInv == null) throw new PreconditionsException();
         this.rateInv = rateInv;
         this.reversible = true;
+
+        logger.info(
+                "ReactionKA:" + this.id + "set rateInv = " + this.rateInv + ", set reversible = " + reversible
+        );
     }
 
     public void initializeCompartmentId(String compartmentId) throws PreconditionsException {
         if (this.compartmentId != null || compartmentId == null) throw new PreconditionsException();
         this.compartmentId = compartmentId;
+
+        logger.info(
+                "ReactionKA:" + this.id + "set compartmentId = " + this.compartmentId
+        );
     }
 
     public void initializeReactants(Set<SpeciesReference> reactants) throws PreconditionsException {
         if (!this.reactants.isEmpty() || reactants == null) throw new PreconditionsException();
 
         this.reactants.addAll(reactants);
+
+        logger.info(
+                "ReactionKA:" + this.id + "set reactants = " + this.reactants
+        );
     }
 
     public void initializeProducts(Set<SpeciesReference> products) throws PreconditionsException {
         if (!this.products.isEmpty() || products == null) throw new PreconditionsException();
 
         this.products.addAll(products);
+
+        logger.info(
+                "ReactionKA:" + this.id + "set products = " + this.products
+        );
     }
 
     public void initializeModifiers(Set<ModifierReference> modifiers) throws PreconditionsException {
         if (!this.modifiers.isEmpty() || modifiers == null) throw new PreconditionsException();
 
         this.modifiers.addAll(modifiers);
+
+        logger.info(
+                "ReactionKA:" + this.id + "set modifiers = " + this.modifiers
+        );
     }
 
     @Override
     public void consolidateModelWithAtom(Model m) throws PreconditionsException {
+        logger.info(
+                "Consolidating model with atom..."
+        );
+        logger.info(
+                "Searching model for Reaction " + this.id + "..."
+        );
         BiologicalEntity be = m.getBioEntityById(this.id);
         if (be != null && !(be instanceof Reaction)) {
             throw new PreconditionsException(
@@ -82,8 +115,14 @@ public class ReactionKA extends KnowledgeAtom {
 
         Reaction r;
         if (be == null) {
+            logger.info(
+                    "Reaction not found"
+            );
             r = new Reaction(this.id, m);
         } else {
+            logger.info(
+                    "Reaction found"
+            );
             r = (Reaction) be;
         }
 
@@ -91,6 +130,9 @@ public class ReactionKA extends KnowledgeAtom {
         this.handleReactionRate(r);
 
         if (reversible) {
+            logger.info(
+                    "The reaction is reversible"
+            );
             r.setReversible();
             this.handleRevReactionRate(r);
         }
@@ -104,17 +146,28 @@ public class ReactionKA extends KnowledgeAtom {
     }
 
     private void handleReactionCompartment(Reaction r) throws PreconditionsException {
+        logger.info(
+                "Handling reaction compartment..."
+        );
         if (!this.id.equals(r.getId())) {
             throw new IdMismatchException(
                     "Reaction has different ID ("+r.getId()+") from atom ("+this.id+")"
             );
         }
 
-        if (this.compartmentId == null) return;
+        if (this.compartmentId == null) {
+            logger.info(
+                    "Atom has no information about reaction compartment"
+            );
+            return;
+        }
 
         Model m = r.getLinkComprises().getModel();
         LinkTypeReactionCompartment l = r.getLinkReactionCompartment();
         if (l != null) {
+            logger.info(
+                    "Reaction is already associated to a compartment"
+            );
             Compartment c = l.getCompartment();
             if (!(c.getId().equals(this.compartmentId))) throw new CompartmentMismatchException();
         } else {
@@ -129,6 +182,9 @@ public class ReactionKA extends KnowledgeAtom {
             Compartment comp = (Compartment)be;
 
             if (comp == null) {
+                logger.info(
+                        "There compartment is not in the model yet"
+                );
                 comp = new Compartment(this.compartmentId, m);
             }
 
@@ -137,12 +193,16 @@ public class ReactionKA extends KnowledgeAtom {
     }
 
     private void handleReactionRate(Reaction r) throws PreconditionsException {
+        logger.info(
+                "Handling reaction rate..."
+        );
         if (!this.id.equals(r.getId())) {
             throw new IdMismatchException(
                     "Reaction has different ID ("+r.getId()+") from atom ("+this.id+")"
             );
         }
 
+        logger.info("Reaction rate = " + r.getRate() + ", atom rate = " + this.rate);
         if (this.rate != null) {
             if (r.getRate() != null) {
                 RealInterval newRate = r.getRate().intersect(this.rate);
@@ -154,15 +214,21 @@ public class ReactionKA extends KnowledgeAtom {
             RealInterval newRate = new RealInterval(0, Double.MAX_VALUE);
             r.setRate(newRate);
         }
+
+        logger.info("New value = " + r.getRate());
     }
 
     private void handleRevReactionRate(Reaction r) throws PreconditionsException {
+        logger.info(
+                "Handling reaction rateInv..."
+        );
         if (!this.id.equals(r.getId())) {
             throw new IdMismatchException(
                     "ReversibleReaction has different ID ("+r.getId()+") from atom ("+this.id+")"
             );
         }
 
+        logger.info("Reaction rateInv = " + r.getRateInv() + ", atom rateInv = " + this.rateInv);
         if (this.rateInv != null) {
             if (r.getRateInv() != null) {
                 RealInterval newRateInv = r.getRateInv().intersect(this.rateInv);
@@ -174,10 +240,15 @@ public class ReactionKA extends KnowledgeAtom {
             RealInterval newRate = new RealInterval(0, Double.MAX_VALUE);
             r.setRateInv(newRate);
         }
+        logger.info("New value = " + r.getRateInv());
+
     }
 
 
     private void handleReactionReactants(Reaction r) throws PreconditionsException {
+        logger.info(
+                "Handling reaction reactants..."
+        );
         if (!this.id.equals(r.getId())) {
             throw new IdMismatchException(
                     "Reaction has different ID ("+r.getId()+") from atom ("+this.id+")"
@@ -207,6 +278,9 @@ public class ReactionKA extends KnowledgeAtom {
     }
 
     private void handleExistentReactionReactants(Reaction r, Map<Species, Integer> reactants) {
+        logger.info(
+                "Handling existent reaction reactants..."
+        );
         for (Map.Entry<Species, Integer> entry : reactants.entrySet()) {
             Species s = entry.getKey();
             Integer stoich = entry.getValue();
@@ -216,6 +290,9 @@ public class ReactionKA extends KnowledgeAtom {
     }
 
     private void handleNonExistentReactionReactants(Reaction r, Map<String, Integer> reactants) throws PreconditionsException {
+        logger.info(
+                "Handling non existent reaction reactants..."
+        );
         for (Map.Entry<String, Integer> entry : reactants.entrySet()) {
             String s_id = entry.getKey();
             Integer stoich = entry.getValue();
@@ -228,6 +305,9 @@ public class ReactionKA extends KnowledgeAtom {
 
 
     private void handleReactionProducts(Reaction r) throws PreconditionsException {
+        logger.info(
+                "Handling reaction products..."
+        );
         if (!this.id.equals(r.getId())) {
             throw new IdMismatchException(
                     "Reaction has different ID ("+r.getId()+") from atom ("+this.id+")"
@@ -257,6 +337,9 @@ public class ReactionKA extends KnowledgeAtom {
     }
 
     private void handleExistentReactionProducts(Reaction r, Map<Species, Integer> products) {
+        logger.info(
+                "Handling existent reaction products..."
+        );
         for (Map.Entry<Species, Integer> entry : products.entrySet()) {
             Species s = entry.getKey();
             Integer stoich = entry.getValue();
@@ -266,6 +349,9 @@ public class ReactionKA extends KnowledgeAtom {
     }
 
     private void handleNonExistentReactionProducts(Reaction r, Map<String, Integer> products) throws PreconditionsException {
+        logger.info(
+                "Handling non existent reaction products..."
+        );
         for (Map.Entry<String, Integer> entry : products.entrySet()) {
             String s_id = entry.getKey();
             Integer stoich = entry.getValue();
@@ -278,6 +364,9 @@ public class ReactionKA extends KnowledgeAtom {
 
 
     private void handleReactionModifiers(Reaction r) throws PreconditionsException {
+        logger.info(
+                "Handling reaction modifiers..."
+        );
         if (!this.id.equals(r.getId())) {
             throw new IdMismatchException(
                     "Reaction has different ID ("+r.getId()+") from atom ("+this.id+")"
@@ -306,6 +395,9 @@ public class ReactionKA extends KnowledgeAtom {
     }
 
     private void handleExistentReactionModifiers(Reaction r, Map<Species, ModifierType> modifiers) {
+        logger.info(
+                "Handling existent reaction modifiers..."
+        );
         for (Map.Entry<Species, ModifierType> entry : modifiers.entrySet()) {
             Species s = entry.getKey();
             ModifierType type = entry.getValue();
@@ -315,6 +407,9 @@ public class ReactionKA extends KnowledgeAtom {
     }
 
     private void handleNonExistentReactionModifiers(Reaction r, Map<String, ModifierType> modifiers) throws PreconditionsException{
+        logger.info(
+                "Handling non existent reaction modifiers..."
+        );
         for (Map.Entry<String, ModifierType> entry : modifiers.entrySet()) {
             String s_id = entry.getKey();
             ModifierType type = entry.getValue();
