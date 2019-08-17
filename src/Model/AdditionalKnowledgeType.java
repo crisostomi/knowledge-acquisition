@@ -19,4 +19,11 @@ public class AdditionalKnowledgeType {
     public String getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "AdditionalKnowledgeType{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }

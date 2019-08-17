@@ -80,4 +80,12 @@ public class Species extends BiologicalEntity {
         this.initialAmount = initialAmount;
     }
 
+    @Override
+    public String toString() {
+        return "Species{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                "initialAmount=" + initialAmount +
+                '}';
+    }
 }

@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Model {
+
+
     private Set<LinkTypeComprises> linkComprisesSet = new HashSet<>();
 
     public void overrideModel(Model overrider) throws PreconditionsException{
@@ -57,5 +59,12 @@ public class Model {
 
     public Set<LinkTypeComprises> getLinkComprisesSet() {
         return (Set<LinkTypeComprises>)((HashSet<LinkTypeComprises>)linkComprisesSet).clone();
+    }
+
+    @Override
+    public String toString() {
+        return "Model{" +
+                "linkComprisesSet=" + linkComprisesSet +
+                '}';
     }
 }

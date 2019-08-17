@@ -1,6 +1,7 @@
 package Model;
 
 import DataTypes.PreconditionsException;
+import Util.GsonRepellent;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,8 +9,10 @@ import java.util.Set;
 public abstract class BiologicalEntity {
 
     protected final String id;
-    private String name;
+    protected String name;
     private Set<LinkTypeAdditionalKnowledge> additionalKnowledge = new HashSet<LinkTypeAdditionalKnowledge>();
+
+    @GsonRepellent
     private LinkTypeComprises linkComprises;
 
     public BiologicalEntity(String id, Model m) throws PreconditionsException {

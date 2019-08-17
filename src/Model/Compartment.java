@@ -1,6 +1,7 @@
 package Model;
 
 import DataTypes.PreconditionsException;
+import Util.GsonRepellent;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,7 +9,11 @@ import java.util.Set;
 public class Compartment extends BiologicalEntity {
 
     private Double size;
+
+    @GsonRepellent
     private Set<LinkTypeSpeciesCompartment> linkSpeciesCompartmentSet = new HashSet<>();
+
+    @GsonRepellent
     private Set<LinkTypeReactionCompartment> linkReactionCompartmentSet = new HashSet<>();
 
 
@@ -106,4 +111,14 @@ public class Compartment extends BiologicalEntity {
         this.size = size;
     }
 
+    @Override
+    public String toString() {
+        return "Compartment{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", size=" + size +
+                ", linkSpeciesCompartmentSet=" + linkSpeciesCompartmentSet +
+                ", linkReactionCompartmentSet=" + linkReactionCompartmentSet +
+                '}';
+    }
 }
