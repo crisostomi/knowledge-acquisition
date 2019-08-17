@@ -28,7 +28,7 @@ public class SpeciesKA extends KnowledgeAtom {
         this.compartmentId = compartmentId;
 
         logger.info(
-                "SpeciesKA:" + this.id + "set compartmentId = " + compartmentId
+                "SpeciesKA:" + this.id + ",\n\tset compartmentId = " + compartmentId
         );
     }
 
@@ -37,7 +37,7 @@ public class SpeciesKA extends KnowledgeAtom {
         this.initialAmount = initialAmount;
 
         logger.info(
-                "SpeciesKA:" + this.id + "set initialAmount = " + initialAmount
+                "SpeciesKA:" + this.id + ",\n\tset initialAmount = " + initialAmount
         );
     }
 

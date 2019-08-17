@@ -37,7 +37,7 @@ public class ReactionKA extends KnowledgeAtom {
         this.rate = rate;
 
         logger.info(
-                "ReactionKA:" + this.id + "set rate = " + this.rate
+                "ReactionKA:" + this.id + ",\n\tset rate = " + this.rate
         );
     }
 
@@ -55,7 +55,7 @@ public class ReactionKA extends KnowledgeAtom {
         this.reversible = true;
 
         logger.info(
-                "ReactionKA:" + this.id + "set rateInv = " + this.rateInv + ", set reversible = " + reversible
+                "ReactionKA:" + this.id + ", \n\tset rateInv = " + this.rateInv + ", set reversible = " + reversible
         );
     }
 
@@ -64,7 +64,7 @@ public class ReactionKA extends KnowledgeAtom {
         this.compartmentId = compartmentId;
 
         logger.info(
-                "ReactionKA:" + this.id + "set compartmentId = " + this.compartmentId
+                "ReactionKA:" + this.id + ", \n\tset compartmentId = " + this.compartmentId
         );
     }
 
@@ -74,7 +74,7 @@ public class ReactionKA extends KnowledgeAtom {
         this.reactants.addAll(reactants);
 
         logger.info(
-                "ReactionKA:" + this.id + "set reactants = " + this.reactants
+                "ReactionKA:" + this.id + ", \n\tset reactants = " + this.reactants
         );
     }
 
@@ -84,7 +84,7 @@ public class ReactionKA extends KnowledgeAtom {
         this.products.addAll(products);
 
         logger.info(
-                "ReactionKA:" + this.id + "set products = " + this.products
+                "ReactionKA:" + this.id + ",\n\tset products = " + this.products
         );
     }
 
@@ -94,7 +94,7 @@ public class ReactionKA extends KnowledgeAtom {
         this.modifiers.addAll(modifiers);
 
         logger.info(
-                "ReactionKA:" + this.id + "set modifiers = " + this.modifiers
+                "ReactionKA:" + this.id + ",\n\tset modifiers = " + this.modifiers
         );
     }
 

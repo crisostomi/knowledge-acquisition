@@ -32,7 +32,7 @@ public abstract class KnowledgeAtom {
         logger.info(
                 "Created object "
                         + this.getClass().getCanonicalName()
-                        + " with id = " + this.id + ", name = " + this.name + ", override = " + this.override
+                        + " with \n\tid = " + this.id + ",\n\tname = " + this.name + ",\n\toverride = " + this.override
         );
 
         LinkContains.insertLink(knowledgeBase, this);
@@ -54,7 +54,7 @@ public abstract class KnowledgeAtom {
         logger.info(
                 "Created object "
                         + this.getClass().getCanonicalName()
-                        + "with id = " + this.id + ", name = " + this.name + ", override = " + this.override
+                        + " with \n\tid = " + this.id + ",\n\tname = " + this.name + ",\n\toverride = " + this.override
         );
 
         LinkContains.insertLink(knowledgeBase, this);

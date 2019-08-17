@@ -19,9 +19,9 @@ public class LinkContains {
         ka.insertLinkContains(pass, link);
 
         logger.info(
-                "Link contains between KnowledgeBase " + kb.getName()
+                "Link contains <KnowledgeBase " + kb.getName()
                         + ", " + ka.getClass().getCanonicalName() + " " + ka.getId()
-                + " inserted"
+                + "> inserted"
         );
     }
 }

@@ -26,7 +26,7 @@ public class CompartmentKA extends KnowledgeAtom {
         this.size = size;
 
         logger.info(
-                "CompartmentKA:" + this.id + ", set size = " + size
+                "CompartmentKA:" + this.id + ",\n\tset size = " + size
         );
     }
 
