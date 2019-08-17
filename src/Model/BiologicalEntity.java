@@ -5,8 +5,11 @@ import Util.GsonRepellent;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public abstract class BiologicalEntity {
+
+    private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 
     protected final String id;
     protected String name;
@@ -26,6 +29,7 @@ public abstract class BiologicalEntity {
         this.id = id;
         this.name = null;
         LinkComprises.insertLink(m, this);
+        LOGGER.info("Created BioEntity "+id);
     }
 
     public abstract BiologicalEntity cloneIntoModel(Model model) throws PreconditionsException;

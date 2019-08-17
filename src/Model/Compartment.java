@@ -5,8 +5,11 @@ import Util.GsonRepellent;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class Compartment extends BiologicalEntity {
+
+    private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 
     private Double size;
 
