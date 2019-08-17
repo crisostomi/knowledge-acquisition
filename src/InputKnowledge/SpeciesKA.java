@@ -60,6 +60,8 @@ public class SpeciesKA extends KnowledgeAtom {
             );
         }
 
+        if (this.compartmentId == null) return;
+
         Model m = s.getLinkComprises().getModel();
         LinkTypeSpeciesCompartment l = s.getLinkSpeciesCompartment();
         if (l != null) {

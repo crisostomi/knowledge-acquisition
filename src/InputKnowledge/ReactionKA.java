@@ -110,6 +110,8 @@ public class ReactionKA extends KnowledgeAtom {
             );
         }
 
+        if (this.compartmentId == null) return;
+
         Model m = r.getLinkComprises().getModel();
         LinkTypeReactionCompartment l = r.getLinkReactionCompartment();
         if (l != null) {
