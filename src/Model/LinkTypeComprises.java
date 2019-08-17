@@ -1,9 +1,14 @@
 package Model;
 
+import Util.GsonRepellent;
+
 import java.util.Objects;
 
 public class LinkTypeComprises {
+
+    @GsonRepellent
     private Model model;
+
     private BiologicalEntity bioEntity;
 
     public Model getModel() {
@@ -17,6 +22,13 @@ public class LinkTypeComprises {
     public LinkTypeComprises(Model model, BiologicalEntity bioEntity) {
         this.model = model;
         this.bioEntity = bioEntity;
+    }
+
+    @Override
+    public String toString() {
+        return "LinkTypeComprises{" +
+                "bioEntity=" + bioEntity +
+                '}';
     }
 
     @Override

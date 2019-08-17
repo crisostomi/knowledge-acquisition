@@ -60,4 +60,12 @@ public class RealInterval {
     public int hashCode() {
         return Objects.hash(lowerBound, upperBound);
     }
+
+    @Override
+    public String toString() {
+        return "RealInterval{" +
+                "lowerBound=" + lowerBound +
+                ", upperBound=" + upperBound +
+                '}';
+    }
 }

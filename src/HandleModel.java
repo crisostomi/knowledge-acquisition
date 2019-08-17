@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HandleKB {
+public class HandleModel {
 
     private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 

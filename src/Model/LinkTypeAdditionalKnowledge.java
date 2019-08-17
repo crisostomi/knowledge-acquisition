@@ -1,8 +1,12 @@
 package Model;
 
+import Util.GsonRepellent;
+
 import java.util.Objects;
 
 public class LinkTypeAdditionalKnowledge {
+
+    @GsonRepellent
     private BiologicalEntity biologicalEntity;
     private AdditionalKnowledgeType addKnowType;
     private String value;
@@ -37,5 +41,13 @@ public class LinkTypeAdditionalKnowledge {
 
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return "LinkTypeAdditionalKnowledge{" +
+                "addKnowType=" + addKnowType +
+                ", value='" + value + '\'' +
+                '}';
     }
 }

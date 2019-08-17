@@ -180,4 +180,18 @@ public class Reaction extends BiologicalEntity {
                 "Reaction " + this.getId() + " is not reversible"
         );
     }
+
+    @Override
+    public String toString() {
+        return "Reaction{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", rate=" + rate +
+                ", rateInv=" + rateInv +
+                ", reversible=" + reversible +
+                ", reactants=" + reactants +
+                ", products=" + products +
+                ", modifiers=" + modifiers +
+                '}';
+    }
 }
