@@ -24,7 +24,7 @@ public class Main {
             kbPaths.add(kbPath);
             kbPaths.add(xmlPath);
 
-            Model m = HandleKB.createModel(kbPaths);
+            Model m = HandleModel.createModel(kbPaths);
             /*ConfigBuilder c = new ConfigBuilder(m, xmlPath);
             c.buildConfig();*/
             System.out.println("All done!");

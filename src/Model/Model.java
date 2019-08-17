@@ -14,9 +14,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class Model {
 
+    private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 
     private Set<LinkTypeComprises> linkComprisesSet = new HashSet<>();
 
@@ -27,7 +29,6 @@ public class Model {
     }
 
     public BiologicalEntity getBioEntityById(String id){
-
         for (LinkTypeComprises link : linkComprisesSet) {
             BiologicalEntity be = link.getBiologicalEntity();
             if (be.getId().equals(id)) return be;
@@ -36,17 +37,20 @@ public class Model {
     }
 
     public void overrideEntity(BiologicalEntity other) throws PreconditionsException{
+        LOGGER.info("overriding "+other.getId());
         boolean exists = false;
         for (LinkTypeComprises link: this.getLinkComprisesSet()) {
             BiologicalEntity modelBioEntity = link.getBiologicalEntity();
             if ( modelBioEntity.getId().equals(other.getId()) ) {
+                LOGGER.info("BioEntity already exists in model");
                 modelBioEntity.override(other);
                 exists = true;
                 break;
             }
         }
         if(!exists){
-           other.cloneIntoModel(this);
+            LOGGER.info("BioEntity doesn't exist in model");
+            other.cloneIntoModel(this);
         }
     }
 
@@ -58,6 +62,8 @@ public class Model {
             throw new PreconditionsException(
                     "It is necessary to show an instance of LinkComprises to invoke this method");
         linkComprisesSet.add(l);
+        LOGGER.info("Added bidirectional link: "+l.getBiologicalEntity().getId()+" to model");
+
     }
 
     public void removeLinkComprises(LinkComprises pass, LinkTypeComprises l)
@@ -66,6 +72,7 @@ public class Model {
             throw new PreconditionsException(
                     "It is necessary to show an instance of LinkComprises to invoke this method");
         linkComprisesSet.remove(l);
+        LOGGER.info("Removed bidirectional link: "+l.getBiologicalEntity().getId()+" to "+l.getModel());
     }
 
     public Set<LinkTypeComprises> getLinkComprisesSet() {

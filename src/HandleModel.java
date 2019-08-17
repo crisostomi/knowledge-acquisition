@@ -27,14 +27,15 @@ public class HandleModel {
             ParserConfigurationException,
             SAXException {
         Set<KnowledgeBase> KBs = new HashSet<>();
-        LOGGER.log(Level.INFO,"Creating model");
         for (String kbPath : kbPaths) {
             KBParser parser = new Parser();
             KnowledgeBase parsedKB = parser.parse(kbPath);
 
             KBs.add(parsedKB);
         }
-
-        return ConsolidateKB.consolidateKB(KBs);
+        LOGGER.info("Creating model");
+        Model model = ConsolidateKB.consolidateKB(KBs);
+        LOGGER.info("Model succesfully created");
+        return model;
     }
 }

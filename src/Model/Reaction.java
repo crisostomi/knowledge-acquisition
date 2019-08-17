@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class Reaction extends BiologicalEntity {
 
-    private static final Logger LOGGER = Logger.getLogger( Reaction.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 
     private RealInterval rate;
     private RealInterval rateInv;
