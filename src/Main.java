@@ -28,8 +28,8 @@ public class Main {
             kbPaths.add(xmlPath);
 
             Model m = HandleModel.createModel(kbPaths);
-            /*ConfigBuilder c = new ConfigBuilder(m, xmlPath);
-            c.buildConfig();*/
+            // ConfigBuilder c = new ConfigBuilder(m, xmlPath);
+            // c.buildConfig();
             System.out.println("All done!");
             m.dump(dumpPath);
 

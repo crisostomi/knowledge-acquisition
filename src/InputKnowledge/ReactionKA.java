@@ -118,7 +118,8 @@ public class ReactionKA extends KnowledgeAtom {
             logger.info(
                     "Reaction not found"
             );
-            r = new Reaction(this.id, m);
+            if (reversible) r = new Reaction(this.id, m, true);
+            else r = new Reaction(this.id, m);
         } else {
             logger.info(
                     "Reaction found"
@@ -133,7 +134,6 @@ public class ReactionKA extends KnowledgeAtom {
             logger.info(
                     "The reaction is reversible"
             );
-            r.setReversible();
             this.handleRevReactionRate(r);
         }
 
@@ -204,14 +204,7 @@ public class ReactionKA extends KnowledgeAtom {
 
         logger.info("Reaction rate = " + r.getRate() + ", atom rate = " + this.rate);
         if (this.rate != null) {
-            if (r.getRate() != null) {
-                RealInterval newRate = r.getRate().intersect(this.rate);
-                r.setRate(newRate);
-            } else {
-                r.setRate(this.rate);
-            }
-        } else if (r.getRate() == null) {
-            RealInterval newRate = new RealInterval(0, Double.MAX_VALUE);
+            RealInterval newRate = r.getRate().intersect(this.rate);
             r.setRate(newRate);
         }
 
@@ -230,16 +223,10 @@ public class ReactionKA extends KnowledgeAtom {
 
         logger.info("Reaction rateInv = " + r.getRateInv() + ", atom rateInv = " + this.rateInv);
         if (this.rateInv != null) {
-            if (r.getRateInv() != null) {
-                RealInterval newRateInv = r.getRateInv().intersect(this.rateInv);
-                r.setRate(newRateInv);
-            } else {
-                r.setRate(this.rate);
-            }
-        } else if (r.getRateInv() == null) {
-            RealInterval newRate = new RealInterval(0, Double.MAX_VALUE);
-            r.setRateInv(newRate);
+            RealInterval newRateInv = r.getRateInv().intersect(this.rateInv);
+            r.setRateInv(newRateInv);
         }
+
         logger.info("New value = " + r.getRateInv());
 
     }
