@@ -6,17 +6,23 @@ import DataTypes.RealInterval;
 public class Species extends BiologicalEntity {
 
     private RealInterval initialAmount;
+    private RealInterval bounds;
+
     private LinkTypeSpeciesCompartment linkTypeSpeciesCompartment;
 
     public Species(String id, Model m) throws PreconditionsException {
         super(id, m);
+        this.initialAmount = new RealInterval(0, Double.MAX_VALUE);
+        this.bounds = new RealInterval(0, Double.MAX_VALUE);
     }
 
     @Override
     public void override(BiologicalEntity bioEntity) throws PreconditionsException {
         if (this.getId().equals(bioEntity.getId()) && bioEntity instanceof Species){
             this.overrideName(bioEntity);
-            this.overrideInitialAmount((Species)bioEntity);
+            Species other = (Species)bioEntity;
+            this.overrideInitialAmount(other);
+            this.overrideBounds(other);
         }
         else{
             throw new PreconditionsException("The overridden species must have the same id.");
@@ -26,6 +32,15 @@ public class Species extends BiologicalEntity {
     public void overrideInitialAmount(Species species) throws PreconditionsException {
         if (this.getId().equals(species.getId())){
             this.initialAmount = species.getInitialAmount();
+        }
+        else{
+            throw new PreconditionsException("The overridden species must have the same id.");
+        }
+    }
+
+    public void overrideBounds(Species species) throws PreconditionsException {
+        if (this.getId().equals(species.getId())){
+            this.bounds = species.getBounds();
         }
         else{
             throw new PreconditionsException("The overridden species must have the same id.");
@@ -78,6 +93,14 @@ public class Species extends BiologicalEntity {
 
     public void setInitialAmount(RealInterval initialAmount) {
         this.initialAmount = initialAmount;
+    }
+
+    public RealInterval getBounds() {
+        return bounds;
+    }
+
+    public void setBounds(RealInterval bounds) {
+        this.bounds = bounds;
     }
 
     @Override

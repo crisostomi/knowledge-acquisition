@@ -4,10 +4,15 @@ import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
 import Model.*;
 
+import java.util.logging.Logger;
+
 public class SpeciesKA extends KnowledgeAtom {
+
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private String compartmentId = null;
     private RealInterval initialAmount = null;
+    private RealInterval bounds = null;
 
     public SpeciesKA(String id, boolean override, KnowledgeBase knowledgeBase)
             throws PreconditionsException {
@@ -22,15 +27,40 @@ public class SpeciesKA extends KnowledgeAtom {
     public void initializeCompartmentId(String compartmentId) throws PreconditionsException {
         if (this.compartmentId != null || compartmentId == null) throw new PreconditionsException();
         this.compartmentId = compartmentId;
+
+        logger.info(
+                "SpeciesKA:" + this.id + ",\n\tset compartmentId = " + compartmentId
+        );
     }
 
     public void initializeInitialAmount(RealInterval initialAmount) throws PreconditionsException {
         if (this.initialAmount != null || initialAmount == null) throw new PreconditionsException();
         this.initialAmount = initialAmount;
+
+        logger.info(
+                "SpeciesKA:" + this.id + ",\n\tset initialAmount = " + initialAmount
+        );
+    }
+
+    public void initializeBounds(RealInterval bounds) throws PreconditionsException {
+        if (this.bounds != null || bounds == null) throw new PreconditionsException();
+        this.bounds = bounds;
+
+        logger.info(
+                "SpeciesKA:" + this.id + ",\n\tset bounds = " + bounds
+        );
     }
 
     @Override
     public void consolidateModelWithAtom(Model m) throws PreconditionsException {
+        logger.info(
+                "Consolidating Model with atom..."
+        );
+
+        logger.info(
+                "Searching the model for Species " + this.id
+        );
+
         BiologicalEntity be = m.getBioEntityById(this.id);
 
         if (be != null && !(be instanceof Species)) {
@@ -41,34 +71,52 @@ public class SpeciesKA extends KnowledgeAtom {
 
         Species s;
         if (be == null) {
+            logger.info(
+                    "Species not found"
+            );
             s = new Species(this.getId(), m);
         } else {
+            logger.info(
+                    "Species found"
+            );
             s = (Species) be;
         }
 
-        this.handleSpeciesInitialAmount(s);
         this.handleSpeciesCompartment(s);
+        this.handleSpeciesInitialAmount(s);
+        this.handleSpeciesBounds(s);
 
         this.handleBioEntityName(s);
         this.addAdditionalKnowledge(s);
     }
 
     private void handleSpeciesCompartment(Species s) throws PreconditionsException {
+        logger.info(
+                "Handling species compartment..."
+        );
         if (!this.id.equals(s.getId())) {
             throw new IdMismatchException(
                     "Species has different ID ("+s.getId()+") from atom ("+this.id+")"
             );
         }
 
-        if (this.compartmentId == null) return;
+        if (this.compartmentId == null) {
+            logger.info("Atom has no information about species compartment");
+            return;
+        }
 
         Model m = s.getLinkComprises().getModel();
         LinkTypeSpeciesCompartment l = s.getLinkSpeciesCompartment();
         if (l != null) {
             Compartment c = l.getCompartment();
+            logger.info(
+                    "Species is already associated to a compartment"
+            );
             if (!(c.getId().equals(this.compartmentId))) throw new CompartmentMismatchException();
         } else {
-
+            logger.info(
+                    "Species is not associated to a compartment yet"
+            );
             BiologicalEntity be = m.getBioEntityById(this.compartmentId);
             if (be != null && !(be instanceof Compartment)) {
                 throw new PreconditionsException(
@@ -79,6 +127,9 @@ public class SpeciesKA extends KnowledgeAtom {
             Compartment comp = (Compartment)be;
 
             if (comp == null) {
+                logger.info(
+                        "The compartment is not in the model yet"
+                );
                 comp = new Compartment(this.compartmentId, m);
             }
 
@@ -87,22 +138,44 @@ public class SpeciesKA extends KnowledgeAtom {
     }
 
     private void handleSpeciesInitialAmount(Species s) throws PreconditionsException {
+        logger.info(
+                "Handling initial amount..."
+        );
         if (!this.id.equals(s.getId())) {
             throw new IdMismatchException(
                     "Species has different ID ("+s.getId()+") from atom ("+this.id+")"
             );
         }
 
+        logger.info("Species initial amount = " + s.getInitialAmount() +
+                ", atom initial amount = " + this.initialAmount);
         if (this.initialAmount != null) {
-            if (s.getInitialAmount() != null) {
-                RealInterval newInitalAmount = s.getInitialAmount().intersect(this.initialAmount);
-                s.setInitialAmount(newInitalAmount);
-            } else {
-                s.setInitialAmount(this.initialAmount);
-            }
-        } else if (s.getInitialAmount() == null) {
-            RealInterval newInitalAmount = new RealInterval(0, Double.MAX_VALUE);
+            RealInterval newInitalAmount = s.getInitialAmount().intersect(this.initialAmount);
             s.setInitialAmount(newInitalAmount);
         }
+
+        logger.info("New value = "+ s.getInitialAmount());
+    }
+
+    private void handleSpeciesBounds(Species s) throws PreconditionsException {
+        logger.info(
+                "Handling bounds..."
+        );
+        if (!this.id.equals(s.getId())) {
+            throw new IdMismatchException(
+                    "Species has different ID ("+s.getId()+") from atom ("+this.id+")"
+            );
+        }
+
+        logger.info("Species bounds = " + s.getBounds() +
+                ", atom bounds = " + this.bounds);
+
+        if (this.bounds != null) {
+            RealInterval newInitalAmount = s.getInitialAmount().intersect(this.initialAmount);
+            s.setInitialAmount(newInitalAmount);
+        }
+
+        logger.info("New value = "+ s.getInitialAmount());
     }
 }
+

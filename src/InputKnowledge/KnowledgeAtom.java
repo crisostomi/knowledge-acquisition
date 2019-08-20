@@ -5,8 +5,11 @@ import Model.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public abstract class KnowledgeAtom {
+
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     protected final String id;
     protected final String name;
@@ -26,7 +29,14 @@ public abstract class KnowledgeAtom {
         this.name = null;
         this.override = override;
 
+        logger.info(
+                "Created object "
+                        + this.getClass().getCanonicalName()
+                        + " with \n\tid = " + this.id + ",\n\tname = " + this.name + ",\n\toverride = " + this.override
+        );
+
         LinkContains.insertLink(knowledgeBase, this);
+
     }
 
     /**
@@ -40,6 +50,12 @@ public abstract class KnowledgeAtom {
         this.id = id;
         this.override = override;
         this.name = name;
+
+        logger.info(
+                "Created object "
+                        + this.getClass().getCanonicalName()
+                        + " with \n\tid = " + this.id + ",\n\tname = " + this.name + ",\n\toverride = " + this.override
+        );
 
         LinkContains.insertLink(knowledgeBase, this);
     }
@@ -92,10 +108,24 @@ public abstract class KnowledgeAtom {
     }
 
     protected void handleBioEntityName(BiologicalEntity be) throws PreconditionsException {
+        logger.info(
+                "Handling entity name..."
+        );
         if (!this.id.equals(be.getId())) throw new IdMismatchException();
-        if (be.getName() != null && !be.getName().equals(this.getName())) throw new NameMismatchException();
+        if (be.getName() != null && !be.getName().equals(this.getName())) {
+            throw new NameMismatchException();
+        }
 
-        if (this.getName() != null) be.setName(this.getName());
+        if (this.getName() != null) {
+            be.setName(this.getName());
+            logger.info(
+                    "Name set"
+            );
+        } else {
+            logger.info(
+                    "Atom has no information about name"
+            );
+        }
     }
 
     public void insertLinkContains(LinkContains pass, LinkTypeContains l)

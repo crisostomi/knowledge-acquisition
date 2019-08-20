@@ -27,6 +27,13 @@ public class Reaction extends BiologicalEntity {
 
     public Reaction(String id, Model m) throws PreconditionsException {
         super(id, m);
+        this.rate = new RealInterval(0, Double.MAX_VALUE);
+    }
+
+    public Reaction(String id, Model m, boolean reversible) throws PreconditionsException {
+        super(id, m);
+        this.rate = new RealInterval(0, Double.MAX_VALUE);
+        this.reversible = reversible;
     }
 
     public void override(BiologicalEntity bioEntity) throws PreconditionsException {
@@ -161,10 +168,6 @@ public class Reaction extends BiologicalEntity {
 
     public boolean isReversible() {
         return this.reversible;
-    }
-
-    public void setReversible() {
-        this.reversible = true;
     }
 
     public RealInterval getRateInv() throws PreconditionsException {

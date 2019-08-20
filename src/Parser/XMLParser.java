@@ -56,9 +56,11 @@ public class XMLParser implements KBParser {
                 String id = element.getAttribute("id");
                 String name = element.getAttribute("name");
                 boolean override =
-                        (element.getAttribute("override").isEmpty()) ? false : Boolean.valueOf(element.getAttribute("override"));
+                        (element.getAttribute("override").isEmpty()) ?
+                                false : Boolean.valueOf(element.getAttribute("override"));
 
-                Double size = (element.getAttribute("size").isEmpty()) ? null : Double.valueOf(element.getAttribute("size"));
+                Double size = (element.getAttribute("size").isEmpty()) ?
+                        null : Double.valueOf(element.getAttribute("size"));
 
                 CompartmentKA ka;
                 if (name.equals("")) {
@@ -85,16 +87,28 @@ public class XMLParser implements KBParser {
                 Element element = (Element) node;
                 String id = element.getAttribute("id");
                 String name = element.getAttribute("name");
+                boolean override =
+                        (element.getAttribute("override").isEmpty()) ?
+                                false : Boolean.valueOf(element.getAttribute("override"));
                 Double minInitialAmount =
-                        element.getAttribute("minInitialAmount").isEmpty() ? null : Double.valueOf(element.getAttribute("minInitialAmount"));
+                        element.getAttribute("minInitialAmount").isEmpty() ?
+                                null : Double.valueOf(element.getAttribute("minInitialAmount"));
                 Double maxInitialAmount =
-                        element.getAttribute("maxInitialAmount").isEmpty() ? null : Double.valueOf(element.getAttribute("maxInitialAmount"));
+                        element.getAttribute("maxInitialAmount").isEmpty() ?
+                                null : Double.valueOf(element.getAttribute("maxInitialAmount"));
+
+                Double lowerBound =
+                        element.getAttribute("lowerBound").isEmpty() ?
+                                null : Double.valueOf(element.getAttribute("lowerBound"));
+                Double upperBound =
+                        element.getAttribute("upperBound").isEmpty() ?
+                                null : Double.valueOf(element.getAttribute("upperBound"));
 
                 SpeciesKA ka;
                 if (name.equals("")) {
-                    ka = new SpeciesKA(id, false, kb);
+                    ka = new SpeciesKA(id, override, kb);
                 } else {
-                    ka = new SpeciesKA(id, false, kb, name);
+                    ka = new SpeciesKA(id, override, kb, name);
                 }
 
                 if (minInitialAmount == null) {
@@ -105,6 +119,15 @@ public class XMLParser implements KBParser {
                 }
 
                 ka.initializeInitialAmount(new RealInterval(minInitialAmount, maxInitialAmount));
+
+                if (lowerBound == null) {
+                    lowerBound = Double.valueOf(0);
+                }
+                if (upperBound == null) {
+                    upperBound = Double.MAX_VALUE;
+                }
+
+                ka.initializeBounds(new RealInterval(lowerBound, upperBound));
             }
         }
     }
@@ -155,7 +178,7 @@ public class XMLParser implements KBParser {
                         maxRateInv = Double.MAX_VALUE;
                     }
 
-                    ka.initializeRate(new RealInterval(minRateInv, maxRateInv));
+                    ka.initializeRateInv(new RealInterval(minRateInv, maxRateInv));
                 }
             }
         }
