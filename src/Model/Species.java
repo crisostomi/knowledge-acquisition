@@ -3,10 +3,16 @@ package Model;
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Species extends BiologicalEntity {
 
     private RealInterval initialAmount;
     private RealInterval bounds;
+
+    private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
+    private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
 
     private LinkTypeSpeciesCompartment linkTypeSpeciesCompartment;
 
@@ -82,6 +88,50 @@ public class Species extends BiologicalEntity {
 
     public LinkTypeSpeciesCompartment getLinkSpeciesCompartment() {
         return linkTypeSpeciesCompartment;
+    }
+
+// Reactant association, of which Reaction and Species are both responsibles
+
+    public void insertLinkReactant(LinkReactant pass, LinkTypeReactant l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeReactantSet.add(l);
+    }
+
+    public void removeLinkReactant(LinkReactant pass, LinkTypeReactant l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeReactantSet.remove(l);
+    }
+
+    public Set<LinkTypeReactant> getLinkReactantSet() {
+        return (Set<LinkTypeReactant>)((HashSet<LinkTypeReactant>)linkTypeReactantSet).clone();
+    }
+
+// Product association, of which Reaction and Species are both responsibles
+
+    public void insertLinkProduct(LinkProduct pass, LinkTypeProduct l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeProductSet.add(l);
+    }
+
+    public void removeLinkProduct(LinkProduct pass, LinkTypeProduct l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeProductSet.remove(l);
+    }
+
+    public Set<LinkTypeProduct> getLinkProductSet() {
+        return (Set<LinkTypeProduct>)((HashSet<LinkTypeProduct>)linkTypeProductSet).clone();
     }
 
 

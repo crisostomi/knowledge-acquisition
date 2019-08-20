@@ -18,9 +18,9 @@ public class Reaction extends BiologicalEntity {
     private RealInterval rateInv;
     private boolean reversible = false;
 
-    private Set<LinkTypeReactant> reactants = new HashSet<>();
-    private Set<LinkTypeProduct> products = new HashSet<>();
     private Set<LinkTypeModifier> modifiers = new HashSet<>();
+    private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
+    private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
 
     private LinkTypeReactionCompartment linkTypeReactionCompartment;
 
@@ -102,13 +102,12 @@ public class Reaction extends BiologicalEntity {
 
 // Reactant association, of which Reaction is the only responsible, n to n
 
-    public void addReactant(Species species, int stoichiometry){
-        LinkTypeReactant linkTypeReac = new LinkTypeReactant(species, this, stoichiometry);
-        this.reactants.add(linkTypeReac);
+    public void addReactant(Species species, int stoichiometry) throws PreconditionsException{
+        LinkReactant.insertLink(species, this, stoichiometry);
     }
 
     public Set<LinkTypeReactant> getReactants() {
-        return (Set<LinkTypeReactant>)((HashSet<LinkTypeReactant>)reactants).clone();
+        return getLinkReactantSet();
     }
 
 // Modifier association, of which Reaction is the only responsible, n to n
@@ -124,13 +123,12 @@ public class Reaction extends BiologicalEntity {
 
 // Product association, of which Reaction is the only responsible, n to n
 
-    public void addProduct(Species species, int stoichiometry){
-        LinkTypeProduct linkTypeProd = new LinkTypeProduct(species, this, stoichiometry);
-        this.products.add(linkTypeProd);
+    public void addProduct(Species species, int stoichiometry) throws PreconditionsException{
+        LinkProduct.insertLink(species, this, stoichiometry);
     }
 
     public Set<LinkTypeProduct> getProducts() {
-        return (Set<LinkTypeProduct>)((HashSet<LinkTypeProduct>)products).clone();
+        return getLinkProductSet();
     }
 
 // ReactionCompartment association, of which Compartment and Reaction are both responsibles, 0/1 to n
@@ -153,6 +151,50 @@ public class Reaction extends BiologicalEntity {
 
     public LinkTypeReactionCompartment getLinkReactionCompartment() {
         return linkTypeReactionCompartment;
+    }
+
+// Reactant association, of which Reaction and Species are both responsibles
+
+    public void insertLinkReactant(LinkReactant pass, LinkTypeReactant l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeReactantSet.add(l);
+    }
+
+    public void removeLinkReactant(LinkReactant pass, LinkTypeReactant l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeReactantSet.remove(l);
+    }
+
+    public Set<LinkTypeReactant> getLinkReactantSet() {
+        return (Set<LinkTypeReactant>)((HashSet<LinkTypeReactant>)linkTypeReactantSet).clone();
+    }
+
+// Product association, of which Reaction and Species are both responsibles
+
+    public void insertLinkProduct(LinkProduct pass, LinkTypeProduct l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeProductSet.add(l);
+    }
+
+    public void removeLinkProduct(LinkProduct pass, LinkTypeProduct l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeProductSet.remove(l);
+    }
+
+    public Set<LinkTypeProduct> getLinkProductSet() {
+        return (Set<LinkTypeProduct>)((HashSet<LinkTypeProduct>)linkTypeProductSet).clone();
     }
 
 
@@ -192,8 +234,8 @@ public class Reaction extends BiologicalEntity {
                 ", rate=" + rate +
                 ", rateInv=" + rateInv +
                 ", reversible=" + reversible +
-                ", reactants=" + reactants +
-                ", products=" + products +
+                ", reactants=" + getReactants() +
+                ", products=" + getProducts() +
                 ", modifiers=" + modifiers +
                 '}';
     }
