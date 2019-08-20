@@ -264,7 +264,8 @@ public class ReactionKA extends KnowledgeAtom {
 
     }
 
-    private void handleExistentReactionReactants(Reaction r, Map<Species, Integer> reactants) {
+    private void handleExistentReactionReactants(Reaction r, Map<Species, Integer> reactants)
+    throws PreconditionsException{
         logger.info(
                 "Handling existent reaction reactants..."
         );
@@ -323,7 +324,8 @@ public class ReactionKA extends KnowledgeAtom {
 
     }
 
-    private void handleExistentReactionProducts(Reaction r, Map<Species, Integer> products) {
+    private void handleExistentReactionProducts(Reaction r, Map<Species, Integer> products)
+    throws PreconditionsException {
         logger.info(
                 "Handling existent reaction products..."
         );

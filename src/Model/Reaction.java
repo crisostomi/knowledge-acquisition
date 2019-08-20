@@ -3,6 +3,7 @@ package Model;
 import DataTypes.ModifierType;
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
+import Util.GsonRepellent;
 
 import java.io.IOException;
 import java.util.logging.FileHandler;
@@ -19,7 +20,9 @@ public class Reaction extends BiologicalEntity {
     private boolean reversible = false;
 
     private Set<LinkTypeModifier> modifiers = new HashSet<>();
+    @GsonRepellent
     private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
+    @GsonRepellent
     private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
 
     private LinkTypeReactionCompartment linkTypeReactionCompartment;
