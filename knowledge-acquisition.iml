@@ -9,5 +9,25 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jsbml-1.4-with-dependencies" level="project" />
     <orderEntry type="library" name="gson-2.8.5" level="project" />
+    <orderEntry type="module-library">
+      <library name="gson">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/gson-2.8.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jsbml">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/jsbml-1.4/jsbml-1.4-with-dependencies.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/lib/jsbml-1.4/jsbml-1.4-with-dependencies.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
