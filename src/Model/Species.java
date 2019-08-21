@@ -2,6 +2,7 @@ package Model;
 
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
+import Util.GsonRepellent;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,8 +11,9 @@ public class Species extends BiologicalEntity {
 
     private RealInterval initialAmount;
     private RealInterval bounds;
-
+    @GsonRepellent
     private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
+    @GsonRepellent
     private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
 
     private LinkTypeSpeciesCompartment linkTypeSpeciesCompartment;

@@ -21,11 +21,11 @@
     <orderEntry type="module-library">
       <library name="jsbml">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jsbml-1.4/jsbml-1.4-with-dependencies.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jsbml-1.4-with-dependencies.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$MODULE_DIR$/lib/jsbml-1.4/jsbml-1.4-with-dependencies.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jsbml-1.4-with-dependencies.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
