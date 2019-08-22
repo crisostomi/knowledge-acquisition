@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.thoughtworks.xstream.XStream;
 
 import java.io.File;
 import java.io.FileReader;
@@ -79,17 +80,27 @@ public class Model {
         return (Set<LinkTypeComprises>)((HashSet<LinkTypeComprises>)linkComprisesSet).clone();
     }
 
-    public void dump(String path) throws IOException {
-        Gson g = new GsonBuilder()
-                .setExclusionStrategies(new MyExclusionStrategy())
-                .registerTypeAdapter(BiologicalEntity.class,
-                        new BiologicalEntityJSONAdapter())
-                .create();
+//    public void dump(String path) throws IOException {
+//        Gson g = new GsonBuilder()
+//                .setExclusionStrategies(new MyExclusionStrategy())
+//                .registerTypeAdapter(BiologicalEntity.class,
+//                        new BiologicalEntityJSONAdapter())
+//                .create();
+//
+//        String json = g.toJson(this);
+//        File f = new File(path);
+//        FileWriter fr = new FileWriter(f);
+//        fr.write(json);
+//        fr.close();
+//    }
+//
 
-        String json = g.toJson(this);
+    public void dump(String path) throws IOException {
+        XStream xStream = new XStream();
+        String xml = xStream.toXML(this);
         File f = new File(path);
         FileWriter fr = new FileWriter(f);
-        fr.write(json);
+        fr.write(xml);
         fr.close();
     }
 
