@@ -11,11 +11,11 @@ import Util.CustomLogger;
 public class Main {
     public static void main(String[] args) {
 
-        String projectFolder = "/home/scacio/Dropbox/Tesisti/software/development/KnowledgeAcquisition";
+        String projectFolder = "/home/scacio/Dropbox/Tesisti/software/development";
         String testFolder = projectFolder + "/test-cases/test-case-4";
 
         String kbPath = testFolder + "/in/galactose.sbml";
-        String xmlPath = testFolder + "/out/quantitative.xml";
+        String xmlPath = testFolder + "/in/quantitative.xml";
         String logPath = testFolder + "/out/log.txt";
         String dumpPath = testFolder + "/out/model_dump.json";
 

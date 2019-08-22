@@ -13,10 +13,7 @@ public class Compartment extends BiologicalEntity {
 
     private Double size;
 
-    @GsonRepellent
     private Set<LinkTypeSpeciesCompartment> linkSpeciesCompartmentSet = new HashSet<>();
-
-    @GsonRepellent
     private Set<LinkTypeReactionCompartment> linkReactionCompartmentSet = new HashSet<>();
 
 
@@ -112,16 +109,5 @@ public class Compartment extends BiologicalEntity {
 
     public void setSize(double size) {
         this.size = size;
-    }
-
-    @Override
-    public String toString() {
-        return "Compartment{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", size=" + size +
-                ", linkSpeciesCompartmentSet=" + linkSpeciesCompartmentSet +
-                ", linkReactionCompartmentSet=" + linkReactionCompartmentSet +
-                '}';
     }
 }

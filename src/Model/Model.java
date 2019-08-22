@@ -79,13 +79,6 @@ public class Model {
         return (Set<LinkTypeComprises>)((HashSet<LinkTypeComprises>)linkComprisesSet).clone();
     }
 
-    @Override
-    public String toString() {
-        return "Model{" +
-                "linkComprisesSet=" + linkComprisesSet +
-                '}';
-    }
-
     public void dump(String path) throws IOException {
         Gson g = new GsonBuilder()
                 .setExclusionStrategies(new MyExclusionStrategy())

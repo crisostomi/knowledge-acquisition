@@ -3,8 +3,9 @@ package Model;
 import Util.GsonRepellent;
 
 public class LinkTypeSpeciesCompartment {
-    @GsonRepellent
     private Species species;
+
+    @GsonRepellent
     private Compartment compartment;
 
 
