@@ -3,8 +3,9 @@ package Model;
 import Util.GsonRepellent;
 
 public class LinkTypeReactionCompartment {
-    @GsonRepellent
     private Reaction reaction;
+
+    @GsonRepellent
     private Compartment compartment;
 
     public LinkTypeReactionCompartment(Reaction reaction, Compartment compartment) {

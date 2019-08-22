@@ -15,7 +15,7 @@ public class Species extends BiologicalEntity {
     private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
     @GsonRepellent
     private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
-
+    @GsonRepellent
     private LinkTypeSpeciesCompartment linkTypeSpeciesCompartment;
 
     public Species(String id, Model m) throws PreconditionsException {

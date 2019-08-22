@@ -20,11 +20,9 @@ public class Reaction extends BiologicalEntity {
     private boolean reversible = false;
 
     private Set<LinkTypeModifier> modifiers = new HashSet<>();
-    @GsonRepellent
     private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
-    @GsonRepellent
     private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
-
+    @GsonRepellent
     private LinkTypeReactionCompartment linkTypeReactionCompartment;
 
 
