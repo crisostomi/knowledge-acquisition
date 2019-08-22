@@ -34,11 +34,7 @@ public class Main {
             c.buildConfig();
             System.out.println("All done!");
             m.dump(dumpPath);
-            XStream xStream = new XStream();
-            Path path = Paths.get(dumpPath);
-            String deserializedXML = Files.readString(path, StandardCharsets.US_ASCII);
-            Model newModel = (Model) xStream.fromXML(deserializedXML);
-            System.out.println(newModel.getLinkComprisesSet());
+
 
         } catch (Exception exc) {
             exc.printStackTrace();
