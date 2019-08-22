@@ -3,11 +3,12 @@ package Model;
 import DataTypes.PreconditionsException;
 import Util.GsonRepellent;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class Compartment extends BiologicalEntity {
+public class Compartment extends BiologicalEntity implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 

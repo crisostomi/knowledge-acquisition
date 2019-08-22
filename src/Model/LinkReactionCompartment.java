@@ -2,7 +2,9 @@ package Model;
 
 import DataTypes.PreconditionsException;
 
-public final class LinkReactionCompartment {
+import java.io.Serializable;
+
+public final class LinkReactionCompartment implements Serializable {
 
     private LinkReactionCompartment() {}
 

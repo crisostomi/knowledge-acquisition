@@ -2,7 +2,9 @@ package Model;
 
 import DataTypes.PreconditionsException;
 
-public class BiologicalEntityNotUniqueException extends PreconditionsException {
+import java.io.Serializable;
+
+public class BiologicalEntityNotUniqueException extends PreconditionsException implements Serializable {
     BiologicalEntityNotUniqueException() {super();}
     BiologicalEntityNotUniqueException(String message) {super(message);}
 }

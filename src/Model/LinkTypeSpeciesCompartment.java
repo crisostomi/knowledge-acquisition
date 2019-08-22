@@ -2,7 +2,9 @@ package Model;
 
 import Util.GsonRepellent;
 
-public class LinkTypeSpeciesCompartment {
+import java.io.Serializable;
+
+public class LinkTypeSpeciesCompartment implements Serializable {
     private Species species;
 
     @GsonRepellent

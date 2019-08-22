@@ -9,15 +9,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.thoughtworks.xstream.XStream;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class Model {
+public class Model implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 

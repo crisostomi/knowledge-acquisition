@@ -2,7 +2,9 @@ package Model;
 
 import DataTypes.PreconditionsException;
 
-public final class LinkComprises {
+import java.io.Serializable;
+
+public final class LinkComprises implements Serializable {
 
     private LinkComprises(){}
 

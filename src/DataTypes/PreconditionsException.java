@@ -1,6 +1,8 @@
 package DataTypes;
 
-public class PreconditionsException extends Exception {
+import java.io.Serializable;
+
+public class PreconditionsException extends Exception implements Serializable {
 
     /**
      * Class that represents the failure to comply with datatypes methods preconditions

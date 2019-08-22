@@ -2,9 +2,10 @@ package Model;
 
 import Util.GsonRepellent;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class LinkTypeReactant {
+public class LinkTypeReactant implements Serializable {
     private Species species;
     @GsonRepellent
     private Reaction reaction;

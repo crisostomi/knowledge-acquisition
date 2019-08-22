@@ -2,7 +2,9 @@ package Model;
 
 import DataTypes.PreconditionsException;
 
-public class LinkReactant {
+import java.io.Serializable;
+
+public class LinkReactant implements Serializable {
 
     public static void insertLink(Species species, Reaction reaction, int stoichiometry) throws PreconditionsException {
         // Creo un pass: solo i metodi di questa classe possono farlo!

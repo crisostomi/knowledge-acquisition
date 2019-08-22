@@ -6,12 +6,13 @@ import DataTypes.RealInterval;
 import Util.GsonRepellent;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Reaction extends BiologicalEntity {
+public class Reaction extends BiologicalEntity implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 
@@ -22,7 +23,6 @@ public class Reaction extends BiologicalEntity {
     private Set<LinkTypeModifier> modifiers = new HashSet<>();
     private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
     private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
-    @GsonRepellent
     private LinkTypeReactionCompartment linkTypeReactionCompartment;
 
 

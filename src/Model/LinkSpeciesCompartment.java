@@ -2,7 +2,9 @@ package Model;
 
 import DataTypes.PreconditionsException;
 
-public final class LinkSpeciesCompartment {
+import java.io.Serializable;
+
+public final class LinkSpeciesCompartment implements Serializable {
 
     private LinkSpeciesCompartment() {}
 

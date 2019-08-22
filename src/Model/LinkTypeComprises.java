@@ -2,11 +2,11 @@ package Model;
 
 import Util.GsonRepellent;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class LinkTypeComprises {
+public class LinkTypeComprises implements Serializable {
 
-    @GsonRepellent
     private Model model;
     private BiologicalEntity bioEntity;
 

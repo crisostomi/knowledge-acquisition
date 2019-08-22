@@ -4,10 +4,11 @@ import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
 import Util.GsonRepellent;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Species extends BiologicalEntity {
+public class Species extends BiologicalEntity implements Serializable {
 
     private RealInterval initialAmount;
     private RealInterval bounds;

@@ -1,8 +1,9 @@
 package DataTypes;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class RealInterval {
+public class RealInterval implements Serializable {
     private double lowerBound;
     private double upperBound;
 

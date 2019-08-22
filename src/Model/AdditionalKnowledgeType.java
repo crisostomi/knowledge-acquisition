@@ -1,9 +1,10 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AdditionalKnowledgeType {
+public class AdditionalKnowledgeType implements Serializable {
     private static Set<String> idsInUse = new HashSet<>();
     private final String id;
 
