@@ -3,10 +3,7 @@ package Model;
 import DataTypes.ModifierType;
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
-import Util.GsonRepellent;
 
-import java.io.IOException;
-import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +19,6 @@ public class Reaction extends BiologicalEntity {
     private Set<LinkTypeModifier> modifiers = new HashSet<>();
     private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
     private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
-    @GsonRepellent
     private LinkTypeReactionCompartment linkTypeReactionCompartment;
 
 
@@ -225,19 +221,5 @@ public class Reaction extends BiologicalEntity {
         else throw new PreconditionsException(
                 "Reaction " + this.getId() + " is not reversible"
         );
-    }
-
-    @Override
-    public String toString() {
-        return "Reaction{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", rate=" + rate +
-                ", rateInv=" + rateInv +
-                ", reversible=" + reversible +
-                ", reactants=" + getReactants() +
-                ", products=" + getProducts() +
-                ", modifiers=" + modifiers +
-                '}';
     }
 }

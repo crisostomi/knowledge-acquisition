@@ -1,12 +1,10 @@
 package Model;
 
-import Util.GsonRepellent;
-
+import java.io.Serializable;
 import java.util.Objects;
 
-public class LinkTypeReactant {
+public class LinkTypeReactant implements Serializable {
     private Species species;
-    @GsonRepellent
     private Reaction reaction;
 
     private int stoichiometry;
@@ -42,13 +40,5 @@ public class LinkTypeReactant {
 
     public Reaction getReaction() {
         return reaction;
-    }
-
-    @Override
-    public String toString() {
-        return "LinkTypeReactant{" +
-                "species=" + species +
-                ", stoichiometry=" + stoichiometry +
-                '}';
     }
 }

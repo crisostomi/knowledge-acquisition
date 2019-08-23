@@ -1,13 +1,13 @@
 package Model;
 
 import DataTypes.PreconditionsException;
-import Util.GsonRepellent;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public abstract class BiologicalEntity {
+public abstract class BiologicalEntity implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 
@@ -15,7 +15,6 @@ public abstract class BiologicalEntity {
     protected String name;
     private Set<LinkTypeAdditionalKnowledge> additionalKnowledge = new HashSet<LinkTypeAdditionalKnowledge>();
 
-    @GsonRepellent
     private LinkTypeComprises linkComprises;
 
     public BiologicalEntity(String id, Model m) throws PreconditionsException {

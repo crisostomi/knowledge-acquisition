@@ -1,13 +1,12 @@
 package Model;
 
 import DataTypes.ModifierType;
-import Util.GsonRepellent;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class LinkTypeModifier {
+public class LinkTypeModifier implements Serializable {
     private Species species;
-    @GsonRepellent
     private Reaction reaction;
     private ModifierType type;
 
@@ -42,13 +41,5 @@ public class LinkTypeModifier {
 
     public Reaction getReaction() {
         return reaction;
-    }
-
-    @Override
-    public String toString() {
-        return "LinkTypeModifier{" +
-                "species=" + species +
-                ", type=" + type +
-                '}';
     }
 }

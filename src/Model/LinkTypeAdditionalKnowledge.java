@@ -1,12 +1,10 @@
 package Model;
 
-import Util.GsonRepellent;
-
+import java.io.Serializable;
 import java.util.Objects;
 
-public class LinkTypeAdditionalKnowledge {
+public class LinkTypeAdditionalKnowledge implements Serializable {
 
-    @GsonRepellent
     private BiologicalEntity biologicalEntity;
     private AdditionalKnowledgeType addKnowType;
     private String value;
@@ -41,13 +39,5 @@ public class LinkTypeAdditionalKnowledge {
 
     public String getValue() {
         return value;
-    }
-
-    @Override
-    public String toString() {
-        return "LinkTypeAdditionalKnowledge{" +
-                "addKnowType=" + addKnowType +
-                ", value='" + value + '\'' +
-                '}';
     }
 }

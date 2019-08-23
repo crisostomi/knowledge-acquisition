@@ -1,11 +1,10 @@
 package Model;
 
-import Util.GsonRepellent;
+import java.io.Serializable;
 
-public class LinkTypeSpeciesCompartment {
+public class LinkTypeSpeciesCompartment implements Serializable {
     private Species species;
 
-    @GsonRepellent
     private Compartment compartment;
 
 
@@ -20,12 +19,5 @@ public class LinkTypeSpeciesCompartment {
 
     public Compartment getCompartment() {
         return compartment;
-    }
-
-    @Override
-    public String toString() {
-        return "LinkTypeSpeciesCompartment{" +
-                "species=" + species +
-                '}';
     }
 }
