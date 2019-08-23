@@ -13,6 +13,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -80,21 +84,6 @@ public class Model {
         return (Set<LinkTypeComprises>)((HashSet<LinkTypeComprises>)linkComprisesSet).clone();
     }
 
-//    public void dump(String path) throws IOException {
-//        Gson g = new GsonBuilder()
-//                .setExclusionStrategies(new MyExclusionStrategy())
-//                .registerTypeAdapter(BiologicalEntity.class,
-//                        new BiologicalEntityJSONAdapter())
-//                .create();
-//
-//        String json = g.toJson(this);
-//        File f = new File(path);
-//        FileWriter fr = new FileWriter(f);
-//        fr.write(json);
-//        fr.close();
-//    }
-//
-
     public void dump(String path) throws IOException {
         XStream xStream = new XStream();
         String xml = xStream.toXML(this);
@@ -105,13 +94,19 @@ public class Model {
     }
 
     public static Model load(String path) throws IOException {
-        Gson g = new GsonBuilder()
-                .setExclusionStrategies(new MyExclusionStrategy())
-                .registerTypeAdapter(BiologicalEntity.class,
-                        new BiologicalEntityJSONAdapter())
-                .create();
+//        Gson g = new GsonBuilder()
+//                .setExclusionStrategies(new MyExclusionStrategy())
+//                .registerTypeAdapter(BiologicalEntity.class,
+//                        new BiologicalEntityJSONAdapter())
+//                .create();
+//
+//        JsonElement jelement = new JsonParser().parse(new FileReader(path));
+//        return g.fromJson(jelement, Model.class);
+        Path filePath = Paths.get(path);
+        String deserializedXML = Files.readString(filePath, StandardCharsets.US_ASCII);
+        XStream xStream = new XStream();
+        Model deserializedModel = (Model) xStream.fromXML(deserializedXML);
 
-        JsonElement jelement = new JsonParser().parse(new FileReader(path));
-        return g.fromJson(jelement, Model.class);
+        return deserializedModel;
     }
 }
