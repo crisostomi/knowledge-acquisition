@@ -1,8 +1,9 @@
 package DataTypes;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class ModifierReference {
+public class ModifierReference implements Serializable {
     private final String speciesId;
     private final ModifierType type;
 

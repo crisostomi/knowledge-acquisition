@@ -1,8 +1,9 @@
 package DataTypes;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class RealInterval {
+public class RealInterval implements Serializable {
     private double lowerBound;
     private double upperBound;
 
@@ -59,13 +60,5 @@ public class RealInterval {
     @Override
     public int hashCode() {
         return Objects.hash(lowerBound, upperBound);
-    }
-
-    @Override
-    public String toString() {
-        return "RealInterval{" +
-                "lowerBound=" + lowerBound +
-                ", upperBound=" + upperBound +
-                '}';
     }
 }

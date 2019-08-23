@@ -1,9 +1,10 @@
 package DataTypes;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 
-public class SpeciesReference {
+public class SpeciesReference implements Serializable {
     private final String speciesId;
     private final int stoichiometry;
 
