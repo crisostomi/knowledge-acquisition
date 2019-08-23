@@ -1,15 +1,16 @@
 package Model;
 
 import DataTypes.PreconditionsException;
-import Util.BiologicalEntityJSONAdapter;
-import Util.MyExclusionStrategy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.thoughtworks.xstream.XStream;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -77,21 +78,6 @@ public class Model implements Serializable {
         return (Set<LinkTypeComprises>)((HashSet<LinkTypeComprises>)linkComprisesSet).clone();
     }
 
-//    public void dump(String path) throws IOException {
-//        Gson g = new GsonBuilder()
-//                .setExclusionStrategies(new MyExclusionStrategy())
-//                .registerTypeAdapter(BiologicalEntity.class,
-//                        new BiologicalEntityJSONAdapter())
-//                .create();
-//
-//        String json = g.toJson(this);
-//        File f = new File(path);
-//        FileWriter fr = new FileWriter(f);
-//        fr.write(json);
-//        fr.close();
-//    }
-//
-
     public void dump(String path) throws IOException {
         XStream xStream = new XStream();
         String xml = xStream.toXML(this);
@@ -102,13 +88,19 @@ public class Model implements Serializable {
     }
 
     public static Model load(String path) throws IOException {
-        Gson g = new GsonBuilder()
-                .setExclusionStrategies(new MyExclusionStrategy())
-                .registerTypeAdapter(BiologicalEntity.class,
-                        new BiologicalEntityJSONAdapter())
-                .create();
+//        Gson g = new GsonBuilder()
+//                .setExclusionStrategies(new MyExclusionStrategy())
+//                .registerTypeAdapter(BiologicalEntity.class,
+//                        new BiologicalEntityJSONAdapter())
+//                .create();
+//
+//        JsonElement jelement = new JsonParser().parse(new FileReader(path));
+//        return g.fromJson(jelement, Model.class);
+        Path filePath = Paths.get(path);
+        String deserializedXML = Files.readString(filePath, StandardCharsets.US_ASCII);
+        XStream xStream = new XStream();
+        Model deserializedModel = (Model) xStream.fromXML(deserializedXML);
 
-        JsonElement jelement = new JsonParser().parse(new FileReader(path));
-        return g.fromJson(jelement, Model.class);
+        return deserializedModel;
     }
 }

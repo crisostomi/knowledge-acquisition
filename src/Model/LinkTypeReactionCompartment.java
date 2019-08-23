@@ -1,13 +1,10 @@
 package Model;
 
-import Util.GsonRepellent;
-
 import java.io.Serializable;
 
 public class LinkTypeReactionCompartment implements Serializable {
     private Reaction reaction;
 
-    @GsonRepellent
     private Compartment compartment;
 
     public LinkTypeReactionCompartment(Reaction reaction, Compartment compartment) {
@@ -21,12 +18,5 @@ public class LinkTypeReactionCompartment implements Serializable {
 
     public Compartment getCompartment() {
         return compartment;
-    }
-
-    @Override
-    public String toString() {
-        return "LinkTypeReactionCompartment{" +
-                "reaction=" + reaction +
-                '}';
     }
 }

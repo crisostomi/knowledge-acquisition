@@ -1,7 +1,6 @@
 package Model;
 
 import DataTypes.PreconditionsException;
-import Util.GsonRepellent;
 
 import java.io.Serializable;
 import java.util.HashSet;

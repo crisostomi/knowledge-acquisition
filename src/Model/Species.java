@@ -2,7 +2,6 @@ package Model;
 
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
-import Util.GsonRepellent;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -12,11 +11,8 @@ public class Species extends BiologicalEntity implements Serializable {
 
     private RealInterval initialAmount;
     private RealInterval bounds;
-    @GsonRepellent
     private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
-    @GsonRepellent
     private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
-    @GsonRepellent
     private LinkTypeSpeciesCompartment linkTypeSpeciesCompartment;
 
     public Species(String id, Model m) throws PreconditionsException {
@@ -156,12 +152,4 @@ public class Species extends BiologicalEntity implements Serializable {
         this.bounds = bounds;
     }
 
-    @Override
-    public String toString() {
-        return "Species{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                "initialAmount=" + initialAmount +
-                '}';
-    }
 }

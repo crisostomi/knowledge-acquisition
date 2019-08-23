@@ -1,7 +1,5 @@
 package Model;
 
-import Util.GsonRepellent;
-
 import java.io.Serializable;
 import java.util.Objects;
 

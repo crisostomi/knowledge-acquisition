@@ -3,16 +3,12 @@ package Model;
 import DataTypes.ModifierType;
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
-import Util.GsonRepellent;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Reaction extends BiologicalEntity implements Serializable {
+public class Reaction extends BiologicalEntity {
 
     private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 
@@ -225,19 +221,5 @@ public class Reaction extends BiologicalEntity implements Serializable {
         else throw new PreconditionsException(
                 "Reaction " + this.getId() + " is not reversible"
         );
-    }
-
-    @Override
-    public String toString() {
-        return "Reaction{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", rate=" + rate +
-                ", rateInv=" + rateInv +
-                ", reversible=" + reversible +
-                ", reactants=" + getReactants() +
-                ", products=" + getProducts() +
-                ", modifiers=" + modifiers +
-                '}';
     }
 }
