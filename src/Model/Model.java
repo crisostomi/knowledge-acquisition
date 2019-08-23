@@ -88,14 +88,6 @@ public class Model implements Serializable {
     }
 
     public static Model load(String path) throws IOException {
-//        Gson g = new GsonBuilder()
-//                .setExclusionStrategies(new MyExclusionStrategy())
-//                .registerTypeAdapter(BiologicalEntity.class,
-//                        new BiologicalEntityJSONAdapter())
-//                .create();
-//
-//        JsonElement jelement = new JsonParser().parse(new FileReader(path));
-//        return g.fromJson(jelement, Model.class);
         Path filePath = Paths.get(path);
         String deserializedXML = Files.readString(filePath, StandardCharsets.US_ASCII);
         XStream xStream = new XStream();
