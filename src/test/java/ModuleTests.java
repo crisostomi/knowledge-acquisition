@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ModuleTests {
     @Test
     public void knowledgeAcquisition_inputDummyPathway_createCorrectModel() throws PreconditionsException, IOException, XMLStreamException, FormatNotSupportedException, SAXException, ParserConfigurationException {
-        String sbmlPath = "/home/don/Dropbox/Tesisti/software/development/test-cases/dummy/dummyPathway.sbml";
+        String sbmlPath = "/home/scacio/Dropbox/Tesisti/software/development/test-cases/dummy/dummyPathway.sbml";
         Set<String> kbPaths = new HashSet<>();
         kbPaths.add(sbmlPath);
         Model generatedModel = HandleModel.createModel(kbPaths);

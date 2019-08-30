@@ -97,12 +97,6 @@ public class XMLParser implements KBParser {
                         element.getAttribute("maxInitialAmount").isEmpty() ?
                                 null : Double.valueOf(element.getAttribute("maxInitialAmount"));
 
-                Double lowerBound =
-                        element.getAttribute("lowerBound").isEmpty() ?
-                                null : Double.valueOf(element.getAttribute("lowerBound"));
-                Double upperBound =
-                        element.getAttribute("upperBound").isEmpty() ?
-                                null : Double.valueOf(element.getAttribute("upperBound"));
 
                 SpeciesKA ka;
                 if (name.equals("")) {
@@ -120,14 +114,6 @@ public class XMLParser implements KBParser {
 
                 ka.initializeInitialAmount(new RealInterval(minInitialAmount, maxInitialAmount));
 
-                if (lowerBound == null) {
-                    lowerBound = Double.valueOf(0);
-                }
-                if (upperBound == null) {
-                    upperBound = Double.MAX_VALUE;
-                }
-
-                ka.initializeBounds(new RealInterval(lowerBound, upperBound));
             }
         }
     }
