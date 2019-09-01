@@ -65,6 +65,15 @@ public class SBMLParser implements KBParser {
         }
     }
 
+    private boolean isProtein(Species s) {
+        try {
+            return s.getNotesString().contains("protein");
+        } catch (XMLStreamException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private void parseSpecies(SBase tree, KnowledgeBase kb)
                             throws PreconditionsException {
         for (Species s : tree.getModel().getListOfSpecies()) {
@@ -73,7 +82,9 @@ public class SBMLParser implements KBParser {
             String compartment = s.getCompartment();
             Double initialAmount = s.getInitialAmount();
             int sboTermValue = s.getSBOTerm();
-
+            if (isProtein(s)){
+                System.out.println(s.getId());
+            }
             SpeciesKA ka;
             if (name.equals("")) {
                 ka = new SpeciesKA(id, false, kb);

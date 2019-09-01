@@ -383,7 +383,7 @@ public class ReactionKA extends KnowledgeAtom {
         handleNonExistentReactionModifiers(r, nonExistent);
     }
 
-    private void handleExistentReactionModifiers(Reaction r, Map<Species, ModifierType> modifiers) {
+    private void handleExistentReactionModifiers(Reaction r, Map<Species, ModifierType> modifiers) throws PreconditionsException {
         logger.info(
                 "Handling existent reaction modifiers..."
         );

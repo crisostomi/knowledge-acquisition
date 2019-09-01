@@ -96,7 +96,6 @@ public class ProteinKA extends SpeciesKA {
 
         this.handleSpeciesCompartment(p);
         this.handleSpeciesInitialAmount(p);
-        this.handleSpeciesBounds(p);
 
         this.handleBioEntityName(p);
         this.addAdditionalKnowledge(p);

@@ -24,6 +24,9 @@ public class Parser implements KBParser {
         } else if (kbPath.endsWith(".sbml")) {
             SBMLParser sbmlParser = new SBMLParser();
             return sbmlParser.parse(kbPath);
+        } else if (kbPath.endsWith(".tsv")){
+            TSVParser tsvParser = new TSVParser();
+            return tsvParser.parse(kbPath);
         } else {
             throw new FormatNotSupportedException(
                     "Could not recognize format of file " + kbPath
