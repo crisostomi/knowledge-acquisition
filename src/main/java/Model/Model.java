@@ -107,13 +107,14 @@ public class Model implements Serializable {
     public CellType getCellType() {
         return cellType;
     }
+
     public void consolidateProteins(){
         for (LinkTypeComprises link_1: this.getLinkComprisesSet()){
             BiologicalEntity bioEntity1 = link_1.getBiologicalEntity();
             if (bioEntity1 instanceof Protein){
                 for (LinkTypeComprises link_2: this.getLinkComprisesSet()){
                     BiologicalEntity bioEntity2 = link_2.getBiologicalEntity();
-                    if (bioEntity2 instanceof Protein && bioEntity2.getId() != bioEntity1.getId()){
+                    if (bioEntity2 instanceof Protein && !(bioEntity2.getId().equals(bioEntity1.getId()))){
                         Protein p1 = (Protein) bioEntity1;
                         Protein p2 = (Protein) bioEntity2;
                         HashSet<String> intersection = new HashSet<>(p1.getExternalIds());
@@ -126,8 +127,6 @@ public class Model implements Serializable {
             }
         }
     }
-
-
 
 
     public void removeCellType() {
