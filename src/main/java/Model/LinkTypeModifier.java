@@ -8,12 +8,13 @@ import java.util.Objects;
 public class LinkTypeModifier implements Serializable {
     private Species species;
     private Reaction reaction;
-    private ModifierType type;
 
-    public LinkTypeModifier(Species species, Reaction reaction, ModifierType type) {
+    private ModifierType modifierType;
+
+    public LinkTypeModifier(Species species, Reaction reaction, ModifierType modifierType) {
         this.species = species;
         this.reaction = reaction;
-        this.type = type;
+        this.modifierType = modifierType;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class LinkTypeModifier implements Serializable {
 
 
     public ModifierType getModifierType() {
-        return type;
+        return modifierType;
     }
 
     public Species getSpecies() {

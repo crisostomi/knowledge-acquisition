@@ -13,6 +13,7 @@ public class Species extends BiologicalEntity implements Serializable {
     private RealInterval bounds;
     private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
     private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
+    private Set<LinkTypeModifier> linkTypeModifierSet = new HashSet<>();
     private LinkTypeSpeciesCompartment linkTypeSpeciesCompartment;
 
     public Species(String id, Model m) throws PreconditionsException {
@@ -133,6 +134,24 @@ public class Species extends BiologicalEntity implements Serializable {
         return (Set<LinkTypeProduct>)((HashSet<LinkTypeProduct>)linkTypeProductSet).clone();
     }
 
+    public void removeLinkModifier(LinkModifier pass, LinkTypeModifier l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeModifierSet.remove(l);
+    }
+    public void insertLinkModifier(LinkModifier pass, LinkTypeModifier l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeModifierSet.add(l);
+    }
+
+    public Set<LinkTypeModifier> getLinkModifierSet() {
+        return (Set<LinkTypeModifier>)((HashSet<LinkTypeModifier>)linkTypeModifierSet).clone();
+    }
 
 // getters and setters
 

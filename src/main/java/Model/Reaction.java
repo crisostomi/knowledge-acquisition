@@ -16,7 +16,7 @@ public class Reaction extends BiologicalEntity {
     private RealInterval rateInv;
     private boolean reversible = false;
 
-    private Set<LinkTypeModifier> modifiers = new HashSet<>();
+    private Set<LinkTypeModifier> linkTypeModifierSet = new HashSet<>();
     private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
     private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
     private LinkTypeReactionCompartment linkTypeReactionCompartment;
@@ -109,13 +109,12 @@ public class Reaction extends BiologicalEntity {
 
 // Modifier association, of which Reaction is the only responsible, n to n
 
-    public void addModifier(Species species, ModifierType type){
-        LinkTypeModifier linkTypeMod = new LinkTypeModifier(species, this, type);
-        this.modifiers.add(linkTypeMod);
+    public void addModifier(Species species, ModifierType type) throws PreconditionsException {
+        LinkModifier.insertLink(species, this, type);
     }
 
     public Set<LinkTypeModifier> getModifiers() {
-        return (Set<LinkTypeModifier>)((HashSet<LinkTypeModifier>)modifiers).clone();
+        return getLinkModifierSet();
     }
 
 // Product association, of which Reaction is the only responsible, n to n
@@ -192,6 +191,26 @@ public class Reaction extends BiologicalEntity {
 
     public Set<LinkTypeProduct> getLinkProductSet() {
         return (Set<LinkTypeProduct>)((HashSet<LinkTypeProduct>)linkTypeProductSet).clone();
+    }
+
+
+    public void removeLinkModifier(LinkModifier pass, LinkTypeModifier l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeModifierSet.remove(l);
+    }
+    public void insertLinkModifier(LinkModifier pass, LinkTypeModifier l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
+        linkTypeModifierSet.add(l);
+    }
+
+    public Set<LinkTypeModifier> getLinkModifierSet() {
+        return (Set<LinkTypeModifier>)((HashSet<LinkTypeModifier>)linkTypeModifierSet).clone();
     }
 
 

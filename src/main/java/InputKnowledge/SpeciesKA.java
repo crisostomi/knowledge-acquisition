@@ -90,7 +90,7 @@ public class SpeciesKA extends KnowledgeAtom {
         this.addAdditionalKnowledge(s);
     }
 
-    private void handleSpeciesCompartment(Species s) throws PreconditionsException {
+    protected void handleSpeciesCompartment(Species s) throws PreconditionsException {
         logger.info(
                 "Handling species compartment..."
         );
@@ -137,7 +137,7 @@ public class SpeciesKA extends KnowledgeAtom {
         }
     }
 
-    private void handleSpeciesInitialAmount(Species s) throws PreconditionsException {
+    protected void handleSpeciesInitialAmount(Species s) throws PreconditionsException {
         logger.info(
                 "Handling initial amount..."
         );
@@ -157,7 +157,7 @@ public class SpeciesKA extends KnowledgeAtom {
         logger.info("New value = "+ s.getInitialAmount());
     }
 
-    private void handleSpeciesBounds(Species s) throws PreconditionsException {
+    protected void handleSpeciesBounds(Species s) throws PreconditionsException {
         logger.info(
                 "Handling bounds..."
         );

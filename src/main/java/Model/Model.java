@@ -97,5 +97,27 @@ public class Model implements Serializable {
         return deserializedModel;
     }
 
+    public void consolidateProteins(){
+        for (LinkTypeComprises link_1: this.getLinkComprisesSet()){
+            BiologicalEntity bioEntity1 = link_1.getBiologicalEntity();
+            if (bioEntity1 instanceof Protein){
+                for (LinkTypeComprises link_2: this.getLinkComprisesSet()){
+                    BiologicalEntity bioEntity2 = link_2.getBiologicalEntity();
+                    if (bioEntity2 instanceof Protein && bioEntity2.getId() != bioEntity1.getId()){
+                        Protein p1 = (Protein) bioEntity1;
+                        Protein p2 = (Protein) bioEntity2;
+                        HashSet<String> intersection = new HashSet<>(p1.getExternalIds());
+                        intersection.retainAll(p2.getExternalIds());
+                        if (! intersection.isEmpty() ){
+                            p1.merge(p2);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
 
 }
