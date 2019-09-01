@@ -75,8 +75,15 @@ public class SBMLParser implements KBParser {
     }
 
     private String getExternalId(Species s){
-        String LOL = "lMAO";
-        return "";
+        String annotationString = s.getAnnotation().getFullAnnotationString();
+        String[] lines = annotationString.split("\n");
+        for (String line: lines) {
+            if (line.contains("uniprot")) {
+                String[] partsOfLine = line.split("/");
+                return partsOfLine[4];
+            }
+        }
+        return null;
     }
 
     private void parseSpecies(SBase tree, KnowledgeBase kb)
@@ -89,17 +96,20 @@ public class SBMLParser implements KBParser {
             int sboTermValue = s.getSBOTerm();
             SpeciesKA ka;
 
-            if (isProtein(s) && name.equals("")){
-                ka = new ProteinKA(id, false, kb);
-                ((ProteinKA) ka).initializeExternalId(getExternalId(s));
-            }
-            else if (isProtein(s)){
-                ka = new ProteinKA(id, false, kb, name);
-            }
-            else if (name.equals("")) {
-                ka = new SpeciesKA(id, false, kb);
+            if (isProtein(s)) {
+                if (name.equals("")) {
+                    ka = new ProteinKA(id, false, kb);
+                    ((ProteinKA) ka).initializeExternalId(getExternalId(s));
+                } else {
+                    ka = new ProteinKA(id, false, kb, name);
+                    ((ProteinKA) ka).initializeExternalId(getExternalId(s));
+                }
             } else {
-                ka = new SpeciesKA(id, false, kb, name);
+                if (name.equals("")) {
+                    ka = new SpeciesKA(id, false, kb);
+                } else {
+                    ka = new SpeciesKA(id, false, kb, name);
+                }
             }
 
             if (!compartment.equals("")) {

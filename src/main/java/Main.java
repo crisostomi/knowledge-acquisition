@@ -16,7 +16,7 @@ import com.thoughtworks.xstream.XStream;
 public class Main {
     public static void main(String[] args) {
 
-        String projectFolder = "/home/don/Dropbox/Tesisti/software";
+        String projectFolder = "/home/scacio/Dropbox/Tesisti/software";
         String testFolder = projectFolder + "/test-cases/test-case-4";
 
         String kbPath = testFolder + "/in/R-HSA-70370.sbml";
@@ -31,7 +31,7 @@ public class Main {
         try {
             Set<String> kbPaths = new HashSet<>();
             kbPaths.add(kbPath);
-            kbPaths.add(xmlPath);
+            // kbPaths.add(xmlPath);
             kbPaths.add(tsvPath);
 
             Model m = HandleModel.createModel(kbPaths);
