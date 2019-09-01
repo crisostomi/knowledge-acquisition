@@ -80,7 +80,7 @@ public class SBMLParser implements KBParser {
         for (String line: lines) {
             if (line.contains("uniprot")) {
                 String[] partsOfLine = line.split("/");
-                return partsOfLine[4];
+                return partsOfLine[4].replace("\"", "");
             }
         }
         return null;

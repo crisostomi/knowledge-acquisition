@@ -27,7 +27,6 @@ public class Main {
 
         CustomLogger.setup(logPath);
 
-
         try {
             Set<String> kbPaths = new HashSet<>();
             kbPaths.add(kbPath);
@@ -39,13 +38,6 @@ public class Main {
             c.buildConfig();
             System.out.println("All done!");
             m.dump(dumpPath);
-            for (LinkTypeComprises link: m.getLinkComprisesSet() ){
-                BiologicalEntity biologicalEntity = link.getBiologicalEntity();
-                if (biologicalEntity instanceof Protein){
-                    Protein protein = (Protein) biologicalEntity;
-                    System.out.println(protein.getId() +" "+ protein.getAbundance());
-                }
-            }
 
 
         } catch (Exception exc) {

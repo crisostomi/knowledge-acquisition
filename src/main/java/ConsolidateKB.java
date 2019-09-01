@@ -57,6 +57,8 @@ public class ConsolidateKB {
             ka.consolidateModelWithAtom(m);
         }
 
+        m.consolidateProteins();
+
         return m;
     }
 }
