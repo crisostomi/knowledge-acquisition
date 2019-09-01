@@ -38,6 +38,22 @@ public class ConsolidateKB {
     private static Model KB2Model(Set<KnowledgeAtom> KAtoms)throws PreconditionsException {
         Model m = new Model();
         for (KnowledgeAtom ka : KAtoms) {
+            if (!(ka instanceof CompartmentKA)) { continue; }
+            ka.consolidateModelWithAtom(m);
+        }
+
+        for (KnowledgeAtom ka : KAtoms) {
+            if (!(ka instanceof SpeciesKA)) { continue; }
+            ka.consolidateModelWithAtom(m);
+        }
+
+        for (KnowledgeAtom ka : KAtoms) {
+            if (!(ka instanceof ProteinKA)) { continue; }
+            ka.consolidateModelWithAtom(m);
+        }
+
+        for (KnowledgeAtom ka : KAtoms) {
+            if (!(ka instanceof ReactionKA)) { continue; }
             ka.consolidateModelWithAtom(m);
         }
 
