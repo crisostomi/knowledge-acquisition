@@ -74,6 +74,11 @@ public class SBMLParser implements KBParser {
         }
     }
 
+    private String getExternalId(Species s){
+        String LOL = "lMAO";
+        return "";
+    }
+
     private void parseSpecies(SBase tree, KnowledgeBase kb)
                             throws PreconditionsException {
         for (Species s : tree.getModel().getListOfSpecies()) {
@@ -82,11 +87,16 @@ public class SBMLParser implements KBParser {
             String compartment = s.getCompartment();
             Double initialAmount = s.getInitialAmount();
             int sboTermValue = s.getSBOTerm();
-            if (isProtein(s)){
-                System.out.println(s.getId());
-            }
             SpeciesKA ka;
-            if (name.equals("")) {
+
+            if (isProtein(s) && name.equals("")){
+                ka = new ProteinKA(id, false, kb);
+                ((ProteinKA) ka).initializeExternalId(getExternalId(s));
+            }
+            else if (isProtein(s)){
+                ka = new ProteinKA(id, false, kb, name);
+            }
+            else if (name.equals("")) {
                 ka = new SpeciesKA(id, false, kb);
             } else {
                 ka = new SpeciesKA(id, false, kb, name);
