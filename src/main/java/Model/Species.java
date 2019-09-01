@@ -10,7 +10,6 @@ import java.util.Set;
 public class Species extends BiologicalEntity implements Serializable {
 
     private RealInterval initialAmount;
-    private RealInterval bounds;
     private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
     private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
     private Set<LinkTypeModifier> linkTypeModifierSet = new HashSet<>();
@@ -19,7 +18,6 @@ public class Species extends BiologicalEntity implements Serializable {
     public Species(String id, Model m) throws PreconditionsException {
         super(id, m);
         this.initialAmount = new RealInterval(0, Double.MAX_VALUE);
-        this.bounds = new RealInterval(0, Double.MAX_VALUE);
     }
 
     @Override
@@ -28,7 +26,6 @@ public class Species extends BiologicalEntity implements Serializable {
             this.overrideName(bioEntity);
             Species other = (Species)bioEntity;
             this.overrideInitialAmount(other);
-            this.overrideBounds(other);
         }
         else{
             throw new PreconditionsException("The overridden species must have the same id.");
@@ -44,14 +41,6 @@ public class Species extends BiologicalEntity implements Serializable {
         }
     }
 
-    public void overrideBounds(Species species) throws PreconditionsException {
-        if (this.getId().equals(species.getId())){
-            this.bounds = species.getBounds();
-        }
-        else{
-            throw new PreconditionsException("The overridden species must have the same id.");
-        }
-    }
 
     @Override
     public Species cloneIntoModel(Model model) throws PreconditionsException{
@@ -161,14 +150,6 @@ public class Species extends BiologicalEntity implements Serializable {
 
     public void setInitialAmount(RealInterval initialAmount) {
         this.initialAmount = initialAmount;
-    }
-
-    public RealInterval getBounds() {
-        return bounds;
-    }
-
-    public void setBounds(RealInterval bounds) {
-        this.bounds = bounds;
     }
 
 }

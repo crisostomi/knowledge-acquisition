@@ -12,7 +12,6 @@ public class SpeciesKA extends KnowledgeAtom {
 
     private String compartmentId = null;
     private RealInterval initialAmount = null;
-    private RealInterval bounds = null;
 
     public SpeciesKA(String id, boolean override, KnowledgeBase knowledgeBase)
             throws PreconditionsException {
@@ -39,15 +38,6 @@ public class SpeciesKA extends KnowledgeAtom {
 
         logger.info(
                 "SpeciesKA:" + this.id + ",\n\tset initialAmount = " + initialAmount
-        );
-    }
-
-    public void initializeBounds(RealInterval bounds) throws PreconditionsException {
-        if (this.bounds != null || bounds == null) throw new PreconditionsException();
-        this.bounds = bounds;
-
-        logger.info(
-                "SpeciesKA:" + this.id + ",\n\tset bounds = " + bounds
         );
     }
 
@@ -84,7 +74,6 @@ public class SpeciesKA extends KnowledgeAtom {
 
         this.handleSpeciesCompartment(s);
         this.handleSpeciesInitialAmount(s);
-        this.handleSpeciesBounds(s);
 
         this.handleBioEntityName(s);
         this.addAdditionalKnowledge(s);
@@ -157,25 +146,5 @@ public class SpeciesKA extends KnowledgeAtom {
         logger.info("New value = "+ s.getInitialAmount());
     }
 
-    protected void handleSpeciesBounds(Species s) throws PreconditionsException {
-        logger.info(
-                "Handling bounds..."
-        );
-        if (!this.id.equals(s.getId())) {
-            throw new IdMismatchException(
-                    "Species has different ID ("+s.getId()+") from atom ("+this.id+")"
-            );
-        }
-
-        logger.info("Species bounds = " + s.getBounds() +
-                ", atom bounds = " + this.bounds);
-
-        if (this.bounds != null) {
-            RealInterval newInitalAmount = s.getInitialAmount().intersect(this.initialAmount);
-            s.setInitialAmount(newInitalAmount);
-        }
-
-        logger.info("New value = "+ s.getInitialAmount());
-    }
 }
 

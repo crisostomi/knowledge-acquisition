@@ -20,7 +20,14 @@ public class Model implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 
+    private CellType cellType = null;
     private Set<LinkTypeComprises> linkComprisesSet = new HashSet<>();
+
+    public Model(){}
+
+    public Model(CellType cellType) {
+        this.cellType = cellType;
+    }
 
     public void overrideModel(Model overrider) throws PreconditionsException{
         for (LinkTypeComprises linkComprises: overrider.getLinkComprisesSet()){
@@ -97,6 +104,9 @@ public class Model implements Serializable {
         return deserializedModel;
     }
 
+    public CellType getCellType() {
+        return cellType;
+    }
     public void consolidateProteins(){
         for (LinkTypeComprises link_1: this.getLinkComprisesSet()){
             BiologicalEntity bioEntity1 = link_1.getBiologicalEntity();
@@ -120,4 +130,12 @@ public class Model implements Serializable {
 
 
 
+    public void removeCellType() {
+        this.cellType = null;
+    }
+
+    public void setCellType(CellType cellType) throws PreconditionsException {
+        if (this.cellType != null) throw new PreconditionsException();
+        this.cellType = cellType;
+    }
 }
