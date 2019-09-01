@@ -12,18 +12,19 @@ public class ProteinKA extends SpeciesKA {
 
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private String externalId = null;
-
-
-
-    private Double abundance = null;
+    private String externalId;
+    private Double abundance;
 
     public ProteinKA(String id, boolean override, KnowledgeBase knowledgeBase) throws PreconditionsException {
         super(id, override, knowledgeBase);
+        this.externalId = null;
+        this.abundance = null;
     }
 
     public ProteinKA(String id, boolean override, KnowledgeBase knowledgeBase, String name) throws PreconditionsException {
         super(id, override, knowledgeBase, name);
+        this.externalId = null;
+        this.abundance = null;
     }
 
     public void initializeExternalId(String externalId) throws PreconditionsException {
@@ -50,7 +51,7 @@ public class ProteinKA extends SpeciesKA {
         );
         if (!this.id.equals(p.getId())) {
             throw new IdMismatchException(
-                    "Species has different ID ("+p.getId()+") from atom ("+this.id+")"
+                    "Protein has different ID ("+p.getId()+") from atom ("+this.id+")"
             );
         }
 
@@ -70,26 +71,26 @@ public class ProteinKA extends SpeciesKA {
         );
 
         logger.info(
-                "Searching the model for Species " + this.id
+                "Searching the model for Protein " + this.id
         );
 
         BiologicalEntity be = m.getBioEntityById(this.id);
 
-        if (be != null && !(be instanceof Species)) {
+        if (be != null && !(be instanceof Protein)) {
             throw new PreconditionsException(
-                    "The model comprises a BiologicalEntity with same ID that is not a Species"
+                    "The model comprises a BiologicalEntity with same ID that is not a Protein"
             );
         }
 
         Protein p;
         if (be == null) {
             logger.info(
-                    "Species not found"
+                    "Protein not found"
             );
             p = new Protein(this.getId(), m);
         } else {
             logger.info(
-                    "Species found"
+                    "Protein found"
             );
             p = (Protein) be;
         }
@@ -102,6 +103,4 @@ public class ProteinKA extends SpeciesKA {
         this.handleProteinAbundances(p);
         p.addExternalId(this.externalId);
     }
-
-
 }
