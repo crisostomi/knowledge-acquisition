@@ -120,7 +120,15 @@ public class Model implements Serializable {
                         HashSet<String> intersection = new HashSet<>(p1.getExternalIds());
                         intersection.retainAll(p2.getExternalIds());
                         if (! intersection.isEmpty() ){
-                            p1.merge(p2);
+                            try {
+                                if (p1.getLinkReactantSet().isEmpty() && p1.getLinkProductSet().isEmpty() && p1.getLinkModifierSet().isEmpty()) {
+                                    p2.merge(p1);
+                                    LinkComprises.removeLink(link_1);
+                                } else {
+                                    p1.merge(p2);
+                                    LinkComprises.removeLink(link_2);
+                                }
+                            } catch (PreconditionsException e) {}
                         }
                     }
                 }
