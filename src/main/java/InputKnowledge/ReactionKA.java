@@ -13,9 +13,9 @@ public class ReactionKA extends KnowledgeAtom {
 
     private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private RealInterval rate = null;
+    private Map<RateParameter, RealInterval> rateParameters = new HashMap<>();
     private boolean reversible = false;
-    private RealInterval rateInv = null;
+    private Map<RateParameter, RealInterval> rateInvParameters = new HashMap<>();
     private String compartmentId = null;
     private Set<SpeciesReference> reactants = new HashSet<>();
     private Set<SpeciesReference> products = new HashSet<>();
@@ -32,12 +32,12 @@ public class ReactionKA extends KnowledgeAtom {
         super(id, override, knowledgeBase, name);
     }
 
-    public void initializeRate(RealInterval rate) throws PreconditionsException {
-        if (this.rate != null || rate == null) throw new PreconditionsException();
-        this.rate = rate;
+    public void initializeRateParam(RateParameter rateParam, RealInterval rate) throws PreconditionsException {
+        if (this.rateParameters.get(rateParam) != null || rate == null) throw new PreconditionsException();
+        rateParameters.put(rateParam, rate);
 
         logger.info(
-                "ReactionKA:" + this.id + ",\n\tset rate = " + this.rate
+                "ReactionKA:" + this.id + ",\n\tset rateParam"+rateParam+"= " + rate
         );
     }
 
@@ -49,13 +49,12 @@ public class ReactionKA extends KnowledgeAtom {
         return this.reversible;
     }
 
-    public void initializeRateInv(RealInterval rateInv) throws PreconditionsException {
-        if (this.rateInv != null || rateInv == null) throw new PreconditionsException();
-        this.rateInv = rateInv;
-        this.reversible = true;
+    public void initializeRateInvParam(RateParameter rateParam, RealInterval rate) throws PreconditionsException {
+        if (this.rateInvParameters.get(rateParam) != null || rate == null) throw new PreconditionsException();
+        rateInvParameters.put(rateParam, rate);
 
         logger.info(
-                "ReactionKA:" + this.id + ", \n\tset rateInv = " + this.rateInv + ", set reversible = " + reversible
+                "ReactionKA:" + this.id + ",\n\tset rateParam"+rateParam+"= " + rate
         );
     }
 
@@ -201,35 +200,46 @@ public class ReactionKA extends KnowledgeAtom {
                     "Reaction has different ID ("+r.getId()+") from atom ("+this.id+")"
             );
         }
+        for (Map.Entry<RateParameter, RealInterval> entry : this.rateParameters.entrySet()){
+            RateParameter rateParameterKA = entry.getKey();
+            RealInterval realIntervalKA = entry.getValue();
+            RealInterval realIntervalReaction = r.getRate(rateParameterKA);
+            logger.info("Reaction rateParam"+rateParameterKA+" = "
+                    + realIntervalReaction + ", atom rate = "
+                    + realIntervalKA);
 
-        logger.info("Reaction rate = " + r.getRate() + ", atom rate = " + this.rate);
-        if (this.rate != null) {
-            RealInterval newRate = r.getRate().intersect(this.rate);
-            r.setRate(newRate);
+            RealInterval newRate = realIntervalKA.intersect(realIntervalReaction);
+            r.setRate(rateParameterKA, newRate);
+
+            logger.info("New value = " + r.getRate(rateParameterKA));
         }
 
-        logger.info("New value = " + r.getRate());
     }
 
     private void handleRevReactionRate(Reaction r) throws PreconditionsException {
         logger.info(
-                "Handling reaction rateInv..."
+                "Handling reaction rate..."
         );
         if (!this.id.equals(r.getId())) {
             throw new IdMismatchException(
-                    "ReversibleReaction has different ID ("+r.getId()+") from atom ("+this.id+")"
+                    "Reaction has different ID ("+r.getId()+") from atom ("+this.id+")"
             );
         }
+        for (Map.Entry<RateParameter, RealInterval> entry : this.rateInvParameters.entrySet()) {
+            RateParameter rateParameterKA = entry.getKey();
+            RealInterval realIntervalKA = entry.getValue();
+            RealInterval realIntervalReaction = r.getRate(rateParameterKA);
+            logger.info("Reaction rateParam" + rateParameterKA + " = "
+                    + realIntervalReaction + ", atom rate = "
+                    + realIntervalKA);
 
-        logger.info("Reaction rateInv = " + r.getRateInv() + ", atom rateInv = " + this.rateInv);
-        if (this.rateInv != null) {
-            RealInterval newRateInv = r.getRateInv().intersect(this.rateInv);
-            r.setRateInv(newRateInv);
+            RealInterval newRate = realIntervalKA.intersect(realIntervalReaction);
+            r.setRate(rateParameterKA, newRate);
+
+            logger.info("New value = " + r.getRate(rateParameterKA));
         }
-
-        logger.info("New value = " + r.getRateInv());
-
     }
+
 
 
     private void handleReactionReactants(Reaction r) throws PreconditionsException {
@@ -407,5 +417,9 @@ public class ReactionKA extends KnowledgeAtom {
 
             r.addModifier(s, type);
         }
+    }
+
+    public void addRateParameter(RateParameter rateParam, RealInterval realInterval) {
+        this.rateParameters.put(rateParam, realInterval);
     }
 }

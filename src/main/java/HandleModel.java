@@ -1,4 +1,5 @@
 import DataTypes.PreconditionsException;
+import Miner.SabioMiner;
 import Model.*;
 import InputKnowledge.*;
 import Parser.KBParser;
@@ -11,7 +12,6 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HandleModel {
@@ -30,9 +30,20 @@ public class HandleModel {
         for (String kbPath : kbPaths) {
             KBParser parser = new Parser();
             KnowledgeBase parsedKB = parser.parse(kbPath);
-
             KBs.add(parsedKB);
         }
+        Set<String> reactionIds = new HashSet<>();
+        for (KnowledgeBase kb: KBs) {
+            for (LinkTypeContains linkContains: kb.getLinkContainsSet()){
+                KnowledgeAtom ka = linkContains.getKnowledgeAtom();
+                if (ka instanceof ReactionKA){
+                    reactionIds.add(ka.getId());
+                }
+            }
+        }
+        SabioMiner sabioMiner = new SabioMiner();
+        KnowledgeBase sabioKB = sabioMiner.mine(reactionIds);
+        KBs.add(sabioKB);
         LOGGER.info("Creating model");
         Model model = ConsolidateKB.consolidateKB(KBs);
         LOGGER.info("Model succesfully created");

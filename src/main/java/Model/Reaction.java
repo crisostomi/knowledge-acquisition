@@ -2,8 +2,11 @@ package Model;
 
 import DataTypes.ModifierType;
 import DataTypes.PreconditionsException;
+import DataTypes.RateParameter;
 import DataTypes.RealInterval;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,8 +15,8 @@ public class Reaction extends BiologicalEntity {
 
     private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 
-    private RealInterval rate;
-    private RealInterval rateInv;
+    private Map<RateParameter, RealInterval> rateParameters = new HashMap<>();
+    private Map<RateParameter, RealInterval> rateInvParameters = new HashMap<>();
     private boolean reversible = false;
 
     private Set<LinkTypeModifier> linkTypeModifierSet = new HashSet<>();
@@ -24,12 +27,16 @@ public class Reaction extends BiologicalEntity {
 
     public Reaction(String id, Model m) throws PreconditionsException {
         super(id, m);
-        this.rate = new RealInterval(0, Double.MAX_VALUE);
+        for(RateParameter rateParam: RateParameter.values()){
+            rateParameters.put(rateParam, new RealInterval(0, Double.MAX_VALUE));
+        }
     }
 
     public Reaction(String id, Model m, boolean reversible) throws PreconditionsException {
         super(id, m);
-        this.rate = new RealInterval(0, Double.MAX_VALUE);
+        for(RateParameter rateParam: RateParameter.values()){
+            rateParameters.put(rateParam, new RealInterval(0, Double.MAX_VALUE));
+        }
         this.reversible = reversible;
     }
 
@@ -45,18 +52,22 @@ public class Reaction extends BiologicalEntity {
 
     public void overrideRate(Reaction other) throws PreconditionsException{
         if (this.getId().equals(other.getId())) {
-            this.setRate(other.rate);
+            this.setRateParameters(other.getRateParameters());
         }
         else{
             throw new PreconditionsException("The overrider and the overridee have different ids.");
         }
     }
 
+    public boolean isComplex(){
+        return !linkTypeModifierSet.isEmpty();
+    }
+
     @Override
     public Reaction cloneIntoModel(Model model) throws PreconditionsException {
         Reaction reaction = new Reaction(this.getId(), model);
         reaction.setName(this.getName());
-        reaction.setRate(this.getRate());
+        reaction.setRateParameters(this.getRateParameters());
         LinkComprises.insertLink(model, reaction);
 
         BiologicalEntity comp = model.getBioEntityById(reaction.getLinkReactionCompartment().getCompartment().getId());
@@ -216,29 +227,38 @@ public class Reaction extends BiologicalEntity {
 
 // getters and setters
 
-    public RealInterval getRate() {
-        return rate;
+    public RealInterval getRate(RateParameter rateParam) {
+        return this.rateParameters.get(rateParam);
     }
 
-    public void setRate(RealInterval rate) {
-        this.rate = rate;
+    public void setRate(RateParameter rateParam, RealInterval rate) {
+
+        this.rateParameters.put(rateParam, rate);
     }
 
     public boolean isReversible() {
         return this.reversible;
     }
 
-    public RealInterval getRateInv() throws PreconditionsException {
-        if (this.reversible) return rateInv;
+    public RealInterval getRateInv(RateParameter rateParam) throws PreconditionsException {
+        if (this.reversible) return this.rateParameters.get(rateParam);
         else throw new PreconditionsException(
                 "Reaction " + this.id + " is not reversible"
         );
     }
 
-    public void setRateInv(RealInterval rateInv) throws PreconditionsException{
-        if (this.reversible) this.rateInv = rateInv;
+    public void setRateInv(RateParameter rateParam, RealInterval rate) throws PreconditionsException{
+        if (this.reversible) this.rateParameters.put(rateParam, rate);
         else throw new PreconditionsException(
                 "Reaction " + this.getId() + " is not reversible"
         );
+    }
+
+    public Map<RateParameter, RealInterval> getRateParameters() {
+        return rateParameters;
+    }
+
+    public void setRateParameters(Map<RateParameter, RealInterval> rateParameters) {
+        this.rateParameters = rateParameters;
     }
 }

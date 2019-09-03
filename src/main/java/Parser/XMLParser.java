@@ -1,6 +1,7 @@
 package Parser;
 
 import DataTypes.PreconditionsException;
+import DataTypes.RateParameter;
 import DataTypes.RealInterval;
 import InputKnowledge.*;
 
@@ -157,7 +158,7 @@ public class XMLParser implements KBParser {
                     maxRate = Double.MAX_VALUE;
                 }
 
-                ka.initializeRate(new RealInterval(minRate, maxRate));
+                ka.initializeRateParam(RateParameter.K, new RealInterval(minRate, maxRate));
 
                 if (element.getAttribute("reversible").equals("true")) {
                     ka.setReversible();
@@ -173,7 +174,7 @@ public class XMLParser implements KBParser {
                         maxRateInv = Double.MAX_VALUE;
                     }
 
-                    ka.initializeRateInv(new RealInterval(minRateInv, maxRateInv));
+                    ka.initializeRateInvParam(RateParameter.K, new RealInterval(minRateInv, maxRateInv));
                 }
             }
         }
