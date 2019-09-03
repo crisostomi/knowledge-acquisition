@@ -2,10 +2,7 @@ package Parser;
 
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
-import InputKnowledge.CompartmentKA;
-import InputKnowledge.KnowledgeBase;
-import InputKnowledge.ReactionKA;
-import InputKnowledge.SpeciesKA;
+import InputKnowledge.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -17,6 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 public class XMLParser implements KBParser {
 
@@ -78,42 +76,53 @@ public class XMLParser implements KBParser {
 
     private void parseSpecies(Document doc, KnowledgeBase kb)
                 throws PreconditionsException{
-        NodeList nodeList = doc.getElementsByTagName("species");
 
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            Node node = nodeList.item(i);
+        String[] elements = {"species", "protein"};
+        for (String elementName: elements) {
+            NodeList nodeList = doc.getElementsByTagName(elementName);
 
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element) node;
-                String id = element.getAttribute("id");
-                String name = element.getAttribute("name");
-                boolean override =
-                        (element.getAttribute("override").isEmpty()) ?
-                                false : Boolean.valueOf(element.getAttribute("override"));
-                Double minInitialAmount =
-                        element.getAttribute("minInitialAmount").isEmpty() ?
-                                null : Double.valueOf(element.getAttribute("minInitialAmount"));
-                Double maxInitialAmount =
-                        element.getAttribute("maxInitialAmount").isEmpty() ?
-                                null : Double.valueOf(element.getAttribute("maxInitialAmount"));
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    String id = element.getAttribute("id");
+                    String name = element.getAttribute("name");
+                    boolean override =
+                            (element.getAttribute("override").isEmpty()) ?
+                                    false : Boolean.valueOf(element.getAttribute("override"));
+                    Double minInitialAmount =
+                            element.getAttribute("minInitialAmount").isEmpty() ?
+                                    null : Double.valueOf(element.getAttribute("minInitialAmount"));
+                    Double maxInitialAmount =
+                            element.getAttribute("maxInitialAmount").isEmpty() ?
+                                    null : Double.valueOf(element.getAttribute("maxInitialAmount"));
 
 
-                SpeciesKA ka;
-                if (name.equals("")) {
-                    ka = new SpeciesKA(id, override, kb);
-                } else {
-                    ka = new SpeciesKA(id, override, kb, name);
+                    SpeciesKA ka;
+                    if (elementName.equals("protein")) {
+                        if (name.equals("")) {
+                            ka = new ProteinKA(id, override, kb);
+                        } else {
+                            ka = new ProteinKA(id, override, kb, name);
+                        }
+                    } else {
+                        if (name.equals("")) {
+                            ka = new SpeciesKA(id, override, kb);
+                        } else {
+                            ka = new SpeciesKA(id, override, kb, name);
+                        }
+                    }
+
+                    if (minInitialAmount == null) {
+                        minInitialAmount = Double.valueOf(0);
+                    }
+                    if (maxInitialAmount == null) {
+                        maxInitialAmount = Double.MAX_VALUE;
+                    }
+
+                    ka.initializeInitialAmount(new RealInterval(minInitialAmount, maxInitialAmount));
                 }
-
-                if (minInitialAmount == null) {
-                    minInitialAmount = Double.valueOf(0);
-                }
-                if (maxInitialAmount == null) {
-                    maxInitialAmount = Double.MAX_VALUE;
-                }
-
-                ka.initializeInitialAmount(new RealInterval(minInitialAmount, maxInitialAmount));
-
             }
         }
     }

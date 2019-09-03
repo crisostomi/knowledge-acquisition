@@ -88,7 +88,8 @@ public class ConfigBuilder {
      * @return a line of XML with the definition of the constraint for the species
      */
     private Element buildSpeciesElement(Species species) {
-        Element element = this.config.createElement("species");
+        String elementName = (species instanceof Protein)? "protein" : "species";
+        Element element = this.config.createElement(elementName);
         element.setAttribute("id", species.getId());
         if (species.getName() != null) element.setAttribute("name", species.getName());
 

@@ -120,14 +120,6 @@ public class Model implements Serializable {
                         HashSet<String> intersection = new HashSet<>(p1.getExternalIds());
                         intersection.retainAll(p2.getExternalIds());
                         if (! intersection.isEmpty() ){
-                            /*
-                            if (p_1.Reactant = {} and p_1.Product = {} and p_1.Modifier and {}) then
-										p_2.merge(p_1)
-										remove link <p_1, this> in comprises
-									else
-										p_1.merge(p_2)
-										remove link <p_2, this> in comprises
-                             */
                             try {
                                 if (p1.getLinkReactantSet().isEmpty() && p1.getLinkProductSet().isEmpty() && p1.getLinkModifierSet().isEmpty()) {
                                     p2.merge(p1);

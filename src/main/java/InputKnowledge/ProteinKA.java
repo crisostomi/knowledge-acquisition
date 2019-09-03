@@ -101,6 +101,8 @@ public class ProteinKA extends SpeciesKA {
         this.handleBioEntityName(p);
         this.addAdditionalKnowledge(p);
         this.handleProteinAbundances(p);
-        p.addExternalId(this.externalId);
+        if (this.externalId != null) {
+            p.addExternalId(this.externalId);
+        }
     }
 }
