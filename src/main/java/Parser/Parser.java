@@ -21,7 +21,12 @@ public class Parser implements KBParser {
         if (kbPath.endsWith(".xml")) {
             XMLParser xmlParser = new XMLParser();
             return xmlParser.parse(kbPath);
-        } else if (kbPath.endsWith(".sbml")) {
+        }
+        else if ( kbPath.endsWith(".sabio.sbml")){
+            SabioParser sabioParser = new SabioParser();
+            return sabioParser.parse(kbPath);
+        }
+        else if (kbPath.endsWith(".sbml")) {
             SBMLParser sbmlParser = new SBMLParser();
             return sbmlParser.parse(kbPath);
         } else if (kbPath.endsWith(".tsv")){
