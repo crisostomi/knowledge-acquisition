@@ -139,9 +139,9 @@ public class SBMLParser implements KBParser {
 
         if (id.contains("catalyst")) {
             return ModifierType.CATALYST;
-        } else if (id.contains("positive_regulator")) {
+        } else if (id.contains("positiveregulator")) {
             return ModifierType.POS_REG;
-        } else if (id.contains("negative_regulator")) {
+        } else if (id.contains("negativeregulator")) {
             return ModifierType.NEG_REG;
         } else return null;
     }

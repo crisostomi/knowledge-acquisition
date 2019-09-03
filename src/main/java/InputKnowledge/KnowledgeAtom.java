@@ -111,21 +111,24 @@ public abstract class KnowledgeAtom {
         logger.info(
                 "Handling entity name..."
         );
-        if (!this.id.equals(be.getId())) throw new IdMismatchException();
-        if (be.getName() != null && !be.getName().equals(this.getName())) {
-            throw new NameMismatchException();
+        if (this.getName() != null){
+            if (!this.id.equals(be.getId())) throw new IdMismatchException();
+            if (be.getName() != null && !be.getName().equals(this.getName())) {
+                throw new NameMismatchException();
+            }
+
+            if (this.getName() != null) {
+                be.setName(this.getName());
+                logger.info(
+                        "Name set"
+                );
+            } else {
+                logger.info(
+                        "Atom has no information about name"
+                );
+            }
         }
 
-        if (this.getName() != null) {
-            be.setName(this.getName());
-            logger.info(
-                    "Name set"
-            );
-        } else {
-            logger.info(
-                    "Atom has no information about name"
-            );
-        }
     }
 
     public void insertLinkContains(LinkContains pass, LinkTypeContains l)

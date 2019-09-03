@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static Util.Utils.containsIgnoreCase;
+
 
 public class SabioMiner implements Miner {
     private static final String sabioUrl = "http://sabiork.h-its.org/sabioRestWebServices/searchKineticLaws/sbml?";
@@ -35,11 +37,11 @@ public class SabioMiner implements Miner {
                 Map<String, Double> params = parseParameters(tree, kb);
                 ReactionKA reactionKA = new ReactionKA(ka_id, false, kb);
                 for (Map.Entry<String, Double> entry : params.entrySet()) {
-                    if (entry.getKey().contains("Km")){
+                    if (containsIgnoreCase(entry.getKey(), "Km")){
                         RealInterval realInt = new RealInterval(entry.getValue(), entry.getValue());
                         reactionKA.addRateParameter(RateParameter.Km,realInt);
                     }
-                    else if (entry.getKey().contains("Kcat")){
+                    else if (containsIgnoreCase(entry.getKey(), "Kcat")){
                         RealInterval realInt = new RealInterval(entry.getValue(), entry.getValue());
                         reactionKA.addRateParameter(RateParameter.Kcat, realInt);
                     }
@@ -48,6 +50,8 @@ public class SabioMiner implements Miner {
         }
         return kb;
     }
+
+
 
 
     public SBase request(String reactionId) throws IOException, XMLStreamException {
@@ -78,7 +82,6 @@ public class SabioMiner implements Miner {
                 content.append(System.lineSeparator());
             }
         }
-        System.out.println(content.toString());
         if(content.toString().equals(EMPTY_QUERY_MESSAGE)){
            return null;
         }
