@@ -61,30 +61,7 @@ public class Model implements Serializable {
         }
     }
 
-    // Comprises association (without attributes), of which BiologicalEntity and Model are both responsible. (n to 1)
 
-    public void insertLinkComprises(LinkComprises pass, LinkTypeComprises l)
-            throws PreconditionsException {
-        if (pass == null)
-            throw new PreconditionsException(
-                    "It is necessary to show an instance of LinkComprises to invoke this method");
-        linkComprisesSet.add(l);
-        LOGGER.info("Added bidirectional link: "+l.getBiologicalEntity().getId()+" to model");
-
-    }
-
-    public void removeLinkComprises(LinkComprises pass, LinkTypeComprises l)
-            throws PreconditionsException {
-        if (pass == null)
-            throw new PreconditionsException(
-                    "It is necessary to show an instance of LinkComprises to invoke this method");
-        linkComprisesSet.remove(l);
-        LOGGER.info("Removed bidirectional link: "+l.getBiologicalEntity().getId()+" to "+l.getModel());
-    }
-
-    public Set<LinkTypeComprises> getLinkComprisesSet() {
-        return (Set<LinkTypeComprises>)((HashSet<LinkTypeComprises>)linkComprisesSet).clone();
-    }
 
     public void dump(String path) throws IOException {
         XStream xStream = new XStream();
@@ -102,10 +79,6 @@ public class Model implements Serializable {
         Model deserializedModel = (Model) xStream.fromXML(deserializedXML);
 
         return deserializedModel;
-    }
-
-    public CellType getCellType() {
-        return cellType;
     }
 
     public void consolidateProteins(){
@@ -136,6 +109,32 @@ public class Model implements Serializable {
         }
     }
 
+    // Comprises association (without attributes), of which BiologicalEntity and Model are both responsible. (n to 1)
+
+    public void insertLinkComprises(LinkComprises pass, LinkTypeComprises l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkComprises to invoke this method");
+        linkComprisesSet.add(l);
+        LOGGER.info("Added bidirectional link: "+l.getBiologicalEntity().getId()+" to model");
+
+    }
+
+    public void removeLinkComprises(LinkComprises pass, LinkTypeComprises l)
+            throws PreconditionsException {
+        if (pass == null)
+            throw new PreconditionsException(
+                    "It is necessary to show an instance of LinkComprises to invoke this method");
+        linkComprisesSet.remove(l);
+        LOGGER.info("Removed bidirectional link: "+l.getBiologicalEntity().getId()+" to "+l.getModel());
+    }
+
+    public Set<LinkTypeComprises> getLinkComprisesSet() {
+        return (Set<LinkTypeComprises>)((HashSet<LinkTypeComprises>)linkComprisesSet).clone();
+    }
+
+    // Getters and setters
 
     public void removeCellType() {
         this.cellType = null;
@@ -145,4 +144,51 @@ public class Model implements Serializable {
         if (this.cellType != null) throw new PreconditionsException();
         this.cellType = cellType;
     }
+
+    public CellType getCellType() {
+        return cellType;
+    }
+
+    public Set<BiologicalEntity> getBiologicalEntities(){
+        Set<BiologicalEntity> biologicalEntities = new HashSet<BiologicalEntity>();
+        for ( LinkTypeComprises linkComprises: this.linkComprisesSet ){
+            biologicalEntities.add(linkComprises.getBiologicalEntity());
+        }
+        return biologicalEntities;
+    }
+
+    public Set<Reaction> getReactions(){
+        Set<Reaction> reactions = new HashSet<>();
+        for (BiologicalEntity bioEntity: this.getBiologicalEntities()){
+            if (bioEntity instanceof Reaction){
+                Reaction reaction = (Reaction) bioEntity;
+                reactions.add(reaction);
+            }
+        }
+        return reactions;
+    }
+
+    public Set<Compartment> getCompartments(){
+        Set<Compartment> compartments = new HashSet<>();
+        for (BiologicalEntity bioEntity: this.getBiologicalEntities()){
+            if (bioEntity instanceof Compartment){
+                Compartment compartment = (Compartment) bioEntity;
+                compartments.add(compartment);
+            }
+        }
+        return compartments;
+    }
+
+    public Set<Species> getSpecies(){
+        Set<Species> speciesSet = new HashSet<>();
+        for (BiologicalEntity bioEntity: this.getBiologicalEntities()){
+            if (bioEntity instanceof Species){
+                Species species = (Species) bioEntity;
+                speciesSet.add(species);
+            }
+        }
+        return speciesSet;
+    }
+
+
 }

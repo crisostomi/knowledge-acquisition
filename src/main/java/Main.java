@@ -1,32 +1,18 @@
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
-
-import DataTypes.PreconditionsException;
-import DataTypes.RateParameter;
-import Miner.SabioMiner;
 import Model.Model;
-import Model.Reaction;
-import Parser.ConfigBuilder;
 import Util.CustomLogger;
-import Model.LinkTypeComprises;
-import Model.BiologicalEntity;
-import Model.Protein;
-import com.thoughtworks.xstream.XStream;
 
-import javax.xml.stream.XMLStreamException;
+
 
 public class Main {
     public static void main(String[] args) {
+        String username = System.getProperty("user.name");
+        String projectFolder = "/home/"+username+"/Dropbox/Tesisti/software";
 
-        String projectFolder = "/home/don/Dropbox/Tesisti/software";
-        String testFolder = projectFolder + "/test-cases/test-case-urea";
+        String testFolder = projectFolder + "/test-cases/urea";
 
-        String kbPath = testFolder + "/in/urea.sbml";
+        String kbPath = testFolder + "/in/pathway.sbml";
 //        String xmlPath = testFolder + "/in/quantitative.xml";
         String tsvPath = testFolder + "/in/abundances.tsv";
 
