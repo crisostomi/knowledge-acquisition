@@ -261,4 +261,25 @@ public class Reaction extends BiologicalEntity {
     public void setRateParameters(Map<RateParameter, RealInterval> rateParameters) {
         this.rateParameters = rateParameters;
     }
+
+    public Set<Species> getInvolvedSpecies(){
+        Set<Species> involvedSpecies = new HashSet<>();
+        for (LinkTypeReactant linkReactant : this.getReactants()) {
+            Species s = linkReactant.getSpecies();
+            involvedSpecies.add(s);
+        }
+
+        for (LinkTypeModifier linkModifier : this.getModifiers()) {
+            Species s = linkModifier.getSpecies();
+            involvedSpecies.add(s);
+        }
+
+        if (this.isReversible()) {
+            for (LinkTypeProduct linkProduct : this.getProducts()) {
+                Species s = linkProduct.getSpecies();
+                involvedSpecies.add(s);
+            }
+        }
+        return involvedSpecies;
+    }
 }
