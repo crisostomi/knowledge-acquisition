@@ -2,6 +2,9 @@ package InputKnowledge;
 
 import DataTypes.*;
 import Model.*;
+import Model.Link.LinkModifier;
+import Model.Link.LinkProduct;
+import Model.Link.LinkReactant;
 import Model.Link.LinkReactionCompartment;
 import Model.LinkType.LinkTypeReactionCompartment;
 
@@ -285,7 +288,7 @@ public class ReactionKA extends KnowledgeAtom {
             Species s = entry.getKey();
             Integer stoich = entry.getValue();
 
-            r.addReactant(s, stoich);
+            LinkReactant.insertLink(s, r, stoich);
         }
     }
 
@@ -299,7 +302,8 @@ public class ReactionKA extends KnowledgeAtom {
 
             Species s = new Species(s_id, r.getLinkComprises().getModel());
 
-            r.addReactant(s, stoich);
+            LinkReactant.insertLink(s, r, stoich);
+
         }
     }
 
@@ -345,7 +349,8 @@ public class ReactionKA extends KnowledgeAtom {
             Species s = entry.getKey();
             Integer stoich = entry.getValue();
 
-            r.addProduct(s, stoich);
+            LinkProduct.insertLink(s, r, stoich);
+
         }
     }
 
@@ -359,7 +364,7 @@ public class ReactionKA extends KnowledgeAtom {
 
             Species s = new Species(s_id, r.getLinkComprises().getModel());
 
-            r.addProduct(s, stoich);
+            LinkProduct.insertLink(s, r, stoich);
         }
     }
 
@@ -403,7 +408,7 @@ public class ReactionKA extends KnowledgeAtom {
             Species s = entry.getKey();
             ModifierType type = entry.getValue();
 
-            r.addModifier(s, type);
+            LinkModifier.insertLink(s, r, type);
         }
     }
 
@@ -417,7 +422,7 @@ public class ReactionKA extends KnowledgeAtom {
 
             Species s = new Species(s_id, r.getLinkComprises().getModel());
 
-            r.addModifier(s, type);
+            LinkModifier.insertLink(s, r, type);
         }
     }
 

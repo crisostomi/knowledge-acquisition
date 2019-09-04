@@ -62,24 +62,14 @@ public class Model implements Serializable {
         }
     }
 
-    public void consolidateProteins(){
+    public void consolidateProteins() throws PreconditionsException {
         for (Protein protein1: this.getProteins()){
             for (Protein protein2: this.getProteins()){
                 if (!(protein1.getId().equals(protein2.getId()))){
                     HashSet<String> intersection = new HashSet<>(protein1.getExternalIds());
                     intersection.retainAll(protein2.getExternalIds());
                     if (! intersection.isEmpty() ){
-                        try {
-                            if (protein1.getLinkReactantSet().isEmpty() && protein1.getLinkProductSet().isEmpty() && protein1.getLinkModifierSet().isEmpty()) {
-                                protein2.merge(protein1);
-                                LinkTypeComprises link1 = new LinkTypeComprises(this, protein1);
-                                LinkComprises.removeLink(link1);
-                            } else {
-                                protein1.merge(protein2);
-                                LinkTypeComprises link2 = new LinkTypeComprises(this, protein2);
-                                LinkComprises.removeLink(link2);
-                            }
-                        } catch (PreconditionsException e) {}
+                        protein1.merge(protein2);
                     }
                 }
             }

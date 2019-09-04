@@ -76,66 +76,36 @@ public class Reaction extends BiologicalEntity {
         }
         LinkReactionCompartment.insertLink(reaction, (Compartment) comp);
 
-        for ( LinkTypeReactant linkReactant: this.getReactants()){
+        for ( LinkTypeReactant linkReactant: this.getLinkReactantSet()){
             Species reactant = linkReactant.getSpecies();
             BiologicalEntity destinationModelSpecies = model.getBioEntityById(this.getId());
             // if not found:
             if ( destinationModelSpecies == null || !(destinationModelSpecies instanceof Reaction) ){
                 destinationModelSpecies = reactant.cloneIntoModel(model);
             }
-            reaction.addReactant( (Species)destinationModelSpecies, linkReactant.getStoichiometry());
+            LinkReactant.insertLink((Species) destinationModelSpecies, this, linkReactant.getStoichiometry());
         }
 
-        for ( LinkTypeProduct linkProduct: this.getProducts()){
+        for ( LinkTypeProduct linkProduct: this.getLinkProductSet()){
             Species product = linkProduct.getSpecies();
             BiologicalEntity destinationModelSpecies = model.getBioEntityById(this.getId());
             // if not found:
             if ( destinationModelSpecies == null || !(destinationModelSpecies instanceof Reaction) ){
                 destinationModelSpecies = product.cloneIntoModel(model);
             }
-            reaction.addProduct( (Species)destinationModelSpecies, linkProduct.getStoichiometry());
+            LinkProduct.insertLink((Species) destinationModelSpecies, this, linkProduct.getStoichiometry());
         }
 
-        for ( LinkTypeModifier linkModifier: this.getModifiers()){
+        for ( LinkTypeModifier linkModifier: this.getLinkModifierSet()){
             Species modifier = linkModifier.getSpecies();
             BiologicalEntity destinationModelSpecies = model.getBioEntityById(this.getId());
             // if not found:
             if ( destinationModelSpecies == null || !(destinationModelSpecies instanceof Reaction) ){
                 destinationModelSpecies = modifier.cloneIntoModel(model);
             }
-            reaction.addModifier( (Species)destinationModelSpecies, linkModifier.getModifierType());
+            LinkModifier.insertLink((Species) destinationModelSpecies, this, linkModifier.getModifierType());
         }
         return reaction;
-    }
-
-// Reactant association, of which Reaction is the only responsible, n to n
-
-    public void addReactant(Species species, int stoichiometry) throws PreconditionsException{
-        LinkReactant.insertLink(species, this, stoichiometry);
-    }
-
-    public Set<LinkTypeReactant> getReactants() {
-        return getLinkReactantSet();
-    }
-
-// Modifier association, of which Reaction is the only responsible, n to n
-
-    public void addModifier(Species species, ModifierType type) throws PreconditionsException {
-        LinkModifier.insertLink(species, this, type);
-    }
-
-    public Set<LinkTypeModifier> getModifiers() {
-        return getLinkModifierSet();
-    }
-
-// Product association, of which Reaction is the only responsible, n to n
-
-    public void addProduct(Species species, int stoichiometry) throws PreconditionsException{
-        LinkProduct.insertLink(species, this, stoichiometry);
-    }
-
-    public Set<LinkTypeProduct> getProducts() {
-        return getLinkProductSet();
     }
 
 // ReactionCompartment association, of which Compartment and Reaction are both responsibles, 0/1 to n
@@ -182,6 +152,14 @@ public class Reaction extends BiologicalEntity {
         return (Set<LinkTypeReactant>)((HashSet<LinkTypeReactant>)linkTypeReactantSet).clone();
     }
 
+    public Set<Species> getReactants(){
+        Set<Species> reactants = new HashSet<>();
+        for (LinkTypeReactant linkTypeReactant: this.linkTypeReactantSet){
+            reactants.add(linkTypeReactant.getSpecies());
+        }
+        return reactants;
+    }
+
 // Product association, of which Reaction and Species are both responsibles
 
     public void insertLinkProduct(LinkProduct pass, LinkTypeProduct l)
@@ -204,6 +182,14 @@ public class Reaction extends BiologicalEntity {
         return (Set<LinkTypeProduct>)((HashSet<LinkTypeProduct>)linkTypeProductSet).clone();
     }
 
+    public Set<Species> getProducts(){
+        Set<Species> products = new HashSet<>();
+        for (LinkTypeProduct linkTypeProduct: this.linkTypeProductSet){
+            products.add(linkTypeProduct.getSpecies());
+        }
+        return products;
+    }
+
 // Modifier association, of which Reaction and Species are both responsibles
 
     public void removeLinkModifier(LinkModifier pass, LinkTypeModifier l)
@@ -224,6 +210,14 @@ public class Reaction extends BiologicalEntity {
 
     public Set<LinkTypeModifier> getLinkModifierSet() {
         return (Set<LinkTypeModifier>)((HashSet<LinkTypeModifier>)linkTypeModifierSet).clone();
+    }
+
+    public Set<Species> getModifiers(){
+        Set<Species> modifiers = new HashSet<>();
+        for (LinkTypeModifier linkTypeModifier: this.linkTypeModifierSet){
+            modifiers.add(linkTypeModifier.getSpecies());
+        }
+        return modifiers;
     }
 
 // getters and setters
@@ -265,18 +259,18 @@ public class Reaction extends BiologicalEntity {
 
     public Set<Species> getInvolvedSpecies(){
         Set<Species> involvedSpecies = new HashSet<>();
-        for (LinkTypeReactant linkReactant : this.getReactants()) {
+        for (LinkTypeReactant linkReactant : this.getLinkReactantSet()) {
             Species s = linkReactant.getSpecies();
             involvedSpecies.add(s);
         }
 
-        for (LinkTypeModifier linkModifier : this.getModifiers()) {
+        for (LinkTypeModifier linkModifier : this.getLinkModifierSet()) {
             Species s = linkModifier.getSpecies();
             involvedSpecies.add(s);
         }
 
         if (this.isReversible()) {
-            for (LinkTypeProduct linkProduct : this.getProducts()) {
+            for (LinkTypeProduct linkProduct : this.getLinkProductSet()) {
                 Species s = linkProduct.getSpecies();
                 involvedSpecies.add(s);
             }
