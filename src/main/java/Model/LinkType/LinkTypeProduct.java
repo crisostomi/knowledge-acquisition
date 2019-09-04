@@ -1,4 +1,7 @@
-package Model;
+package Model.LinkType;
+
+import Model.Reaction;
+import Model.Species;
 
 import java.io.Serializable;
 import java.util.Objects;

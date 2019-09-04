@@ -1,6 +1,8 @@
 package Model;
 
 import DataTypes.PreconditionsException;
+import Model.Link.LinkComprises;
+import Model.LinkType.LinkTypeComprises;
 import com.thoughtworks.xstream.XStream;
 
 import java.io.File;
@@ -12,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -61,48 +62,24 @@ public class Model implements Serializable {
         }
     }
 
-
-
-    public void dump(String path) throws IOException {
-        XStream xStream = new XStream();
-        String xml = xStream.toXML(this);
-        File f = new File(path);
-        FileWriter fr = new FileWriter(f);
-        fr.write(xml);
-        fr.close();
-    }
-
-    public static Model load(String path) throws IOException {
-        Path filePath = Paths.get(path);
-        String deserializedXML = Files.readString(filePath, StandardCharsets.US_ASCII);
-        XStream xStream = new XStream();
-        Model deserializedModel = (Model) xStream.fromXML(deserializedXML);
-
-        return deserializedModel;
-    }
-
     public void consolidateProteins(){
-        for (LinkTypeComprises link_1: this.getLinkComprisesSet()){
-            BiologicalEntity bioEntity1 = link_1.getBiologicalEntity();
-            if (bioEntity1 instanceof Protein){
-                for (LinkTypeComprises link_2: this.getLinkComprisesSet()){
-                    BiologicalEntity bioEntity2 = link_2.getBiologicalEntity();
-                    if (bioEntity2 instanceof Protein && !(bioEntity2.getId().equals(bioEntity1.getId()))){
-                        Protein p1 = (Protein) bioEntity1;
-                        Protein p2 = (Protein) bioEntity2;
-                        HashSet<String> intersection = new HashSet<>(p1.getExternalIds());
-                        intersection.retainAll(p2.getExternalIds());
-                        if (! intersection.isEmpty() ){
-                            try {
-                                if (p1.getLinkReactantSet().isEmpty() && p1.getLinkProductSet().isEmpty() && p1.getLinkModifierSet().isEmpty()) {
-                                    p2.merge(p1);
-                                    LinkComprises.removeLink(link_1);
-                                } else {
-                                    p1.merge(p2);
-                                    LinkComprises.removeLink(link_2);
-                                }
-                            } catch (PreconditionsException e) {}
-                        }
+        for (Protein protein1: this.getProteins()){
+            for (Protein protein2: this.getProteins()){
+                if (!(protein1.getId().equals(protein2.getId()))){
+                    HashSet<String> intersection = new HashSet<>(protein1.getExternalIds());
+                    intersection.retainAll(protein2.getExternalIds());
+                    if (! intersection.isEmpty() ){
+                        try {
+                            if (protein1.getLinkReactantSet().isEmpty() && protein1.getLinkProductSet().isEmpty() && protein1.getLinkModifierSet().isEmpty()) {
+                                protein2.merge(protein1);
+                                LinkTypeComprises link1 = new LinkTypeComprises(this, protein1);
+                                LinkComprises.removeLink(link1);
+                            } else {
+                                protein1.merge(protein2);
+                                LinkTypeComprises link2 = new LinkTypeComprises(this, protein2);
+                                LinkComprises.removeLink(link2);
+                            }
+                        } catch (PreconditionsException e) {}
                     }
                 }
             }
@@ -188,6 +165,36 @@ public class Model implements Serializable {
             }
         }
         return speciesSet;
+    }
+
+    public Set<Protein> getProteins(){
+        Set<Protein> proteins = new HashSet<>();
+        for(Species species: this.getSpecies()){
+            if (species instanceof Protein){
+                proteins.add((Protein) species);
+            }
+        }
+        return proteins;
+    }
+
+    // Serialization functions
+
+    public void dump(String path) throws IOException {
+        XStream xStream = new XStream();
+        String xml = xStream.toXML(this);
+        File f = new File(path);
+        FileWriter fr = new FileWriter(f);
+        fr.write(xml);
+        fr.close();
+    }
+
+    public static Model load(String path) throws IOException {
+        Path filePath = Paths.get(path);
+        String deserializedXML = Files.readString(filePath, StandardCharsets.US_ASCII);
+        XStream xStream = new XStream();
+        Model deserializedModel = (Model) xStream.fromXML(deserializedXML);
+
+        return deserializedModel;
     }
 
 

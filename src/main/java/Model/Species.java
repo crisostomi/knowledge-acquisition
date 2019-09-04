@@ -2,6 +2,11 @@ package Model;
 
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
+import Model.Link.*;
+import Model.LinkType.LinkTypeModifier;
+import Model.LinkType.LinkTypeProduct;
+import Model.LinkType.LinkTypeReactant;
+import Model.LinkType.LinkTypeSpeciesCompartment;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -40,8 +45,6 @@ public class Species extends BiologicalEntity implements Serializable {
             throw new PreconditionsException("The overridden species must have the same id.");
         }
     }
-
-
     @Override
     public Species cloneIntoModel(Model model) throws PreconditionsException{
         Species species = new Species(this.getId(), model);
@@ -55,7 +58,6 @@ public class Species extends BiologicalEntity implements Serializable {
         LinkSpeciesCompartment.insertLink(species, (Compartment) comp);
         return species;
     }
-
 
 // SpeciesCompartment association, of which Compartment and Species are both responsibles, 0/1 to n
 
@@ -122,6 +124,8 @@ public class Species extends BiologicalEntity implements Serializable {
     public Set<LinkTypeProduct> getLinkProductSet() {
         return (Set<LinkTypeProduct>)((HashSet<LinkTypeProduct>)linkTypeProductSet).clone();
     }
+
+// Modifier association, of which Reaction and Species are both responsibles
 
     public void removeLinkModifier(LinkModifier pass, LinkTypeModifier l)
             throws PreconditionsException {

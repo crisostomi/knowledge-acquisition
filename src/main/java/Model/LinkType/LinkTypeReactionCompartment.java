@@ -1,4 +1,8 @@
-package Model;
+package Model.LinkType;
+
+import Model.Model;
+import Model.Reaction;
+import Model.Compartment;
 
 import java.io.Serializable;
 

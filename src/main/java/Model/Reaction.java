@@ -4,6 +4,11 @@ import DataTypes.ModifierType;
 import DataTypes.PreconditionsException;
 import DataTypes.RateParameter;
 import DataTypes.RealInterval;
+import Model.Link.*;
+import Model.LinkType.LinkTypeModifier;
+import Model.LinkType.LinkTypeProduct;
+import Model.LinkType.LinkTypeReactant;
+import Model.LinkType.LinkTypeReactionCompartment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +28,6 @@ public class Reaction extends BiologicalEntity {
     private Set<LinkTypeProduct> linkTypeProductSet = new HashSet<>();
     private Set<LinkTypeReactant> linkTypeReactantSet = new HashSet<>();
     private LinkTypeReactionCompartment linkTypeReactionCompartment;
-
 
     public Reaction(String id, Model m) throws PreconditionsException {
         super(id, m);
@@ -57,10 +61,6 @@ public class Reaction extends BiologicalEntity {
         else{
             throw new PreconditionsException("The overrider and the overridee have different ids.");
         }
-    }
-
-    public boolean isComplex(){
-        return !linkTypeModifierSet.isEmpty();
     }
 
     @Override
@@ -204,6 +204,7 @@ public class Reaction extends BiologicalEntity {
         return (Set<LinkTypeProduct>)((HashSet<LinkTypeProduct>)linkTypeProductSet).clone();
     }
 
+// Modifier association, of which Reaction and Species are both responsibles
 
     public void removeLinkModifier(LinkModifier pass, LinkTypeModifier l)
             throws PreconditionsException {
@@ -212,6 +213,7 @@ public class Reaction extends BiologicalEntity {
                     "It is necessary to show an instance of LinkSpeciesCompartment to invoke this method");
         linkTypeModifierSet.remove(l);
     }
+
     public void insertLinkModifier(LinkModifier pass, LinkTypeModifier l)
             throws PreconditionsException {
         if (pass == null)
@@ -223,7 +225,6 @@ public class Reaction extends BiologicalEntity {
     public Set<LinkTypeModifier> getLinkModifierSet() {
         return (Set<LinkTypeModifier>)((HashSet<LinkTypeModifier>)linkTypeModifierSet).clone();
     }
-
 
 // getters and setters
 
@@ -282,4 +283,9 @@ public class Reaction extends BiologicalEntity {
         }
         return involvedSpecies;
     }
+
+    public boolean isComplex(){
+        return !linkTypeModifierSet.isEmpty();
+    }
+
 }

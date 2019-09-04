@@ -3,6 +3,8 @@ package InputKnowledge;
 import DataTypes.PreconditionsException;
 import DataTypes.RealInterval;
 import Model.*;
+import Model.Link.LinkSpeciesCompartment;
+import Model.LinkType.LinkTypeSpeciesCompartment;
 
 import java.util.logging.Logger;
 

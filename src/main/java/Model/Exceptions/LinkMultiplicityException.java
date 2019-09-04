@@ -1,6 +1,7 @@
-package Model;
+package Model.Exceptions;
 
 import DataTypes.PreconditionsException;
+import Model.Model;
 
 import java.io.Serializable;
 

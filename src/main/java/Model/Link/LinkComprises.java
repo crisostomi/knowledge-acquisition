@@ -1,6 +1,9 @@
-package Model;
+package Model.Link;
 
 import DataTypes.PreconditionsException;
+import Model.LinkType.LinkTypeComprises;
+import Model.Model;
+import Model.BiologicalEntity;
 
 import java.io.Serializable;
 

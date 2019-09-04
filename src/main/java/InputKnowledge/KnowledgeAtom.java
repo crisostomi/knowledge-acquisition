@@ -2,6 +2,8 @@ package InputKnowledge;
 
 import DataTypes.PreconditionsException;
 import Model.*;
+import Model.Exceptions.LinkMultiplicityException;
+import Model.LinkType.LinkTypeAdditionalKnowledge;
 
 import java.util.HashSet;
 import java.util.Set;

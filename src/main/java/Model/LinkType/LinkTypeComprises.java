@@ -1,5 +1,7 @@
-package Model;
+package Model.LinkType;
 
+import Model.Model;
+import Model.BiologicalEntity;
 import java.io.Serializable;
 import java.util.Objects;
 

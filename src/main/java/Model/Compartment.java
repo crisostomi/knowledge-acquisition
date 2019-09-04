@@ -1,6 +1,11 @@
 package Model;
 
 import DataTypes.PreconditionsException;
+import Model.Link.LinkComprises;
+import Model.Link.LinkReactionCompartment;
+import Model.Link.LinkSpeciesCompartment;
+import Model.LinkType.LinkTypeReactionCompartment;
+import Model.LinkType.LinkTypeSpeciesCompartment;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -55,7 +60,6 @@ public class Compartment extends BiologicalEntity implements Serializable {
         return compartment;
     }
 
-
 // SpeciesCompartment association, of which Compartment and Species are both responsibles, 0/1 to n
 
     public void insertLinkSpeciesCompartment(LinkSpeciesCompartment pass, LinkTypeSpeciesCompartment l)
@@ -100,7 +104,6 @@ public class Compartment extends BiologicalEntity implements Serializable {
         return (Set<LinkTypeReactionCompartment>)((HashSet<LinkTypeReactionCompartment>)linkReactionCompartmentSet).clone();
     }
 
-
 // getters and setters
 
     public Double getSize() {
@@ -109,5 +112,21 @@ public class Compartment extends BiologicalEntity implements Serializable {
 
     public void setSize(double size) {
         this.size = size;
+    }
+
+    public Set<Species> getSpecies(){
+        Set<Species> species = new HashSet<>();
+        for (LinkTypeSpeciesCompartment linkTypeSpeciesCompartment: this.getLinkSpeciesCompartmentSet()){
+            species.add(linkTypeSpeciesCompartment.getSpecies());
+        }
+        return species;
+    }
+
+    public Set<Reaction> getReactions(){
+        Set<Reaction> reactions = new HashSet<>();
+        for (LinkTypeReactionCompartment linkTypeReactionCompartment: this.getLinkReactionCompartmentSet()){
+            reactions.add(linkTypeReactionCompartment.getReaction());
+        }
+        return reactions;
     }
 }

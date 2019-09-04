@@ -1,6 +1,9 @@
-package Model;
+package Model.Link;
 
 import DataTypes.PreconditionsException;
+import Model.Compartment;
+import Model.LinkType.LinkTypeReactionCompartment;
+import Model.Reaction;
 
 import java.io.Serializable;
 

@@ -1,6 +1,11 @@
 package Model;
 
 import DataTypes.PreconditionsException;
+import Model.Exceptions.BiologicalEntityNotUniqueException;
+import Model.Exceptions.LinkMultiplicityException;
+import Model.Link.LinkComprises;
+import Model.LinkType.LinkTypeAdditionalKnowledge;
+import Model.LinkType.LinkTypeComprises;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -14,7 +19,6 @@ public abstract class BiologicalEntity implements Serializable {
     protected final String id;
     protected String name;
     private Set<LinkTypeAdditionalKnowledge> additionalKnowledge = new HashSet<LinkTypeAdditionalKnowledge>();
-
     private LinkTypeComprises linkComprises;
 
     public BiologicalEntity(String id, Model m) throws PreconditionsException {

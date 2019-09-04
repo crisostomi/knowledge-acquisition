@@ -1,7 +1,10 @@
-package Model;
+package Model.Link;
 
 import DataTypes.ModifierType;
 import DataTypes.PreconditionsException;
+import Model.LinkType.LinkTypeModifier;
+import Model.Reaction;
+import Model.Species;
 
 import java.io.Serializable;
 

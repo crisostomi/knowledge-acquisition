@@ -2,6 +2,8 @@ package InputKnowledge;
 
 import DataTypes.*;
 import Model.*;
+import Model.Link.LinkReactionCompartment;
+import Model.LinkType.LinkTypeReactionCompartment;
 
 import java.util.HashMap;
 import java.util.HashSet;

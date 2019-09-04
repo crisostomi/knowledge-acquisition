@@ -1,5 +1,7 @@
-package Model;
+package Model.LinkType;
 
+import Model.Species;
+import Model.Compartment;
 import java.io.Serializable;
 
 public class LinkTypeSpeciesCompartment implements Serializable {

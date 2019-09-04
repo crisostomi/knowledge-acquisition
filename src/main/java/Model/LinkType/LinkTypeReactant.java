@@ -1,27 +1,27 @@
-package Model;
-
-import DataTypes.ModifierType;
+package Model.LinkType;
 
 import java.io.Serializable;
 import java.util.Objects;
+import Model.Species;
+import Model.Reaction;
 
-public class LinkTypeModifier implements Serializable {
+public class LinkTypeReactant implements Serializable {
     private Species species;
     private Reaction reaction;
 
-    private ModifierType modifierType;
+    private int stoichiometry;
 
-    public LinkTypeModifier(Species species, Reaction reaction, ModifierType modifierType) {
+    public LinkTypeReactant(Species species, Reaction reaction, int stoichiometry) {
         this.species = species;
         this.reaction = reaction;
-        this.modifierType = modifierType;
+        this.stoichiometry = stoichiometry;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LinkTypeModifier that = (LinkTypeModifier) o;
+        LinkTypeReactant that = (LinkTypeReactant) o;
         return species == that.species &&
                 reaction == that.reaction;
     }
@@ -32,8 +32,8 @@ public class LinkTypeModifier implements Serializable {
     }
 
 
-    public ModifierType getModifierType() {
-        return modifierType;
+    public int getStoichiometry() {
+        return stoichiometry;
     }
 
     public Species getSpecies() {
