@@ -15,15 +15,14 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class TSVParser implements KBParser{
+
     @Override
     public KnowledgeBase parse(String kbPath) throws XMLStreamException, IOException, FormatNotSupportedException, PreconditionsException, ParserConfigurationException, SAXException {
         TsvParserSettings settings = new TsvParserSettings();
         settings.getFormat().setLineSeparator("\n");
 
-// creates a TSV parser
         TsvParser parser = new TsvParser(settings);
 
-// parses all rows in one go.
         KnowledgeBase kb = new KnowledgeBase("paxDB", kbPath);
         List<String[]> allRows = parser.parseAll(getReader(kbPath));
         for (String[] row: allRows){
@@ -35,10 +34,17 @@ public class TSVParser implements KBParser{
             proteinKA.initializeExternalId(externalID);
         }
         return kb;
-
     }
 
-    public Reader getReader(String path) throws UnsupportedEncodingException, FileNotFoundException {
+    public List<String[]> getContent(String tsvPath) throws FileNotFoundException {
+        TsvParserSettings settings = new TsvParserSettings();
+        settings.getFormat().setLineSeparator("\n");
+        TsvParser parser = new TsvParser(settings);
+        List<String[]> allRows = parser.parseAll(getReader(tsvPath));
+        return allRows;
+    }
+
+    public Reader getReader(String path) throws FileNotFoundException {
         return new FileReader(new File(path));
     }
 }

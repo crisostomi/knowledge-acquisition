@@ -17,10 +17,14 @@ public class SBMLParser implements KBParser {
 
     AdditionalKnowledgeType sboTerm;
 
-    public SBMLParser() {
-        try {
-            sboTerm = new AdditionalKnowledgeType("sboTerm");
-        } catch (Exception e) {}
+    public SBMLParser(boolean preProcesser) {
+        if (!preProcesser){
+            try {
+                sboTerm = new AdditionalKnowledgeType("sboTerm");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -125,6 +129,20 @@ public class SBMLParser implements KBParser {
                 ka.insertLinkAdditionalKA(sboTerm, String.valueOf(sboTermValue));
             }
         }
+    }
+
+    public Set<String> getProteinsExternalIds(String sbmlPath) throws IOException, XMLStreamException {
+        File f = new File(sbmlPath);
+        SBase tree = SBMLReader.read(f);
+
+        Set<String> externalIds = new HashSet<>();
+        for (Species s : tree.getModel().getListOfSpecies()) {
+            if (isProtein(s)) {
+                externalIds.add(getExternalId(s));
+            }
+        }
+
+        return externalIds;
     }
 
     private void parseReactions(SBase tree, KnowledgeBase kb)

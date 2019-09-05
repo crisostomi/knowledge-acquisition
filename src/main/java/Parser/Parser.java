@@ -27,7 +27,7 @@ public class Parser implements KBParser {
             return sabioParser.parse(kbPath);
         }
         else if (kbPath.endsWith(".sbml")) {
-            SBMLParser sbmlParser = new SBMLParser();
+            SBMLParser sbmlParser = new SBMLParser(false);
             return sbmlParser.parse(kbPath);
         } else if (kbPath.endsWith(".tsv")){
             TSVParser tsvParser = new TSVParser();
