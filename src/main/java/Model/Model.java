@@ -76,6 +76,17 @@ public class Model implements Serializable {
         }
     }
 
+    public void consolidateAbundance() {
+        assert this.cellType != null;
+        for (Protein p: this.getProteins()) {
+            if (p.getAbundance() != null) {
+                double abundancePPM = p.getAbundance();
+                double abundanceMicroMol = this.cellType.calculateAbundanceMicroMol(abundancePPM);
+                p.setAbundance(abundanceMicroMol);
+            }
+        }
+    }
+
     // Comprises association (without attributes), of which BiologicalEntity and Model are both responsible. (n to 1)
 
     public void insertLinkComprises(LinkComprises pass, LinkTypeComprises l)
