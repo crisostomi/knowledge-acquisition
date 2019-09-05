@@ -2,10 +2,11 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import Model.*;
-import Parser.ConfigBuilder;
 import Util.CustomLogger;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.TransformerException;
 
 
 public class Main {
@@ -34,7 +35,8 @@ public class Main {
 
         try {
             Bootstrap.joinAbundances(kbPath, globalAbundancesPath, localAbundancesPath);
-        } catch (IOException | XMLStreamException e) {
+            Bootstrap.buildQuantitativeFile(kbPath, xmlPath);
+        } catch (IOException | XMLStreamException | ParserConfigurationException | TransformerException e) {
             e.printStackTrace();
         }
 
@@ -42,7 +44,7 @@ public class Main {
             Set<String> kbPaths = new HashSet<>();
 
             kbPaths.add(kbPath);
-//            kbPaths.add(xmlPath);
+            kbPaths.add(xmlPath);
             kbPaths.add(localAbundancesPath);
 
 
@@ -50,8 +52,6 @@ public class Main {
             CellType helaCell = new CellType("HeLa", HeLaProteins);
             m.setCellType(helaCell);
             m.consolidateAbundance();
-            ConfigBuilder c = new ConfigBuilder(m, xmlPath);
-            c.buildConfig();
             System.out.println("All done!");
             m.dump(dumpPath);
 

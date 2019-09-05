@@ -31,16 +31,20 @@ public class SBMLParser implements KBParser {
     public KnowledgeBase parse(String kbPath)
             throws XMLStreamException, IOException, PreconditionsException {
 
-        File f = new File(kbPath);
-        SBase tree = SBMLReader.read(f);
+        SBase tree = this.getContent(kbPath);
 
-        KnowledgeBase kb = new KnowledgeBase(f.getName(), kbPath);
+        KnowledgeBase kb = new KnowledgeBase("reactome", kbPath);
 
         parseCompartments(tree, kb);
         parseSpecies(tree, kb);
         parseReactions(tree, kb);
 
         return kb;
+    }
+
+    public SBase getContent(String sbmlPath) throws IOException, XMLStreamException {
+        File f = new File(sbmlPath);
+        return SBMLReader.read(f);
     }
 
     private void parseCompartments(SBase tree, KnowledgeBase kb)
@@ -69,7 +73,7 @@ public class SBMLParser implements KBParser {
         }
     }
 
-    private boolean isProtein(Species s) {
+    public boolean isProtein(Species s) {
         try {
             return s.getNotesString().contains("protein");
         } catch (XMLStreamException e) {
