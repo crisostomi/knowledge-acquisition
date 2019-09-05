@@ -1,6 +1,7 @@
 package Model;
 
 import DataTypes.PreconditionsException;
+import Model.Exceptions.LinkMultiplicityException;
 import Model.Link.LinkComprises;
 import Model.LinkType.LinkTypeComprises;
 
@@ -32,15 +33,21 @@ public class Protein extends Species {
     }
 
     public void merge(Protein other) throws PreconditionsException {
+        // una delle due non partecipa a reazioni
         assert ( other.getLinkReactantSet().isEmpty() && other.getLinkProductSet().isEmpty() &&
                 other.getLinkModifierSet().isEmpty() ) ^ ( this.getLinkReactantSet().isEmpty() && this.getLinkProductSet().isEmpty() &&
                 this.getLinkModifierSet().isEmpty());
+
+        // se è l'altra a non partecipare a reazioni
         if ( other.getLinkReactantSet().isEmpty() && other.getLinkProductSet().isEmpty() &&
                 other.getLinkModifierSet().isEmpty() ) {
-            this.setAbundance(other.getAbundance());
-            Model model = other.getLinkComprises().getModel();
-            LinkTypeComprises linkTypeComprises = new LinkTypeComprises(model, other);
-            LinkComprises.removeLink(linkTypeComprises);
+            Double oldAbundance = this.abundance;
+            try {
+                this.setAbundance(other.getAbundance());
+                LinkComprises.removeLink(other.getLinkComprises());
+            } catch (LinkMultiplicityException exc) {
+                this.abundance = oldAbundance;
+            }
         }
         else{
             other.merge(this);

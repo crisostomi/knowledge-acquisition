@@ -85,7 +85,9 @@ public abstract class BiologicalEntity implements Serializable {
     }
 
     public LinkTypeComprises getLinkComprises() throws PreconditionsException{
-        if (linkComprises == null) throw new LinkMultiplicityException();
+        if (linkComprises == null) {
+            throw new LinkMultiplicityException();
+        }
         return linkComprises;
     }
 

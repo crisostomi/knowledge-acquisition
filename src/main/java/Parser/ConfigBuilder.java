@@ -97,9 +97,6 @@ public class ConfigBuilder {
         element.setAttribute("minInitialAmount", "");
         element.setAttribute("maxInitialAmount", "");
 
-        element.setAttribute("lowerBound", "");
-        element.setAttribute("upperBound", "");
-
         return element;
     }
 

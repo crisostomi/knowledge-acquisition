@@ -1,6 +1,7 @@
 import java.util.HashSet;
 import java.util.Set;
 import Model.Model;
+import Parser.ConfigBuilder;
 import Util.CustomLogger;
 
 
@@ -10,10 +11,10 @@ public class Main {
         String username = System.getProperty("user.name");
         String projectFolder = "/home/"+username+"/Dropbox/Tesisti/software";
 
-        String testFolder = projectFolder + "/test-cases/dummy";
+        String testFolder = projectFolder + "/test-cases/urea";
 
         String kbPath = testFolder + "/in/pathway.sbml";
-//        String xmlPath = testFolder + "/in/quantitative.xml";
+        String xmlPath = testFolder + "/in/quantitative.xml";
         String tsvPath = testFolder + "/in/abundances.tsv";
 
         String logPath = testFolder + "/out/log.txt";
@@ -24,7 +25,7 @@ public class Main {
         try {
             Set<String> kbPaths = new HashSet<>();
             kbPaths.add(kbPath);
-//            kbPaths.add(xmlPath);
+            kbPaths.add(xmlPath);
             kbPaths.add(tsvPath);
 
             Model m = HandleModel.createModel(kbPaths);
