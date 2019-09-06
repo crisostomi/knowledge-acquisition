@@ -139,10 +139,6 @@ public class XMLParser implements KBParser {
                 Element element = (Element) node;
                 String id = element.getAttribute("id");
                 String name = element.getAttribute("name");
-                Double minRate =
-                        element.getAttribute("minRate").isEmpty() ? null : Double.valueOf(element.getAttribute("minRate"));
-                Double maxRate =
-                        element.getAttribute("maxRate").isEmpty() ? null : Double.valueOf(element.getAttribute("maxRate"));
 
                 ReactionKA ka;
                 if (name.equals("")) {
@@ -151,30 +147,39 @@ public class XMLParser implements KBParser {
                     ka = new ReactionKA(id, false, kb, name);
                 }
 
-                if (minRate == null) {
-                    minRate = Double.valueOf(0);
-                }
-                if (maxRate == null) {
-                    maxRate = Double.MAX_VALUE;
-                }
+                for ( RateParameter rate: RateParameter.values()){
+                    String minRateName = "min"+rate.name();
+                    String maxRateName = "max"+rate.name();
+                    Double minRate =
+                            element.getAttribute(minRateName).isEmpty() ? null : Double.valueOf(element.getAttribute(minRateName));
+                    Double maxRate =
+                            element.getAttribute(maxRateName).isEmpty() ? null : Double.valueOf(element.getAttribute(maxRateName));
 
-                ka.initializeRateParam(RateParameter.K, new RealInterval(minRate, maxRate));
-
-                if (element.getAttribute("reversible").equals("true")) {
-                    ka.setReversible();
-                    Double minRateInv =
-                            element.getAttribute("minRateInv").isEmpty() ? null : Double.valueOf(element.getAttribute("minRateInv"));
-                    Double maxRateInv =
-                            element.getAttribute("maxRateInv").isEmpty() ? null : Double.valueOf(element.getAttribute("maxRateInv"));
-
-                    if (minRateInv == null) {
-                        minRateInv = Double.valueOf(0);
+                    if (minRate == null) {
+                        minRate = Double.valueOf(0);
                     }
-                    if (maxRateInv == null) {
-                        maxRateInv = Double.MAX_VALUE;
+                    if (maxRate == null) {
+                        maxRate = Double.MAX_VALUE;
                     }
 
-                    ka.initializeRateInvParam(RateParameter.K, new RealInterval(minRateInv, maxRateInv));
+                    ka.initializeRateParam(rate, new RealInterval(minRate, maxRate));
+
+                    if (element.getAttribute("reversible").equals("true")) {
+                        ka.setReversible();
+                        Double minRateInv =
+                                element.getAttribute(minRateName+"Inv").isEmpty() ? null : Double.valueOf(element.getAttribute(minRateName+"Inv"));
+                        Double maxRateInv =
+                                element.getAttribute(maxRateName+"Inv").isEmpty() ? null : Double.valueOf(element.getAttribute(maxRateName+"Inv"));
+
+                        if (minRateInv == null) {
+                            minRateInv = Double.valueOf(0);
+                        }
+                        if (maxRateInv == null) {
+                            maxRateInv = Double.MAX_VALUE;
+                        }
+
+                        ka.initializeRateInvParam(rate, new RealInterval(minRateInv, maxRateInv));
+                    }
                 }
             }
         }

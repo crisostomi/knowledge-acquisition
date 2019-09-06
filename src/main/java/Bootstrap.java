@@ -135,12 +135,20 @@ public class Bootstrap {
 
             if (reaction.getName() != null) element.setAttribute("name", reaction.getName());
 
-            element.setAttribute("minRate", "");
-            element.setAttribute("maxRate", "");
+            element.setAttribute("minK", "");
+            element.setAttribute("maxK", "");
+            element.setAttribute("minKm", "");
+            element.setAttribute("maxKm", "");
+            element.setAttribute("minKcat", "");
+            element.setAttribute("maxKcat", "");
 
             if (reaction.isReversible()) {
                 element.setAttribute("minRateInv", "");
                 element.setAttribute("maxRateInv", "");
+                element.setAttribute("minKmInv", "");
+                element.setAttribute("maxKmInv", "");
+                element.setAttribute("minKcatInv", "");
+                element.setAttribute("maxKcatInv", "");
             }
 
             return element;
