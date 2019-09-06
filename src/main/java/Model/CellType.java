@@ -32,7 +32,7 @@ public class CellType {
         double abundanceMol = numberOfProteins / avogadroConstant;
         double abundanceMicroMol = abundanceMol * 1e6;
 
-        return abundanceMicroMol;
+        return abundanceMol;
     }
 
     // getters and setters
