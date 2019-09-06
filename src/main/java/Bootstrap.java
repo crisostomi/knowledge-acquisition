@@ -57,12 +57,37 @@ public class Bootstrap {
         builder.buildConfig();
     }
 
+    public static void buildQuantitativeFile(String sbmlPath, String configPath,
+                                             Double minInitialAmount, Double maxInitialAmount,
+                                             Double minK, Double maxK,
+                                             Double minKcat, Double maxKcat,
+                                             Double minKm, Double maxKm
+                                             )
+            throws ParserConfigurationException, TransformerException, IOException, XMLStreamException {
+        QuantitativeXMLBuilder builder = new QuantitativeXMLBuilder(
+                sbmlPath, configPath,
+                minInitialAmount, maxInitialAmount,
+                minK, maxK,
+                minKcat, maxKcat,
+                minKm, maxKm);
+
+        builder.buildConfig();
+    }
+
     private static class QuantitativeXMLBuilder {
 
         private SBMLParser sbmlParser;
         private String sbmlPath;
         private String configPath;
         private Document config;
+        private Double minInitialAmount;
+        private Double maxInitialAmount;
+        private Double minK;
+        private Double maxK;
+        private Double minKcat;
+        private Double maxKcat;
+        private Double minKm;
+        private Double maxKm;
 
         public QuantitativeXMLBuilder(String sbmlPath, String configPath) throws ParserConfigurationException {
             this.sbmlPath = sbmlPath;
@@ -72,9 +97,24 @@ public class Bootstrap {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             this.config = dBuilder.newDocument();
-
         }
 
+        public QuantitativeXMLBuilder(String sbmlPath, String configPath,
+                                      Double minInitialAmount, Double maxInitialAmount,
+                                      Double minK, Double maxK,
+                                      Double minKcat, Double maxKcat,
+                                      Double minKm, Double maxKm) throws ParserConfigurationException {
+
+            this(sbmlPath, configPath);
+            this.minInitialAmount = minInitialAmount;
+            this.maxInitialAmount = maxInitialAmount;
+            this.minK = minK;
+            this.maxK = maxK;
+            this.minKcat = minKcat;
+            this.maxKcat = maxKcat;
+            this.minKm = minKm;
+            this.maxKm = maxKm;
+        }
 
         public void buildConfig() throws TransformerException, IOException, XMLStreamException {
 
@@ -120,8 +160,10 @@ public class Bootstrap {
             element.setAttribute("id", species.getId());
             if (species.getName() != null) element.setAttribute("name", species.getName());
 
-            element.setAttribute("minInitialAmount", "");
-            element.setAttribute("maxInitialAmount", "");
+            String minInitalAmountValue = (this.minInitialAmount == null) ? "" : String.valueOf(this.minInitialAmount);
+            element.setAttribute("minInitialAmount", minInitalAmountValue);
+            String maxInitalAmountValue = (this.maxInitialAmount == null) ? "" : String.valueOf(this.maxInitialAmount);
+            element.setAttribute("maxInitialAmount", maxInitalAmountValue);
 
             return element;
         }
@@ -135,12 +177,20 @@ public class Bootstrap {
 
             if (reaction.getName() != null) element.setAttribute("name", reaction.getName());
 
-            element.setAttribute("minK", "");
-            element.setAttribute("maxK", "");
-            element.setAttribute("minKm", "");
-            element.setAttribute("maxKm", "");
-            element.setAttribute("minKcat", "");
-            element.setAttribute("maxKcat", "");
+            String minKValue = (this.minK == null) ? "" : String.valueOf(this.minK);
+            element.setAttribute("minK", minKValue);
+            String maxKValue = (this.maxK == null) ? "" : String.valueOf(this.maxK);
+            element.setAttribute("maxK", maxKValue);
+
+            String minKmValue = (this.minKm == null) ? "" : String.valueOf(this.minKm);
+            element.setAttribute("minKm", minKmValue);
+            String maxKmValue = (this.maxKm == null) ? "" : String.valueOf(this.maxKm);
+            element.setAttribute("maxKm", maxKmValue);
+
+            String minKcatValue = (this.minKcat == null) ? "" : String.valueOf(this.minKcat);
+            element.setAttribute("minKcat", minKcatValue);
+            String maxKcatValue = (this.maxKcat == null) ? "" : String.valueOf(this.maxKcat);
+            element.setAttribute("maxKcat", maxKcatValue);
 
             if (reaction.isReversible()) {
                 element.setAttribute("minRateInv", "");
