@@ -20,44 +20,72 @@ import java.util.Map;
 import java.util.Set;
 
 import static Util.Utils.containsIgnoreCase;
+import java.net.URLEncoder;
+import java.util.logging.Logger;
 
 
 public class SabioMiner implements Miner {
+    private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
+
     private static final String sabioUrl = "http://sabiork.h-its.org/sabioRestWebServices/searchKineticLaws/sbml?";
     private static HttpURLConnection con;
     private static final String EMPTY_QUERY_MESSAGE = "No results found for query\n";
 
     @Override
-    public KnowledgeBase mine(Set<String> ka_ids) throws IOException, XMLStreamException, PreconditionsException {
+    public KnowledgeBase mine(Set<String> reaction_ids) throws IOException, XMLStreamException, PreconditionsException {
         KnowledgeBase kb = new KnowledgeBase("Sabio",sabioUrl);
-        for(String ka_id: ka_ids) {
-            String idNumber = ka_id.replace("reaction_","");
-            SBase tree = request(idNumber);
-            if (tree != null){
-                Map<String, Double> params = parseParameters(tree, kb);
-                ReactionKA reactionKA = new ReactionKA(ka_id, false, kb);
-                for (Map.Entry<String, Double> entry : params.entrySet()) {
-                    if (containsIgnoreCase(entry.getKey(), "Km")){
-                        RealInterval realInt = new RealInterval(entry.getValue(), entry.getValue());
-                        reactionKA.addRateParameter(RateParameter.Km,realInt);
+
+        for(String reaction_id: reaction_ids) {
+            String idNumber = reaction_id.replace("reaction_","");
+
+            if (informationAvailable(idNumber)){
+
+                for (RateParameter rateParam: RateParameter.values()){
+
+                    Map<String, Double> params = retrieveRateParameter(idNumber, rateParam);
+                    if (params != null){
+                        ReactionKA reactionKA = new ReactionKA(reaction_id, false, kb);
+                        for (Map.Entry<String, Double> entry : params.entrySet()) {
+                            if (containsIgnoreCase(entry.getKey(), rateParam.name())){
+                                RealInterval realInt = new RealInterval(entry.getValue(), entry.getValue());
+                                reactionKA.addRateParameter(rateParam,realInt);
+                            }
+                        }
                     }
-                    else if (containsIgnoreCase(entry.getKey(), "Kcat")){
-                        RealInterval realInt = new RealInterval(entry.getValue(), entry.getValue());
-                        reactionKA.addRateParameter(RateParameter.Kcat, realInt);
-                    }
+
                 }
             }
         }
         return kb;
     }
 
+    public Map<String, Double> retrieveRateParameter(String reactionId, RateParameter rateParam) throws IOException, XMLStreamException {
+        String query = getQueryRateParameter(reactionId, rateParam);
+        SBase response = request(query);
+        if (response != null){
+            Map<String, Double> params = parseParameters(response);
+            return params;
+        }
+        return null;
+    }
 
+    public String getQueryKmAndKcat(String reactionId){
+        String organism = "human";
+        String query = "ReactomeReactionID:\"R-HSA-"+reactionId+"\" AND Organism:\""+organism+"\" AND Parametertype:\"km\" AND Parametertype: \"kcat\"";
+        return "q="+URLEncoder.encode(query);
+    }
 
+    public String getQueryRateParameter(String reactionId, RateParameter rateParam){
+        String rateParamName;
+        rateParamName = rateParam.name().equals("Kcat_over_Km")? "kcat/km":rateParam.name();
+        String organism = "human";
+        String query = "ReactomeReactionID:\"R-HSA-"+reactionId+"\" AND Organism:\""+organism+"\" AND Parametertype:\""+rateParamName.toLowerCase()+"\"";
+        return "q="+URLEncoder.encode(query);
+    }
 
-    public SBase request(String reactionId) throws IOException, XMLStreamException {
+    public SBase request(String query) throws IOException, XMLStreamException {
         URL url = new URL(sabioUrl);
-        String urlParameters = "q=ReactomeReactionID%3A%22R-HSA-"+reactionId+"%22%20AND%20Organism%3A%22human%22%20AND%20Parametertype%3A%22km%22%20AND%20Parametertype%3A%22kcat%22%20AND%20KineticMechanismType%3A%22michaelis-menten%22";
-        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+        byte[] postData = query.getBytes(StandardCharsets.UTF_8);
 
         con = (HttpURLConnection) url.openConnection();
 
@@ -89,8 +117,7 @@ public class SabioMiner implements Miner {
         return tree;
     }
 
-
-    private Map<String, Double> parseParameters(SBase tree, KnowledgeBase kb) {
+    private Map<String, Double> parseParameters(SBase tree) {
         Map<String, Double> map = new HashMap<>();
         List<LocalParameter> params = tree.getModel().getListOfReactions().get(0).getKineticLaw().getListOfLocalParameters();
         for(LocalParameter param:params){
@@ -101,4 +128,32 @@ public class SabioMiner implements Miner {
         return map;
 
     }
+
+    public boolean informationAvailable(String reactionId) throws IOException {
+        String organism = "human";
+        String query = "q="+URLEncoder.encode("ReactomeReactionID:\"R-HSA-"+reactionId+"\" AND Organism:\""+organism+"\"");
+        URL url = new URL(sabioUrl);
+        byte[] postData = query.getBytes(StandardCharsets.UTF_8);
+        con = (HttpURLConnection) url.openConnection();
+        con.setDoOutput(true);
+        con.setRequestMethod("POST");
+        con.setRequestProperty("User-Agent", "Java client");
+        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+            wr.write(postData);
+        }
+        try (BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()))) {
+            String line;
+            line = in.readLine();
+            line += "\n";
+            if (line.equals(EMPTY_QUERY_MESSAGE)){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+    }
+
 }

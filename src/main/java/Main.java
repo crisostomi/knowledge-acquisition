@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +14,7 @@ public class Main {
     public static final String ABUNDANCES_FILENAME = "abundances.tsv";
     public static final String REACTOME_FILENAME = "pathway.sbml";
     public static final String LOG_FILENAME = "log.txt";
-    public static final String TEST = "meiotic-recombination";
+    public static final String TEST = "smooth-muscle";
 
     public static final double HeLaProteins = 2.3e9;
 
@@ -60,4 +61,5 @@ public class Main {
             exc.printStackTrace();
         }
     }
+
 }

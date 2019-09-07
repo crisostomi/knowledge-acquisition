@@ -135,17 +135,26 @@ public class SBMLParser implements KBParser {
         }
     }
 
-    public Set<String> getProteinsExternalIds(String sbmlPath) throws IOException, XMLStreamException {
+    public Set<Species> getProteins(String sbmlPath) throws IOException, XMLStreamException {
         File f = new File(sbmlPath);
         SBase tree = SBMLReader.read(f);
 
-        Set<String> externalIds = new HashSet<>();
+        Set<Species> proteins = new HashSet<>();
         for (Species s : tree.getModel().getListOfSpecies()) {
             if (isProtein(s)) {
-                externalIds.add(getExternalId(s));
+                proteins.add(s);
             }
         }
 
+        return proteins;
+    }
+
+    public Set<String> getProteinsExternalIds(String sbmlPath) throws IOException, XMLStreamException {
+        Set<Species> proteins = getProteins(sbmlPath);
+        Set<String> externalIds = new HashSet<>();
+        for (Species protein: proteins){
+            externalIds.add(getExternalId(protein));
+        }
         return externalIds;
     }
 
@@ -154,6 +163,14 @@ public class SBMLParser implements KBParser {
         for (Reaction r : tree.getModel().getListOfReactions()) {
             parseReaction(r, kb);
         }
+    }
+
+    public Set<String> getReactionIds(SBase tree){
+        Set<String> reactions = new HashSet<>();
+        for (Reaction r : tree.getModel().getListOfReactions()) {
+            reactions.add(r.getId());
+        }
+        return reactions;
     }
 
     private ModifierType getModifierType(ModifierSpeciesReference sr) {
