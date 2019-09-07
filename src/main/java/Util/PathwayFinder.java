@@ -1,14 +1,13 @@
+package Util;
+
 import Miner.SabioMiner;
 import Parser.SBMLParser;
-import Parser.SabioParser;
 import org.sbml.jsbml.SBase;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.HashSet;
 import java.util.Set;
 
 public class PathwayFinder {

@@ -11,9 +11,9 @@ public class AdditionalKnowledgeType implements Serializable {
     private final String id;
 
     public AdditionalKnowledgeType(String id) throws AdditionalKnowledgeTypeNotUniqueException {
-        if (idsInUse.contains(id)) throw new AdditionalKnowledgeTypeNotUniqueException(
-                "AdditionalKnowledgeType " + id + " already exists"
-        );
+//        if (idsInUse.contains(id)) throw new AdditionalKnowledgeTypeNotUniqueException(
+//                "AdditionalKnowledgeType " + id + " already exists"
+//        );
 
         this.id = id;
         idsInUse.add(id);
