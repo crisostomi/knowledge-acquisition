@@ -54,4 +54,8 @@ public class Protein extends Species {
         }
     }
 
+    public boolean isQuantitative(){
+        return this.getId().contains("ENSP");
+    }
+
 }

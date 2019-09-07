@@ -68,7 +68,7 @@ public class Model implements Serializable {
                 if (!(protein1.getId().equals(protein2.getId()))){
                     HashSet<String> intersection = new HashSet<>(protein1.getExternalIds());
                     intersection.retainAll(protein2.getExternalIds());
-                    if (! intersection.isEmpty() ){
+                    if (!intersection.isEmpty() && (protein1.isQuantitative() || protein2.isQuantitative()) ){
                         protein1.merge(protein2);
                     }
                 }

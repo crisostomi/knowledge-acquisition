@@ -17,7 +17,13 @@ public class PathwayFinder {
     public static final String projectFolder = "/home/"+username+"/Dropbox/Tesisti/software";
     public static final String testFolder = projectFolder + "/test-cases/whole-reactome";
 
-    public void findPathways(String folder, int maxNumReactions, int minNumProteins) throws IOException, XMLStreamException {
+    public static void main(String args[]) throws IOException, XMLStreamException {
+        PathwayFinder finder = new PathwayFinder();
+//        finder.findKineticInfoPathways(testFolder, 15, 2);
+        finder.findProteinPathways(testFolder, 6, 6);
+    }
+
+    public void findKineticInfoPathways(String folder, int maxNumReactions, int minNumProteins) throws IOException, XMLStreamException {
         File folderFile = new File(folder);
         SBMLParser parser = new SBMLParser(true);
         SabioMiner sabioMiner = new SabioMiner();
@@ -66,10 +72,32 @@ public class PathwayFinder {
 
     }
 
-    public static void main(String args[]) throws IOException, XMLStreamException {
-        PathwayFinder finder = new PathwayFinder();
-        finder.findPathways(testFolder, 15, 2);
+    public void findProteinPathways(String folder, int maxNumReactions, int minNumProteins) throws IOException, XMLStreamException {
+        File folderFile = new File(folder);
+        SBMLParser parser = new SBMLParser(true);
+        FileWriter fileWrite = new FileWriter(folder+"/../../proteinInfo.txt");
+        StringBuilder stringBuilder = new StringBuilder();
 
+        for(String pathway: folderFile.list()) {
+            String pathwayFullPath = folder + "/" + pathway;
+            File pathwayFile = new File(pathwayFullPath);
+            SBase tree = parser.getContent(pathwayFullPath);
+            Set<String> reaction_Ids = parser.getReactionIds(tree);
+
+            int numReactions = (reaction_Ids).size();
+            int numProteins = parser.getProteinsExternalIds(pathwayFullPath).size();
+
+            if (numReactions > maxNumReactions || numProteins < minNumProteins) {
+                pathwayFile.delete();
+                continue;
+            }
+            stringBuilder.append("Pathway: "+pathway+ " reactions: "+numReactions+ "proteins: "+numProteins+"\n");
+        }
+        fileWrite.append(stringBuilder.toString());
+        fileWrite.close();
     }
+
+
+
 
 }
