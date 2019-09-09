@@ -46,7 +46,7 @@ public class SabioMiner implements Miner {
                     if (params != null){
                         ReactionKA reactionKA = new ReactionKA(reaction_id, false, kb);
                         for (Map.Entry<String, Double> entry : params.entrySet()) {
-                            if (containsIgnoreCase(entry.getKey(), rateParam.name())){
+                            if (containsParameterName(rateParam, entry.getKey() )){
                                 RealInterval realInt = new RealInterval(entry.getValue(), entry.getValue());
                                 reactionKA.addRateParameter(rateParam,realInt);
                             }
@@ -57,6 +57,16 @@ public class SabioMiner implements Miner {
             }
         }
         return kb;
+    }
+
+    public boolean containsParameterName(RateParameter rateParameter, String localParameter){
+        String rateParamName = rateParameter.name().equals("Kcat_over_Km")? "kcat_km":rateParameter.name();
+        if (rateParameter == RateParameter.Kcat){
+            return containsIgnoreCase(localParameter, rateParamName) && ! containsIgnoreCase(localParameter, "km");
+        }
+        else {
+            return containsIgnoreCase(localParameter, rateParamName);
+        }
     }
 
     public Map<String, Double> retrieveRateParameter(String reactionId, RateParameter rateParam) throws IOException, XMLStreamException {

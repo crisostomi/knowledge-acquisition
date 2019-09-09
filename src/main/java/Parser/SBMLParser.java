@@ -94,6 +94,11 @@ public class SBMLParser implements KBParser {
         return null;
     }
 
+
+    public int getSpeciesCount(SBase tree){
+        return tree.getModel().getListOfSpecies().size();
+    }
+
     private void parseSpecies(SBase tree, KnowledgeBase kb)
                             throws PreconditionsException {
         for (Species s : tree.getModel().getListOfSpecies()) {
