@@ -20,6 +20,7 @@ public class Main {
     public static final String LOG_FILENAME = "log.txt";
     public static final String TEST = "estrogen-biosynthesis";
 
+    public static final double HeLaSize = 3e-12;
     public static final double HeLaProteins = 2.3e9;
 
     public static void main(String[] args) {
@@ -54,9 +55,8 @@ public class Main {
 
 
             Model m = HandleModel.createModel(kbPaths);
-            CellType helaCell = new CellType("HeLa", HeLaProteins);
+            CellType helaCell = new CellType("HeLa", HeLaSize, HeLaProteins);
             m.setCellType(helaCell);
-            m.consolidateAbundance();
             System.out.println("All done!");
             m.dump(dumpPath);
             for(Reaction react:m.getReactions()){

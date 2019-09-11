@@ -23,6 +23,7 @@ public class Model implements Serializable {
 
     private CellType cellType = null;
     private Set<LinkTypeComprises> linkComprisesSet = new HashSet<>();
+    private boolean abundanceConsolidated = false;
 
     public Model(){}
 
@@ -78,13 +79,15 @@ public class Model implements Serializable {
 
     public void consolidateAbundance() {
         assert this.cellType != null;
+        assert !abundanceConsolidated;
         for (Protein p: this.getProteins()) {
             if (p.getAbundance() != null) {
                 double abundancePPM = p.getAbundance();
-                double abundanceMicroMol = this.cellType.calculateAbundanceMicroMol(abundancePPM);
-                p.setAbundance(abundanceMicroMol);
+                double abundanceConcentration = this.cellType.calculateAbundanceConcentration(abundancePPM);
+                p.setAbundance(abundanceConcentration);
             }
         }
+        abundanceConsolidated = true;
     }
 
     // Comprises association (without attributes), of which BiologicalEntity and Model are both responsible. (n to 1)
@@ -121,6 +124,7 @@ public class Model implements Serializable {
     public void setCellType(CellType cellType) throws PreconditionsException {
         if (this.cellType != null) throw new PreconditionsException();
         this.cellType = cellType;
+        this.consolidateAbundance();
     }
 
     public CellType getCellType() {

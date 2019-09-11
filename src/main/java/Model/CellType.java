@@ -10,29 +10,36 @@ public class CellType {
     private String name;
     private static final double avogadroConstant = 6.022e23;
     private Double proteinsInCell;
+    private Double size;
 
     public CellType() {}
 
-    public CellType(String name) throws PreconditionsException {
+    public CellType(String name, Double size, Double proteinsInCell) throws PreconditionsException {
         if (namesInUse.contains(name)) throw new PreconditionsException();
 
         this.name = name;
-    }
-
-    public CellType(String name, double proteinsInCell) throws PreconditionsException {
-        if (namesInUse.contains(name)) throw new PreconditionsException();
-
-        this.name = name;
+        this.size = size;
         this.proteinsInCell = proteinsInCell;
     }
 
-    public double calculateAbundanceMicroMol(double abundancePPM) {
+    public double calculateAbundanceMol(double abundancePPM) {
         double abundancePercent = abundancePPM * 1e-4;
         double numberOfProteins = abundancePercent * proteinsInCell / 100;
         double abundanceMol = numberOfProteins / avogadroConstant;
-        double abundanceMicroMol = abundanceMol * 1e6;
 
         return abundanceMol;
+    }
+
+    public double calculateAbundanceMicroMol(double abundancePPM) {
+        double abundanceMol = calculateAbundanceMol(abundancePPM);
+        double abundanceMicroMol = abundanceMol * 1e6;
+        return abundanceMicroMol;
+    }
+
+    public double calculateAbundanceConcentration(double abundancePPM) {
+        double abundanceMol = calculateAbundanceMol(abundancePPM);
+        double abundanceConcentration = abundanceMol / this.size;
+        return abundanceConcentration;
     }
 
     // getters and setters
