@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -210,6 +211,7 @@ public class PathwayFinder {
         FileWriter fileWriter = new FileWriter(folderFile + "/info.txt");
 
         String info = "";
+        pathwayInfos.sort(Comparator.comparing((PathwayInfo p) -> p.pathwayName));
         for (PathwayInfo pathwayInfo: pathwayInfos) {
             info += pathwayInfo.pathwayName + "\n";
             info += "\t" + pathwayInfo.getInfo().replace("\n", "\n\t") + "\n";
