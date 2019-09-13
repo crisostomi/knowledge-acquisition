@@ -149,12 +149,12 @@ public class PathwayFinder {
             }
 
             String getInfo() {
-                String info = "Pathway id: " + pathwayId + "\n" +
-                        "Number of species: " + numberOfSpecies + "\n" +
-                        "Number of proteins: " + numberOfProteins + "\n" +
-                        "Number of constrained proteins: " + numberOfConstrainedProteins + "\n" +
-                        "Number of reactions: " + numberOfReactions + "\n" +
-                        "Number of constrained reactions: " +
+                String info = "Pathway id:" + "\t".repeat(7) + pathwayId + "\n" +
+                        "Number of species:" + "\t".repeat(5) + numberOfSpecies + "\n" +
+                        "Number of proteins:" + "\t".repeat(5) + numberOfProteins + "\n" +
+                        "Number of constrained proteins:" + "\t".repeat(2) + numberOfConstrainedProteins + "\n" +
+                        "Number of reactions:" + "\t".repeat(4) + numberOfReactions + "\n" +
+                        "Number of constrained reactions:" + "\t" +
                         ((numberOfConstrainedReactions == -1)? "COULD NOT GATHER INFO FROM SABIO" : String.valueOf(numberOfConstrainedReactions));
                 return info;
             }
