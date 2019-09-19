@@ -231,6 +231,20 @@ public class Reaction extends BiologicalEntity {
         this.rateParameters.put(rateParam, rate);
     }
 
+    public int getSpeciesStoich(Species species){
+        for (LinkTypeReactant link: this.getLinkReactantSet() ){
+            if (link.getSpecies().equals(species)){
+                return link.getStoichiometry();
+            }
+        }
+        for (LinkTypeProduct link: this.getLinkProductSet()){
+            if (link.getSpecies().equals(species)){
+                return link.getStoichiometry();
+            }
+        }
+        return 0;
+    }
+
     public boolean isReversible() {
         return this.reversible;
     }
