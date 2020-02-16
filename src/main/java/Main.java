@@ -15,6 +15,7 @@ import javax.xml.transform.TransformerException;
 
 
 public class Main {
+    public static final String PROJECT_FOLDER = "";
     public static final String ABUNDANCES_FILENAME = "abundances.tsv";
     public static final String REACTOME_FILENAME = "pathway.sbml";
     public static final String LOG_FILENAME = "log.txt";
@@ -25,11 +26,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String username = System.getProperty("user.name");
-        String projectFolder = "/home/"+username+"/Dropbox/Tesisti/software";
-        String testFolder = projectFolder + "/test-cases/"+TEST;
+        String testFolder = PROJECT_FOLDER + "/test-cases/"+TEST;
         String kbPath = testFolder + "/in/"+REACTOME_FILENAME;
-        String globalAbundancesPath = projectFolder +"/knowledge/"+ ABUNDANCES_FILENAME;
+        String globalAbundancesPath = PROJECT_FOLDER +"/knowledge/"+ ABUNDANCES_FILENAME;
         String logPath = testFolder +"/out/"+ LOG_FILENAME;
         String localAbundancesPath = testFolder+"/in/"+ABUNDANCES_FILENAME;
         String dumpPath = testFolder + "/out/model_dump.xml";
@@ -42,29 +41,15 @@ public class Main {
         try {
             Bootstrap.joinAbundances(kbPath, globalAbundancesPath, localAbundancesPath);
             Bootstrap.buildQuantitativeFile(kbPath, xmlPath);
-        } catch (IOException | XMLStreamException | ParserConfigurationException | TransformerException e) {
-            e.printStackTrace();
-        }
-
-        try {
             Set<String> kbPaths = new HashSet<>();
-
             kbPaths.add(kbPath);
             kbPaths.add(xmlPath);
             kbPaths.add(localAbundancesPath);
-
-
             Model m = HandleModel.createModel(kbPaths);
             CellType helaCell = new CellType("HeLa", HeLaSize, HeLaProteins);
             m.setCellType(helaCell);
             System.out.println("All done!");
             m.dump(dumpPath);
-            for(Reaction react:m.getReactions()){
-                for (Map.Entry<RateParameter, RealInterval> entry: react.getRateParameters().entrySet()){
-                    System.out.println(entry.getKey().name() +": " + entry.getValue().getLowerBound());
-                }
-            }
-
         } catch (Exception exc) {
             exc.printStackTrace();
         }
